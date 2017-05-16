@@ -45,3 +45,8 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+
+HCU_V0.2/.vs/
+.cproject
+.cwGeneratedFileSetLog
+.project

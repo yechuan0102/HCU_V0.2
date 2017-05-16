@@ -1,0 +1,5 @@
+
+***1. union 结构体 高地位顺序检验。
+2. AD innerfault 处理  (ADCH_Start() Task_ADCHS = 0)
+3.TLE DriverFault 暂时不实用
+4.核算 100ms SPI发送数据时长。

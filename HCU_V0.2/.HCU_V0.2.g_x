@@ -1,0 +1,63 @@
+<CodeGenerationInfo>
+  <ToolchainSettings>
+    <option>
+      <name>PE_G_4PEx_ToolChain_Compiler_SearchUserPaths</name>
+      <values lines_count="2">
+        <Line>"${ProjDirPath}/Sources"</Line>
+        <Line>"${ProjDirPath}/Generated_Code"</Line>
+      </values>
+    </option>
+  </ToolchainSettings>
+  <GeneratedFilesList>
+    <GeneratedByPE>
+      <File Name="Generated_Code/LED2.c" FileDate="2017-05-16, 10:50:16" FileAge="1494903016588" FileType="45637" CompNumb="44" />
+      <File Name="Project_Settings/Linker_Files/ProcessorExpert.prm" FileDate="2017-05-15, 16:12:31" FileAge="1494835951223" FileType="8" CompNumb="2" />
+      <File Name="Generated_Code/TI_10ms.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951297" FileType="45637" CompNumb="36" />
+      <File Name="Generated_Code/Vectors.c" FileDate="2017-05-16, 10:50:16" FileAge="1494903016880" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/LED1.h" FileDate="2017-05-16, 10:50:16" FileAge="1494903016601" FileType="45637" CompNumb="43" />
+      <File Name="Documentation/HCU_V0.2_SIGNALS.txt" FileDate="2017-05-16, 16:21:46" FileAge="1494922906653" FileType="3072" />
+      <File Name="Generated_Code/TI_10ms.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951291" FileType="45637" CompNumb="36" />
+      <File Name="Generated_Code/SPI_DriverINH_2.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951326" FileType="45637" CompNumb="18" />
+      <File Name="Generated_Code/Cpu.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951240" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/LED1.c" FileDate="2017-05-16, 10:50:16" FileAge="1494903016597" FileType="45637" CompNumb="43" />
+      <File Name="Generated_Code/SPI.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951459" FileType="45637" CompNumb="29" />
+      <File Name="Generated_Code/SPI_DriverINH_2.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951322" FileType="45637" CompNumb="18" />
+      <File Name="Generated_Code/Cpu.c" FileDate="2017-05-16, 10:50:16" FileAge="1494903016863" FileType="45637" CompNumb="2" />
+      <File Name="Generated_Code/SPI.c" FileDate="2017-05-16, 10:50:16" FileAge="1494903016670" FileType="45637" CompNumb="29" />
+      <File Name="Sources/Events.h" FileDate="2017-05-16, 10:50:16" FileAge="1494903016900" FileType="131328" />
+      <File Name="Generated_Code/SPI_DriverINH_1.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951427" FileType="45637" CompNumb="17" />
+      <File Name="Sources/Events.c" FileDate="2017-05-15, 16:12:25" FileAge="1494835945333" FileType="131328" />
+      <File Name="Generated_Code/SPI_DriverINH_1.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951422" FileType="45637" CompNumb="17" />
+      <File Name="Generated_Code/SPI_DriverSS_2.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951436" FileType="45637" CompNumb="15" />
+      <File Name="Generated_Code/WDog_1S.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951500" FileType="45637" CompNumb="7" />
+      <File Name="Generated_Code/SPI_DriverSS_2.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951432" FileType="45637" CompNumb="15" />
+      <File Name="Generated_Code/TI_1ms.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951318" FileType="45637" CompNumb="35" />
+      <File Name="Generated_Code/WDog_1S.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951496" FileType="45637" CompNumb="7" />
+      <File Name="Sources/main.c" FileDate="2017-05-16, 10:50:16" FileAge="1494903016699" FileType="128" />
+      <File Name="Generated_Code/TI_1ms.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951314" FileType="45637" CompNumb="35" />
+      <File Name="Generated_Code/PE_Const.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951271" FileType="45637" />
+      <File Name="Generated_Code/SPI_DriverSS_1.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951468" FileType="45637" CompNumb="16" />
+      <File Name="Generated_Code/PE_Types.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951287" FileType="45637" />
+      <File Name="Generated_Code/PE_Error.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951275" FileType="45637" />
+      <File Name="Generated_Code/SPI_DriverSS_1.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951464" FileType="45637" CompNumb="16" />
+      <File Name="Generated_Code/IO_Map.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951266" FileType="45637" />
+      <File Name="Generated_Code/IO_Map.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951252" FileType="45637" />
+      <File Name="Generated_Code/SPI_DriverFault_2.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951409" FileType="45637" CompNumb="34" />
+      <File Name="Generated_Code/SPI_DriverFault_2.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951404" FileType="45637" CompNumb="34" />
+      <File Name="Generated_Code/LED4.h" FileDate="2017-05-16, 10:50:16" FileAge="1494903016575" FileType="45637" CompNumb="46" />
+      <File Name="Documentation/HCU_V0.2_Settings.xml" FileDate="2017-05-16, 10:50:17" FileAge="1494903017040" FileType="3072" />
+      <File Name="Generated_Code/SPI_DriverFault_1.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951417" FileType="45637" CompNumb="33" />
+      <File Name="Generated_Code/CAN.h" FileDate="2017-05-13, 10:41:10" FileAge="1494643270414" FileType="45637" CompNumb="6" />
+      <File Name="Generated_Code/LED4.c" FileDate="2017-05-16, 10:50:16" FileAge="1494903016570" FileType="45637" CompNumb="46" />
+      <File Name="Documentation/HCU_V0.2.txt" FileDate="2017-05-16, 10:50:17" FileAge="1494903017104" FileType="3072" />
+      <File Name="Generated_Code/SPI_DriverFault_1.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951413" FileType="45637" CompNumb="33" />
+      <File Name="Generated_Code/CAN.c" FileDate="2017-05-13, 10:41:10" FileAge="1494643270404" FileType="45637" CompNumb="6" />
+      <File Name="Generated_Code/LED3.h" FileDate="2017-05-16, 10:50:16" FileAge="1494903016583" FileType="45637" CompNumb="45" />
+      <File Name="Generated_Code/ADCH.h" FileDate="2017-05-15, 16:12:31" FileAge="1494835951490" FileType="45637" CompNumb="8" />
+      <File Name="Generated_Code/LED3.c" FileDate="2017-05-16, 10:50:16" FileAge="1494903016579" FileType="45637" CompNumb="45" />
+      <File Name="Generated_Code/ADCH.c" FileDate="2017-05-15, 16:12:31" FileAge="1494835951479" FileType="45637" CompNumb="8" />
+      <File Name="Generated_Code/LED2.h" FileDate="2017-05-16, 10:50:16" FileAge="1494903016592" FileType="45637" CompNumb="44" />
+    </GeneratedByPE>
+  </GeneratedFilesList>
+  <CodeGenReference>4</CodeGenReference>
+</CodeGenerationInfo>

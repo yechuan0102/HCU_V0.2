@@ -1,0 +1,32 @@
+"$(ProjDirPath)/Project_Settings/Linker_Files/ProcessorExpert.prm"
+-M
+-ViewHidden
+-WmsgFob"%f%e:%l:%k:%d %m\n"
+-WmsgSd1100
+-WmsgSd1912 
+-Add("$(ProjDirPath)/FLASH/Sources/Events_c.obj"
+"$(ProjDirPath)/FLASH/Sources/main_c.obj"
+"$(ProjDirPath)/FLASH/Project_Settings/Startup_Code/start08_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/ADCH_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/CAN_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/Cpu_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/IO_Map_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/LED1_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/LED2_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/LED3_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/LED4_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/SPI_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/SPI_DriverFault_1_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/SPI_DriverFault_2_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/SPI_DriverINH_1_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/SPI_DriverINH_2_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/SPI_DriverSS_1_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/SPI_DriverSS_2_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/TI_10ms_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/TI_1ms_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/Vectors_c.obj"
+"$(ProjDirPath)/FLASH/Generated_Code/WDog_1S_c.obj"
+"$(ProjDirPath)/FLASH/AppLayer/StateMachineManagement_c.obj"
+"$(ProjDirPath)/FLASH/AppLayer/SysParameters_c.obj"
+"$(ProjDirPath)/FLASH/AppLayer/TaskSchedule_c.obj"
+"$(MCUToolsBaseDirEnv)/lib/hc08c/lib/ansiis.lib" )
