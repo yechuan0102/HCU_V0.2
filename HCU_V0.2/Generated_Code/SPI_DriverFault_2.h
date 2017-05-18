@@ -6,7 +6,7 @@
 **     Component   : BitIO
 **     Version     : Component 02.086, Driver 03.27, CPU db: 3.00.026
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-15, 16:12, # CodeGen: 0
+**     Date/Time   : 2017-05-16, 22:41, # CodeGen: 4
 **     Abstract    :
 **         This component "BitIO" implements an one-bit input/output.
 **         It uses one bit/pin of a port.
@@ -18,20 +18,20 @@
 **             ----------------------------------------------------
 **                Number (on package)  |    Name
 **             ----------------------------------------------------
-**                       4             |  PTC6_ADP22
+**                       32            |  PTD1_PID1_TPM2CH1
 **             ----------------------------------------------------
 **
-**         Port name                   : PTC
+**         Port name                   : PTD
 **
-**         Bit number (in port)        : 6
-**         Bit mask of the port        : $0040
+**         Bit number (in port)        : 1
+**         Bit mask of the port        : $0002
 **
 **         Initial direction           : Input (direction cannot be changed)
 **         Initial output value        : 0
 **         Initial pull option         : up
 **
-**         Port data register          : PTCD      [$0004]
-**         Port control register       : PTCDD     [$0005]
+**         Port data register          : PTDD      [$0006]
+**         Port control register       : PTDDD     [$0007]
 **
 **         Optimization for            : speed
 **     Contents    :
@@ -114,7 +114,7 @@
 ** ===================================================================
 */
 #define SPI_DriverFault_2_GetVal() ( \
-    (bool)((getReg8(PTCD) & 0x40U))    /* Return port data */ \
+    (bool)((getReg8(PTDD) & 0x02U))    /* Return port data */ \
   )
 
 

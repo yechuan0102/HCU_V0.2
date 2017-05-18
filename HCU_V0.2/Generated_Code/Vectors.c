@@ -5,7 +5,7 @@
 **     Processor   : MC9S08DZ60MLH
 **     Version     : Component 01.076, Driver 01.40, CPU db: 3.00.026
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-16, 10:50, # CodeGen: 2
+**     Date/Time   : 2017-05-18, 09:06, # CodeGen: 7
 **     Abstract    :
 **         This component "MC9S08DZ60_64" contains initialization 
 **         of the CPU and provides basic methods and events for 
@@ -70,7 +70,7 @@
 #include "SPI_DriverFault_2.h"
 #include "SPI_DriverINH_2.h"
 #include "TI_1ms.h"
-#include "TI_10ms.h"
+#include "TI_20ms.h"
 #include "LED1.h"
 #include "LED2.h"
 #include "LED3.h"
@@ -98,7 +98,7 @@ static void (* near const _vect[])(void) @0xFFC0 = { /* Interrupt vector table *
          Cpu_Interrupt,                /* Int.no. 15 Vspi (at FFE0)                  Unassigned */
          Cpu_Interrupt,                /* Int.no. 14 Vtpm2ovf (at FFE2)              Unassigned */
          Cpu_Interrupt,                /* Int.no. 13 Vtpm2ch1 (at FFE4)              Unassigned */
-         TI_10ms_Interrupt,            /* Int.no. 12 Vtpm2ch0 (at FFE6)              Used */
+         TI_20ms_Interrupt,            /* Int.no. 12 Vtpm2ch0 (at FFE6)              Used */
          Cpu_Interrupt,                /* Int.no. 11 Vtpm1ovf (at FFE8)              Unassigned */
          Cpu_Interrupt,                /* Int.no. 10 Vtpm1ch5 (at FFEA)              Unassigned */
          Cpu_Interrupt,                /* Int.no.  9 Vtpm1ch4 (at FFEC)              Unassigned */

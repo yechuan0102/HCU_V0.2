@@ -7,7 +7,7 @@
 **     Version     : Component 01.076, Driver 01.40, CPU db: 3.00.026
 **     Datasheet   : MC9S08DZ60 Rev. 3 10/2007
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-16, 10:50, # CodeGen: 2
+**     Date/Time   : 2017-05-18, 09:06, # CodeGen: 7
 **     Abstract    :
 **         This component "MC9S08DZ60_64" contains initialization 
 **         of the CPU and provides basic methods and events for 
@@ -77,7 +77,7 @@
 #include "SPI_DriverFault_2.h"
 #include "SPI_DriverINH_2.h"
 #include "TI_1ms.h"
-#include "TI_10ms.h"
+#include "TI_20ms.h"
 #include "LED1.h"
 #include "LED2.h"
 #include "LED3.h"
@@ -253,14 +253,10 @@ void PE_low_level_init(void)
   clrSetReg8Bits(PTEDD, 0x20U, 0x1DU);  
   /* PTDD: PTDD3=0,PTDD2=0 */
   clrReg8Bits(PTDD, 0x0CU);             
-  /* PTDPE: PTDPE3=1,PTDPE2=1,PTDPE0=1 */
-  setReg8Bits(PTDPE, 0x0DU);            
-  /* PTDDD: PTDDD3=1,PTDDD2=1,PTDDD0=0 */
-  clrSetReg8Bits(PTDDD, 0x01U, 0x0CU);  
-  /* PTCPE: PTCPE6=1 */
-  setReg8Bits(PTCPE, 0x40U);            
-  /* PTCDD: PTCDD6=0 */
-  clrReg8Bits(PTCDD, 0x40U);            
+  /* PTDPE: PTDPE3=1,PTDPE2=1,PTDPE1=1,PTDPE0=1 */
+  setReg8Bits(PTDPE, 0x0FU);            
+  /* PTDDD: PTDDD3=1,PTDDD2=1,PTDDD1=0,PTDDD0=0 */
+  clrSetReg8Bits(PTDDD, 0x03U, 0x0CU);  
   /* PTGD: PTGD5=0,PTGD4=0,PTGD3=0,PTGD2=0 */
   clrReg8Bits(PTGD, 0x3CU);             
   /* PTGPE: PTGPE5=0,PTGPE4=0,PTGPE3=0,PTGPE2=0 */
@@ -315,8 +311,8 @@ void PE_low_level_init(void)
   /* ### BitIO "SPI_DriverINH_2" init code ... */
   /* ### TimerInt "TI_1ms" init code ... */
   TI_1ms_Init();
-  /* ### TimerInt "TI_10ms" init code ... */
-  TI_10ms_Init();
+  /* ### TimerInt "TI_20ms" init code ... */
+  TI_20ms_Init();
   /* ### BitIO "LED1" init code ... */
   /* ### BitIO "LED2" init code ... */
   /* ### BitIO "LED3" init code ... */

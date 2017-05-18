@@ -32,10 +32,9 @@ extern volatile unsigned char Timer_100ms;
 extern volatile unsigned char Timer_CAN;
 
 #define Task_ADCHS				TaskFlags.Bits.flag0//ADC OnEnd ISR
-#define Task_TLE6232Update		TaskFlags.Bits.flag1//100ms ISR
+#define Task_TLE6232			TaskFlags.Bits.flag1//100ms ISR
 #define Task_CANTXD				TaskFlags.Bits.flag2//After Timer_CAN=CAN_Send_Delay
 #define Task_FCUCMD				TaskFlags.Bits.flag3//CAN REV ISR
-#define Task_TLE6232CMDSet		TaskFlags.Bits.flag4//100ms ISR
 #define Task_ErrorDiagnosis		TaskFlags.Bits.flag5//ADC OnEnd ISR
 
 /*
@@ -101,13 +100,13 @@ extern const unsigned int H2ConData_Table[H2ConData_Table_Len];
 #define P_H2TankData_Table_Len (2)
 extern const unsigned int P_H2TankRawData_Table[P_H2TankData_Table_Len];
 extern const unsigned int P_H2TankData_Table[P_H2TankData_Table_Len];
-#define P_H2TankDataRawLimitH (3932)	//480barg 
+#define P_H2TankDataRawLimitH (3962)	//480barg 
 #define P_H2TankDataRawLimitL (614)		//<3mA sensor error
 
 #define P_H2MidData_Table_Len (2)
 extern const unsigned int P_H2MidRawData_Table[P_H2MidData_Table_Len];
 extern const unsigned int P_H2MidData_Table[P_H2MidData_Table_Len];
-#define P_H2MidDataRawLimitH (3686) 	//18barg
+#define P_H2MidDataRawLimitH (3768) 	//18barg
 #define P_H2MidDataRawLimitL (614)		//<3mA sensor error
 
 
@@ -432,6 +431,22 @@ extern volatile CAN_ID CAN_RXD_ID[CAN_RXD_NUM];
 #define LED3_OFF	LED3_ClrVal()
 #define LED4_OFF	LED4_ClrVal()
 
+/*
+**********************************************************************
+** ===================================================================
+**                  Sys Temp Variables Parameters
+** ===================================================================
+**********************************************************************
+*/
+extern volatile int systemp_rev;
+extern volatile int systemp_error;
+extern volatile int systemp_H;
+extern volatile int systemp_L;
+extern volatile int systemp_Flag;
+extern volatile int systemp_Timer1;
+extern volatile int systemp_Timer2;
+extern volatile int systemp_Timer3;
+extern volatile int systemp_Timer4;
 
 
 void SysParametersInit(void);

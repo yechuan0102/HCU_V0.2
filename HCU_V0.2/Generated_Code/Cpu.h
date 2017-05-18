@@ -7,7 +7,7 @@
 **     Version     : Component 01.076, Driver 01.40, CPU db: 3.00.026
 **     Datasheet   : MC9S08DZ60 Rev. 3 10/2007
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-15, 16:12, # CodeGen: 0
+**     Date/Time   : 2017-05-16, 22:41, # CodeGen: 4
 **     Abstract    :
 **         This component "MC9S08DZ60_64" contains initialization 
 **         of the CPU and provides basic methods and events for 

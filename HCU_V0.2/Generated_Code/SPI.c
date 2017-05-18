@@ -6,7 +6,7 @@
 **     Component   : SynchroMaster
 **     Version     : Component 02.347, Driver 01.30, CPU db: 3.00.026
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-16, 10:50, # CodeGen: 2
+**     Date/Time   : 2017-05-18, 09:06, # CodeGen: 7
 **     Abstract    :
 **         This component "SynchroMaster" implements MASTER part of synchronous
 **         serial master-slave communication.
@@ -105,7 +105,7 @@
 #include "SPI_DriverFault_2.h"
 #include "SPI_DriverINH_2.h"
 #include "TI_1ms.h"
-#include "TI_10ms.h"
+#include "TI_20ms.h"
 #include "LED1.h"
 #include "LED2.h"
 #include "LED3.h"

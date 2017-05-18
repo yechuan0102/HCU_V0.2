@@ -45,7 +45,7 @@
 #include "SPI_DriverFault_2.h"
 #include "SPI_DriverINH_2.h"
 #include "TI_1ms.h"
-#include "TI_10ms.h"
+#include "TI_20ms.h"
 #include "LED1.h"
 #include "LED2.h"
 #include "LED3.h"
@@ -133,12 +133,12 @@ void TI_1ms_OnInterrupt(void);
 ** ===================================================================
 */
 
-void TI_10ms_OnInterrupt(void);
+void TI_20ms_OnInterrupt(void);
 /*
 ** ===================================================================
-**     Event       :  TI_10ms_OnInterrupt (module Events)
+**     Event       :  TI_20ms_OnInterrupt (module Events)
 **
-**     Component   :  TI_10ms [TimerInt]
+**     Component   :  TI_20ms [TimerInt]
 **     Description :
 **         When a timer interrupt occurs this event is called (only
 **         when the component is enabled - <Enable> and the events are

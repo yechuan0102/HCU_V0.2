@@ -41,7 +41,7 @@
 #include "SPI_DriverFault_2.h"
 #include "SPI_DriverINH_2.h"
 #include "TI_1ms.h"
-#include "TI_10ms.h"
+#include "TI_20ms.h"
 #include "LED1.h"
 #include "LED2.h"
 #include "LED3.h"
@@ -62,7 +62,12 @@ void main(void)
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
   PE_low_level_init();
   /*** End of Processor Expert internal initialization.                    ***/
-
+	Timer_100ms++;
+	if (Timer_100ms == 10)
+	{
+		Timer_100ms = 0;
+		Task_TLE6232 = 1;
+	}
   /* Write your code here */
   /* For example: for(;;) { } */
   SysInit();

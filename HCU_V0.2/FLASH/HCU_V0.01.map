@@ -1,13 +1,4 @@
-*** EVALUATION ************************************************************************************************
-*********************************************************************************************
-LINKING FAILED
-The linking process failed in some stage.
-Depending on the phase the linker failed, part of the information contained in this map file may be inaccurate or wrong.
-If the linking failed before the allocation phase finished, then the addresses might be inaccurate.
-Also summary information like the code size is likely to be misleading.
----------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------------------
-
+*** EVALUATION ***
 PROGRAM "HCU_V0.01.abs"
 
 *********************************************************************************************
@@ -41,11 +32,11 @@ rtshc08.o (ansiis.lib)                  Model: SMALL,         Lang: ANSI-C
 STARTUP SECTION
 ---------------------------------------------------------------------------------------------
 Entry point: 0x1904 (_EntryPoint)
-_startupData is allocated at 0x1A1F and uses 6 Bytes
+_startupData is allocated at 0x1A16 and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0xA0     212
-  _Copy    *toCopyDownBeg 0x30FA
+  _Range   pZeroOut       0xA0     222
+  _Copy    *toCopyDownBeg 0x3211
 } _startupData;
 
 *********************************************************************************************
@@ -53,8 +44,8 @@ SECTION-ALLOCATION SECTION
 Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
 .data                             12   R/W       0xA0       0xAB   RAM
-.text                           5641     R     0x1A2D     0x3035   ROM
-.rodata                          196     R     0x3036     0x30F9   ROM
+.text                           5929     R     0x1A24     0x314C   ROM
+.rodata                          196     R     0x314D     0x3210   ROM
 .abs_section_ffbd                  1     R     0xFFBD     0xFFBD   .absSeg0
 .abs_section_ffbf                  1     R     0xFFBF     0xFFBF   .absSeg1
 .abs_section_0                     1   N/I        0x0        0x0   .absSeg2
@@ -241,16 +232,16 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_18a0                  4   N/I     0x18A0     0x18A3   .absSeg183
 .abs_section_18b0                  4   N/I     0x18B0     0x18B3   .absSeg184
 .abs_section_ffc0                 64     R     0xFFC0     0xFFFF   .absSeg185
-.bss                              58   R/W       0xAC       0xE5   RAM
-.startData                        14     R     0x1A1F     0x1A2C   ROM
-.init                            287     R     0x1900     0x1A1E   ROM
-.common                          142   R/W       0xE6      0x173   RAM
-.stack                           128   R/W      0x174      0x1F3   RAM
-.copy                             18     R     0x30FA     0x310B   ROM
+.bss                              60   R/W       0xAC       0xE7   RAM
+.startData                        14     R     0x1A16     0x1A23   ROM
+.init                            278     R     0x1900     0x1A15   ROM
+.common                          150   R/W       0xE8      0x17D   RAM
+.stack                           128   R/W      0x17E      0x1FD   RAM
+.copy                             18     R     0x3211     0x3222   ROM
 
 Summary of section sizes per section type:
-READ_ONLY (R):        184E (dec:     6222)
-READ_WRITE (R/W):      154 (dec:      340)
+READ_ONLY (R):        1965 (dec:     6501)
+READ_WRITE (R/W):      15E (dec:      350)
 NO_INIT (N/I):          D3 (dec:      211)
 
 *********************************************************************************************
@@ -264,68 +255,68 @@ OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 MODULE:                 -- Events_c.obj --
 - PROCEDURES:
-     ADCH_OnEnd                                1A2D      24      36       0   .text       
-     CAN_OnFreeTxBuffer                        1A51      A8     168       0   .text       
-     CAN_OnFullRxBuffer                        1AF9       3       3       0   .text       
-     CAN_OnBusOff                              1AFC       6       6       0   .text       
-     TI_1ms_OnInterrupt                        1B02      1A      26       0   .text       
-     TI_10ms_OnInterrupt                       1B1C      1B      27       0   .text       
+     ADCH_OnEnd                                1A24      24      36       1   .text       
+     CAN_OnFreeTxBuffer                        1A48      A8     168       3   .text       
+     CAN_OnFullRxBuffer                        1AF0       B      11       1   .text       
+     CAN_OnBusOff                              1AFB       6       6       1   .text       
+     TI_1ms_OnInterrupt                        1B01      1A      26       1   .text       
+     TI_10ms_OnInterrupt                       1B1B      17      23       1   .text       
 - VARIABLES:
-     watchpoint                                  AC       1       1       0   .bss        
+     watchpoint                                  AC       1       1       1   .bss        
 MODULE:                 -- main_c.obj --
 - PROCEDURES:
-     main                                      1B37      16      22       0   .text       
+     main                                      1B32      16      22       1   .text       
 - VARIABLES:
 MODULE:                 -- start08_c.obj --
 - PROCEDURES:
-     loadByte                                  1B4D       E      14       0   .text       
-     Init                                      1B5B      6D     109       0   .text       
-     _Startup                                  1BC8       9       9       0   .text       
+     loadByte                                  1B48       E      14       5   .text       
+     Init                                      1B56      6D     109       1   .text       
+     _Startup                                  1BC3       9       9       1   .text       
 - VARIABLES:
-     _startupData                              1A1F       6       6       0   .startData  
+     _startupData                              1A16       6       6       4   .startData  
 - LABELS:
-     __SEG_END_SSTACK                           1F4       0       0       0               
+     __SEG_END_SSTACK                           1FE       0       0       1               
 MODULE:                 -- ADCH_c.obj --
 - PROCEDURES:
-     ADCH_Interrupt                            1BD1     115     277       0   .text       
-     ClrSumV                                   1CE6      33      51       0   .text       
-     ADCH_HWEnDi                               1D19      24      36       0   .text       
-     ADCH_Start                                1D3D      19      25       0   .text       
-     ADCH_Stop                                 1D56      11      17       0   .text       
-     ADCH_GetValue                             1D67      FF     255       0   .text       
-     ADCH_Init                                 1E66      17      23       0   .text       
+     ADCH_Interrupt                            1BCC     115     277       4   .text       
+     ClrSumV                                   1CE1      33      51       1   .text       
+     ADCH_HWEnDi                               1D14      24      36       2   .text       
+     ADCH_Start                                1D38      19      25       2   .text       
+     ADCH_Stop                                 1D51      11      17       2   .text       
+     ADCH_GetValue                             1D62      FF     255       9   .text       
+     ADCH_Init                                 1E61      17      23       2   .text       
 - VARIABLES:
-     Channels                                  3036      10      16       0   .rodata     
-     EnUser                                      AD       1       1       0   .bss        
-     OutFlg                                      AE       1       1       0   .bss        
-     SumChan                                     AF       1       1       0   .bss        
-     ModeFlg                                     B0       1       1       0   .bss        
-     SumCnt                                      B1       1       1       0   .bss        
-     ADCH_SumV                                   E6      20      32       0   .common     
-     ADCH_OutV                                  106      20      32       0   .common     
+     Channels                                  314D      10      16       2   .rodata     
+     EnUser                                      AD       1       1       3   .bss        
+     OutFlg                                      AE       1       1       4   .bss        
+     SumChan                                     AF       1       1       7   .bss        
+     ModeFlg                                     B0       1       1      10   .bss        
+     SumCnt                                      B1       1       1       4   .bss        
+     ADCH_SumV                                   E8      20      32      51   .common     
+     ADCH_OutV                                  108      20      32      32   .common     
 MODULE:                 -- CAN_c.obj --
 - PROCEDURES:
-     CAN_SetAcceptanceCode                     1E7D      74     116       0   .text       
-     CAN_SendFrameExt                          1EF1     145     325       0   .text       
-     CAN_ReadFrame                             2036     107     263       0   .text       
-     CAN_Init                                  213D      76     118       0   .text       
-     CAN_SetAcceptanceMask                     21B3      74     116       0   .text       
-     CAN_InterruptTx                           2227      17      23       0   .text       
-     CAN_InterruptRx                           223E      28      40       0   .text       
-     CAN_InterruptError                        2266      35      53       0   .text       
+     CAN_SetAcceptanceCode                     1E78      74     116       1   .text       
+     CAN_SendFrameExt                          1EEC     145     325       2   .text       
+     CAN_ReadFrame                             2031     107     263       2   .text       
+     CAN_Init                                  2138      76     118       2   .text       
+     CAN_SetAcceptanceMask                     21AE      74     116       1   .text       
+     CAN_InterruptTx                           2222      17      23       1   .text       
+     CAN_InterruptRx                           2239      28      40       1   .text       
+     CAN_InterruptError                        2261      35      53       1   .text       
 - VARIABLES:
-     ErrFlag                                     B2       1       1       0   .bss        
-     SerFlag                                     B3       1       1       0   .bss        
+     ErrFlag                                     B2       1       1       5   .bss        
+     SerFlag                                     B3       1       1       6   .bss        
 MODULE:                 -- Cpu_c.obj --
 - PROCEDURES:
-     Cpu_Interrupt                             1900       4       4       0   .init       
-     _EntryPoint                               1904      74     116       0   .init       
-     PE_low_level_init                         1978      A7     167       0   .init       
+     Cpu_Interrupt                             1900       4       4      25   .init       
+     _EntryPoint                               1904      74     116       1   .init       
+     PE_low_level_init                         1978      9E     158       1   .init       
 - VARIABLES:
      NVPROT_INIT                               FFBD       1       1       0   .abs_section_ffbd
      NVOPT_INIT                                FFBF       1       1       0   .abs_section_ffbf
-     CCR_reg                                    126       1       1       0   .common     
-     CCR_lock                                   127       1       1       0   .common     
+     CCR_reg                                    128       1       1       7   .common     
+     CCR_lock                                   129       1       1      14   .common     
 MODULE:                 -- IO_Map_c.obj --
 - PROCEDURES:
 - VARIABLES:
@@ -335,21 +326,21 @@ MODULE:                 -- IO_Map_c.obj --
      _PTBDD                                       3       1       1       0   .abs_section_3
      _PTCD                                        4       1       1       0   .abs_section_4
      _PTCDD                                       5       1       1       0   .abs_section_5
-     _PTDD                                        6       1       1       0   .abs_section_6
-     _PTDDD                                       7       1       1       0   .abs_section_7
-     _PTED                                        8       1       1       0   .abs_section_8
-     _PTEDD                                       9       1       1       0   .abs_section_9
+     _PTDD                                        6       1       1       6   .abs_section_6
+     _PTDDD                                       7       1       1       2   .abs_section_7
+     _PTED                                        8       1       1       6   .abs_section_8
+     _PTEDD                                       9       1       1       2   .abs_section_9
      _PTFD                                        A       1       1       0   .abs_section_a
      _PTFDD                                       B       1       1       0   .abs_section_b
-     _PTGD                                        C       1       1       0   .abs_section_c
-     _PTGDD                                       D       1       1       0   .abs_section_d
+     _PTGD                                        C       1       1       6   .abs_section_c
+     _PTGDD                                       D       1       1       2   .abs_section_d
      _ACMP1SC                                     E       1       1       0   .abs_section_e
      _ACMP2SC                                     F       1       1       0   .abs_section_f
-     _ADCSC1                                     10       1       1       0   .abs_section_10
-     _ADCSC2                                     11       1       1       0   .abs_section_11
-     _ADCCFG                                     16       1       1       0   .abs_section_16
-     _APCTL1                                     17       1       1       0   .abs_section_17
-     _APCTL2                                     18       1       1       0   .abs_section_18
+     _ADCSC1                                     10       1       1       5   .abs_section_10
+     _ADCSC2                                     11       1       1       1   .abs_section_11
+     _ADCCFG                                     16       1       1       1   .abs_section_16
+     _APCTL1                                     17       1       1       1   .abs_section_17
+     _APCTL2                                     18       1       1       1   .abs_section_18
      _APCTL3                                     19       1       1       0   .abs_section_19
      _IRQSC                                      1C       1       1       0   .abs_section_1c
      _TPM1SC                                     20       1       1       0   .abs_section_20
@@ -371,34 +362,34 @@ MODULE:                 -- IO_Map_c.obj --
      _SCI2S2                                     45       1       1       0   .abs_section_45
      _SCI2C3                                     46       1       1       0   .abs_section_46
      _SCI2D                                      47       1       1       0   .abs_section_47
-     _MCGC1                                      48       1       1       0   .abs_section_48
-     _MCGC2                                      49       1       1       0   .abs_section_49
-     _MCGTRM                                     4A       1       1       0   .abs_section_4a
-     _MCGSC                                      4B       1       1       0   .abs_section_4b
-     _MCGC3                                      4C       1       1       0   .abs_section_4c
-     _SPIC1                                      50       1       1       0   .abs_section_50
-     _SPIC2                                      51       1       1       0   .abs_section_51
-     _SPIBR                                      52       1       1       0   .abs_section_52
-     _SPIS                                       53       1       1       0   .abs_section_53
-     _SPID                                       55       1       1       0   .abs_section_55
+     _MCGC1                                      48       1       1       3   .abs_section_48
+     _MCGC2                                      49       1       1       3   .abs_section_49
+     _MCGTRM                                     4A       1       1       1   .abs_section_4a
+     _MCGSC                                      4B       1       1       7   .abs_section_4b
+     _MCGC3                                      4C       1       1       1   .abs_section_4c
+     _SPIC1                                      50       1       1       2   .abs_section_50
+     _SPIC2                                      51       1       1       1   .abs_section_51
+     _SPIBR                                      52       1       1       1   .abs_section_52
+     _SPIS                                       53       1       1       5   .abs_section_53
+     _SPID                                       55       1       1       5   .abs_section_55
      _IICA                                       58       1       1       0   .abs_section_58
      _IICF                                       59       1       1       0   .abs_section_59
      _IICC1                                      5A       1       1       0   .abs_section_5a
      _IICS                                       5B       1       1       0   .abs_section_5b
      _IICD                                       5C       1       1       0   .abs_section_5c
      _IICC2                                      5D       1       1       0   .abs_section_5d
-     _TPM2SC                                     60       1       1       0   .abs_section_60
-     _TPM2C0SC                                   65       1       1       0   .abs_section_65
+     _TPM2SC                                     60       1       1       2   .abs_section_60
+     _TPM2C0SC                                   65       1       1       2   .abs_section_65
      _TPM2C1SC                                   68       1       1       0   .abs_section_68
-     _RTCSC                                      6C       1       1       0   .abs_section_6c
+     _RTCSC                                      6C       1       1       5   .abs_section_6c
      _RTCCNT                                     6D       1       1       0   .abs_section_6d
-     _RTCMOD                                     6E       1       1       0   .abs_section_6e
-     _SRS                                      1800       1       1       0   .abs_section_1800
+     _RTCMOD                                     6E       1       1       3   .abs_section_6e
+     _SRS                                      1800       1       1       4   .abs_section_1800
      _SBDFR                                    1801       1       1       0   .abs_section_1801
-     _SOPT1                                    1802       1       1       0   .abs_section_1802
-     _SOPT2                                    1803       1       1       0   .abs_section_1803
-     _SPMSC1                                   1809       1       1       0   .abs_section_1809
-     _SPMSC2                                   180A       1       1       0   .abs_section_180a
+     _SOPT1                                    1802       1       1       1   .abs_section_1802
+     _SOPT2                                    1803       1       1       1   .abs_section_1803
+     _SPMSC1                                   1809       1       1       1   .abs_section_1809
+     _SPMSC2                                   180A       1       1       1   .abs_section_180a
      _DBGC                                     1816       1       1       0   .abs_section_1816
      _DBGT                                     1817       1       1       0   .abs_section_1817
      _DBGS                                     1818       1       1       0   .abs_section_1818
@@ -409,67 +400,67 @@ MODULE:                 -- IO_Map_c.obj --
      _FSTAT                                    1825       1       1       0   .abs_section_1825
      _FCMD                                     1826       1       1       0   .abs_section_1826
      _PTAPE                                    1840       1       1       0   .abs_section_1840
-     _PTASE                                    1841       1       1       0   .abs_section_1841
-     _PTADS                                    1842       1       1       0   .abs_section_1842
+     _PTASE                                    1841       1       1       1   .abs_section_1841
+     _PTADS                                    1842       1       1       1   .abs_section_1842
      _PTASC                                    1844       1       1       0   .abs_section_1844
      _PTAPS                                    1845       1       1       0   .abs_section_1845
      _PTAES                                    1846       1       1       0   .abs_section_1846
      _PTBPE                                    1848       1       1       0   .abs_section_1848
-     _PTBSE                                    1849       1       1       0   .abs_section_1849
-     _PTBDS                                    184A       1       1       0   .abs_section_184a
+     _PTBSE                                    1849       1       1       1   .abs_section_1849
+     _PTBDS                                    184A       1       1       1   .abs_section_184a
      _PTBSC                                    184C       1       1       0   .abs_section_184c
      _PTBPS                                    184D       1       1       0   .abs_section_184d
      _PTBES                                    184E       1       1       0   .abs_section_184e
      _PTCPE                                    1850       1       1       0   .abs_section_1850
-     _PTCSE                                    1851       1       1       0   .abs_section_1851
-     _PTCDS                                    1852       1       1       0   .abs_section_1852
-     _PTDPE                                    1858       1       1       0   .abs_section_1858
-     _PTDSE                                    1859       1       1       0   .abs_section_1859
-     _PTDDS                                    185A       1       1       0   .abs_section_185a
+     _PTCSE                                    1851       1       1       1   .abs_section_1851
+     _PTCDS                                    1852       1       1       1   .abs_section_1852
+     _PTDPE                                    1858       1       1       1   .abs_section_1858
+     _PTDSE                                    1859       1       1       1   .abs_section_1859
+     _PTDDS                                    185A       1       1       1   .abs_section_185a
      _PTDSC                                    185C       1       1       0   .abs_section_185c
      _PTDPS                                    185D       1       1       0   .abs_section_185d
      _PTDES                                    185E       1       1       0   .abs_section_185e
-     _PTEPE                                    1860       1       1       0   .abs_section_1860
-     _PTESE                                    1861       1       1       0   .abs_section_1861
-     _PTEDS                                    1862       1       1       0   .abs_section_1862
+     _PTEPE                                    1860       1       1       1   .abs_section_1860
+     _PTESE                                    1861       1       1       1   .abs_section_1861
+     _PTEDS                                    1862       1       1       1   .abs_section_1862
      _PTFPE                                    1868       1       1       0   .abs_section_1868
-     _PTFSE                                    1869       1       1       0   .abs_section_1869
-     _PTFDS                                    186A       1       1       0   .abs_section_186a
-     _PTGPE                                    1870       1       1       0   .abs_section_1870
-     _PTGSE                                    1871       1       1       0   .abs_section_1871
-     _PTGDS                                    1872       1       1       0   .abs_section_1872
-     _CANCTL0                                  1880       1       1       0   .abs_section_1880
-     _CANCTL1                                  1881       1       1       0   .abs_section_1881
-     _CANBTR0                                  1882       1       1       0   .abs_section_1882
-     _CANBTR1                                  1883       1       1       0   .abs_section_1883
-     _CANRFLG                                  1884       1       1       0   .abs_section_1884
-     _CANRIER                                  1885       1       1       0   .abs_section_1885
-     _CANTFLG                                  1886       1       1       0   .abs_section_1886
-     _CANTIER                                  1887       1       1       0   .abs_section_1887
+     _PTFSE                                    1869       1       1       1   .abs_section_1869
+     _PTFDS                                    186A       1       1       1   .abs_section_186a
+     _PTGPE                                    1870       1       1       1   .abs_section_1870
+     _PTGSE                                    1871       1       1       1   .abs_section_1871
+     _PTGDS                                    1872       1       1       1   .abs_section_1872
+     _CANCTL0                                  1880       1       1       6   .abs_section_1880
+     _CANCTL1                                  1881       1       1       7   .abs_section_1881
+     _CANBTR0                                  1882       1       1       1   .abs_section_1882
+     _CANBTR1                                  1883       1       1       1   .abs_section_1883
+     _CANRFLG                                  1884       1       1       6   .abs_section_1884
+     _CANRIER                                  1885       1       1       3   .abs_section_1885
+     _CANTFLG                                  1886       1       1       4   .abs_section_1886
+     _CANTIER                                  1887       1       1       7   .abs_section_1887
      _CANTARQ                                  1888       1       1       0   .abs_section_1888
      _CANTAAK                                  1889       1       1       0   .abs_section_1889
-     _CANTBSEL                                 188A       1       1       0   .abs_section_188a
-     _CANIDAC                                  188B       1       1       0   .abs_section_188b
+     _CANTBSEL                                 188A       1       1       3   .abs_section_188a
+     _CANIDAC                                  188B       1       1       1   .abs_section_188b
      _CANMISC                                  188D       1       1       0   .abs_section_188d
      _CANRXERR                                 188E       1       1       0   .abs_section_188e
      _CANTXERR                                 188F       1       1       0   .abs_section_188f
-     _CANIDAR0                                 1890       1       1       0   .abs_section_1890
-     _CANIDAR1                                 1891       1       1       0   .abs_section_1891
-     _CANIDAR2                                 1892       1       1       0   .abs_section_1892
-     _CANIDAR3                                 1893       1       1       0   .abs_section_1893
-     _CANIDMR0                                 1894       1       1       0   .abs_section_1894
-     _CANIDMR1                                 1895       1       1       0   .abs_section_1895
-     _CANIDMR2                                 1896       1       1       0   .abs_section_1896
-     _CANIDMR3                                 1897       1       1       0   .abs_section_1897
-     _CANIDAR4                                 1898       1       1       0   .abs_section_1898
-     _CANIDAR5                                 1899       1       1       0   .abs_section_1899
-     _CANIDAR6                                 189A       1       1       0   .abs_section_189a
-     _CANIDAR7                                 189B       1       1       0   .abs_section_189b
-     _CANIDMR4                                 189C       1       1       0   .abs_section_189c
-     _CANIDMR5                                 189D       1       1       0   .abs_section_189d
-     _CANIDMR6                                 189E       1       1       0   .abs_section_189e
-     _CANIDMR7                                 189F       1       1       0   .abs_section_189f
-     _CANRDSR0                                 18A4       1       1       0   .abs_section_18a4
+     _CANIDAR0                                 1890       1       1       2   .abs_section_1890
+     _CANIDAR1                                 1891       1       1       2   .abs_section_1891
+     _CANIDAR2                                 1892       1       1       2   .abs_section_1892
+     _CANIDAR3                                 1893       1       1       2   .abs_section_1893
+     _CANIDMR0                                 1894       1       1       2   .abs_section_1894
+     _CANIDMR1                                 1895       1       1       2   .abs_section_1895
+     _CANIDMR2                                 1896       1       1       2   .abs_section_1896
+     _CANIDMR3                                 1897       1       1       2   .abs_section_1897
+     _CANIDAR4                                 1898       1       1       2   .abs_section_1898
+     _CANIDAR5                                 1899       1       1       2   .abs_section_1899
+     _CANIDAR6                                 189A       1       1       2   .abs_section_189a
+     _CANIDAR7                                 189B       1       1       2   .abs_section_189b
+     _CANIDMR4                                 189C       1       1       2   .abs_section_189c
+     _CANIDMR5                                 189D       1       1       2   .abs_section_189d
+     _CANIDMR6                                 189E       1       1       2   .abs_section_189e
+     _CANIDMR7                                 189F       1       1       2   .abs_section_189f
+     _CANRDSR0                                 18A4       1       1       1   .abs_section_18a4
      _CANRDSR1                                 18A5       1       1       0   .abs_section_18a5
      _CANRDSR2                                 18A6       1       1       0   .abs_section_18a6
      _CANRDSR3                                 18A7       1       1       0   .abs_section_18a7
@@ -477,7 +468,7 @@ MODULE:                 -- IO_Map_c.obj --
      _CANRDSR5                                 18A9       1       1       0   .abs_section_18a9
      _CANRDSR6                                 18AA       1       1       0   .abs_section_18aa
      _CANRDSR7                                 18AB       1       1       0   .abs_section_18ab
-     _CANRDLR                                  18AC       1       1       0   .abs_section_18ac
+     _CANRDLR                                  18AC       1       1       1   .abs_section_18ac
      _CANTDSR0                                 18B4       1       1       0   .abs_section_18b4
      _CANTDSR1                                 18B5       1       1       0   .abs_section_18b5
      _CANTDSR2                                 18B6       1       1       0   .abs_section_18b6
@@ -486,9 +477,9 @@ MODULE:                 -- IO_Map_c.obj --
      _CANTDSR5                                 18B9       1       1       0   .abs_section_18b9
      _CANTDSR6                                 18BA       1       1       0   .abs_section_18ba
      _CANTDSR7                                 18BB       1       1       0   .abs_section_18bb
-     _CANTDLR                                  18BC       1       1       0   .abs_section_18bc
+     _CANTDLR                                  18BC       1       1       1   .abs_section_18bc
      _CANTTBPR                                 18BD       1       1       0   .abs_section_18bd
-     _ADCR                                       12       2       2       0   .abs_section_12
+     _ADCR                                       12       2       2       3   .abs_section_12
      _ADCCV                                      14       2       2       0   .abs_section_14
      _TPM1CNT                                    21       2       2       0   .abs_section_21
      _TPM1MOD                                    23       2       2       0   .abs_section_23
@@ -500,9 +491,9 @@ MODULE:                 -- IO_Map_c.obj --
      _TPM1C5V                                    35       2       2       0   .abs_section_35
      _SCI1BD                                     38       2       2       0   .abs_section_38
      _SCI2BD                                     40       2       2       0   .abs_section_40
-     _TPM2CNT                                    61       2       2       0   .abs_section_61
-     _TPM2MOD                                    63       2       2       0   .abs_section_63
-     _TPM2C0V                                    66       2       2       0   .abs_section_66
+     _TPM2CNT                                    61       2       2       1   .abs_section_61
+     _TPM2MOD                                    63       2       2       1   .abs_section_63
+     _TPM2C0V                                    66       2       2       2   .abs_section_66
      _TPM2C1V                                    69       2       2       0   .abs_section_69
      _SDID                                     1806       2       2       0   .abs_section_1806
      _DBGCA                                    1810       2       2       0   .abs_section_1810
@@ -510,138 +501,146 @@ MODULE:                 -- IO_Map_c.obj --
      _DBGF                                     1814       2       2       0   .abs_section_1814
      _CANRTSR                                  18AE       2       2       0   .abs_section_18ae
      _CANTTSR                                  18BE       2       2       0   .abs_section_18be
-     _CANRIDR                                  18A0       4       4       0   .abs_section_18a0
-     _CANTIDR                                  18B0       4       4       0   .abs_section_18b0
+     _CANRIDR                                  18A0       4       4       6   .abs_section_18a0
+     _CANTIDR                                  18B0       4       4       1   .abs_section_18b0
 MODULE:                 -- SPI_c.obj --
 - PROCEDURES:
-     SPI_Init                                  229B       F      15       0   .text       
+     SPI_Init                                  2296       F      15       1   .text       
 - VARIABLES:
 MODULE:                 -- TI_10ms_c.obj --
 - PROCEDURES:
-     TI_10ms_Init                              22AA      14      20       0   .text       
-     TI_10ms_Interrupt                         22BE       8       8       0   .text       
+     TI_10ms_Init                              22A5      14      20       1   .text       
+     TI_10ms_Interrupt                         22B9       8       8       1   .text       
 - VARIABLES:
 MODULE:                 -- TI_1ms_c.obj --
 - PROCEDURES:
-     HWEnDi                                    22C6      10      16       0   .text       
-     TI_1ms_Enable                             22D6       E      14       0   .text       
-     TI_1ms_Disable                            22E4       D      13       0   .text       
-     TI_1ms_Init                               22F1       E      14       0   .text       
-     TI_1ms_Interrupt                          22FF       8       8       0   .text       
+     HWEnDi                                    22C1      10      16       3   .text       
+     TI_1ms_Enable                             22D1       E      14       1   .text       
+     TI_1ms_Disable                            22DF       D      13       1   .text       
+     TI_1ms_Init                               22EC       E      14       1   .text       
+     TI_1ms_Interrupt                          22FA       8       8       1   .text       
 - VARIABLES:
-     EnUser                                      B4       1       1       0   .bss        
+     EnUser                                      B4       1       1       6   .bss        
 MODULE:                 -- Vectors_c.obj --
 - PROCEDURES:
 - VARIABLES:
      _vect                                     FFC0      40      64       0   .abs_section_ffc0
 MODULE:                 -- StateMachineManagement_c.obj --
 - PROCEDURES:
-     StateMachineManagement                    2307      32      50       0   .text       
+     StateMachineManagement                    2302      32      50       1   .text       
 - VARIABLES:
 MODULE:                 -- SysParameters_c.obj --
 - PROCEDURES:
-     SysParametersInit                         2339      39      57       0   .text       
-     SysInit                                   2372      42      66       0   .text       
-     CANMsgBuffersConfig                       23B4      ED     237       0   .text       
-     SystemADData_Int                          24A1      41      65       0   .text       
+     SysParametersInit                         2334      47      71       1   .text       
+     SysInit                                   237B      20      32       1   .text       
+     CANMsgBuffersConfig                       239B     10F     271       2   .text       
+     SystemADData_Int                          24AA      41      65       1   .text       
 - VARIABLES:
-     TRawData_Table                            3046      4E      78       0   .rodata     
-     TData_Table                               3094      4E      78       0   .rodata     
-     H2ConRawData_Table                        30E2       4       4       0   .rodata     
-     H2ConData_Table                           30E6       4       4       0   .rodata     
-     P_H2TankRawData_Table                     30EA       4       4       0   .rodata     
-     P_H2TankData_Table                        30EE       4       4       0   .rodata     
-     P_H2MidRawData_Table                      30F2       4       4       0   .rodata     
-     P_H2MidData_Table                         30F6       4       4       0   .rodata     
-     CAN_TXD_ID                                  A0       8       8       0   .data       
-     CAN_RXD_ID                                  A8       4       4       0   .data       
-     Timer_100ms                                 B5       1       1       0   .bss        
-     ADCHRawData                                 B6      20      32       0   .bss        
-     PrtCANTXD                                   D6       1       1       0   .bss        
-     TaskFlags                                  128       2       2       0   .common     
-     Timer_CAN                                  12A       1       1       0   .common     
-     SYSTEM_AD_DATA                             12B       F      15       0   .common     
-     HCUStatus                                  13A       1       1       0   .common     
-     InnerFalutFlags                            13B       2       2       0   .common     
-     TLECMD                                     13D       2       2       0   .common     
-     TLECMDTarget                               13F       2       2       0   .common     
-     TLEErrFlag_1                               141       2       2       0   .common     
-     TLEErrFlag_2                               143       2       2       0   .common     
-     TLEFault1                                  145       1       1       0   .common     
-     TLEFault2                                  146       1       1       0   .common     
-     Msg_CAN_TXD                                147      1E      30       0   .common     
-     Msg_CAN_RXD                                165       F      15       0   .common     
+     TRawData_Table                            315D      4E      78       8   .rodata     
+     TData_Table                               31AB      4E      78       2   .rodata     
+     H2ConRawData_Table                        31F9       4       4       8   .rodata     
+     H2ConData_Table                           31FD       4       4       5   .rodata     
+     P_H2TankRawData_Table                     3201       4       4       7   .rodata     
+     P_H2TankData_Table                        3205       4       4       3   .rodata     
+     P_H2MidRawData_Table                      3209       4       4       7   .rodata     
+     P_H2MidData_Table                         320D       4       4       3   .rodata     
+     CAN_TXD_ID                                  A0       8       8       2   .data       
+     CAN_RXD_ID                                  A8       4       4       1   .data       
+     Timer_100ms                                 B5       1       1       3   .bss        
+     ADCHRawData                                 B6      20      32       2   .bss        
+     PrtCANTXD                                   D6       1       1       8   .bss        
+     TaskFlags                                  12A       2       2      14   .common     
+     Timer_CAN                                  12C       1       1       3   .common     
+     SYSTEM_AD_DATA                             12D       F      15      14   .common     
+     HCUStatus                                  13C       1       1      11   .common     
+     InnerFalutFlags                            13D       2       2      17   .common     
+     TLECMD                                     13F       2       2      53   .common     
+     TLECMDTarget                               141       2       2      40   .common     
+     TLEErrFlag_1                               143       2       2       6   .common     
+     TLEErrFlag_2                               145       2       2       6   .common     
+     TLEFault1                                  147       1       1       2   .common     
+     TLEFault2                                  148       1       1       2   .common     
+     Msg_CAN_TXD                                149      1E      30      21   .common     
+     Msg_CAN_RXD                                167       F      15      12   .common     
+     systemp_Timer1                             176       2       2       3   .common     
+     systemp_Timer2                             178       2       2       3   .common     
+     systemp_Timer3                             17A       2       2       1   .common     
+     systemp_Timer4                             17C       2       2       1   .common     
 MODULE:                 -- TaskSchedule_c.obj --
 - PROCEDURES:
-     TaskSchedule                              24E2      29      41       0   .text       
-     Task_ADCHSProcess                         250B      C3     195       0   .text       
-     Calc_ADData_NTC                           25CE      35      53       0   .text       
-     Calc_ADData_H2Con                         2603      35      53       0   .text       
-     Calc_ADData_P_H2Tank                      2638      36      54       0   .text       
-     Calc_ADData_P_H2Mid                       266E      36      54       0   .text       
-     AD_Lagrange                               26A4     2EB     747       0   .text       
-     TLE_SPI_SendCMD                           298F     127     295       0   .text       
-     Task_TLE6232UpdateProcess                 2AB6      B1     177       0   .text       
-     Task_CANTXD_Process                       2B67      10      16       0   .text       
-     CANTXD_MsgBufferUpdate                    2B77      42      66       0   .text       
-     CANDownLoad                               2BB9      A0     160       0   .text       
-     Task_FCUCMD_Process                       2C59      72     114       0   .text       
+     TaskSchedule                              24EB      29      41       1   .text       
+     Task_ADCHSProcess                         2514      9F     159       1   .text       
+     Calc_ADData_NTC                           25B3      A8     168       8   .text       
+     Calc_ADData_H2Con                         265B      8A     138       1   .text       
+     Calc_ADData_P_H2Tank                      26E5      9C     156       1   .text       
+     Calc_ADData_P_H2Mid                       2781      9C     156       1   .text       
+     TLE_SPI_SendCMD                           281D     11A     282       8   .text       
+     TLECMD_Open1Channel                       2937      FC     252       1   .text       
+     TLECMD_Close1Channel                      2A33      FC     252       2   .text       
+     TLE_CMDset                                2B2F      50      80       1   .text       
+     GetTLEFault1                              2B7F       5       5       1   .text       
+     GetTLEFault2                              2B84       6       6       1   .text       
+     TLE_Update                                2B8A      A6     166       1   .text       
+     Task_TLE6232Process                       2C30       E      14       1   .text       
+     Task_CANTXD_Process                       2C3E      18      24       1   .text       
+     CANTXD_MsgBufferUpdate                    2C56      42      66       1   .text       
+     CANDownLoad                               2C98      A0     160       1   .text       
+     Task_FCUCMD_Process                       2D38      72     114       1   .text       
 - VARIABLES:
-     tempCANMSG.3                                D7       F      15       0   .bss        
+     TLE_ON_count.1                              D7       1       1       3   .bss        
+     TLE_OFF_count.2                             D8       1       1       3   .bss        
+     tempCANMSG.3                                D9       F      15      11   .bss        
 MODULE:                 -- rtshc08.o (ansiis.lib) --
 - PROCEDURES:
-     _PUSH_ARGS_L                              2CCB      20      32       0   .text       
-     _ENTER_UNARY_L                            2CEB      29      41       0   .text       
-     _ENTER_BINARY_L                           2D14      16      22       0   .text       
-     _ENTER_BINARY_L_RC                        2D2A      19      25       0   .text       
-     _LADD_k_is_k_plus_j                       2D43      1F      31       0   .text       
-     _k_is_k_plus_j_l                          2D62      1E      30       0   .text       
-     _k_is_k_plus_j_i                          2D80      12      18       0   .text       
-     _LSUB_k_is_k_minus_j                      2D92      1F      31       0   .text       
-     _LAND_k_is_k_and_j                        2DB1      1F      31       0   .text       
-     _LOR_k_is_k_or_j                          2DD0      1F      31       0   .text       
-     _LMUL_k_is_k_mul_j                        2DEF      81     129       0   .text       
-     _LDIVMOD                                  2E70      A4     164       0   .text       
-     _NEG_L_HX                                 2F14      13      19       0   .text       
-     _ABS_L_HX                                 2F27       6       6       0   .text       
-     _SPLITSIGN_L                              2F2D       A      10       0   .text       
-     _LDIVS_k_is_k_div_j                       2F37      27      39       0   .text       
-     _LCMP_k_rel_j                             2F5E      1F      31       0   .text       
-     _LADD                                     2F7D       6       6       0   .text       
-     _LSUB                                     2F83       6       6       0   .text       
-     _LAND_RC                                  2F89       6       6       0   .text       
-     _LOR                                      2F8F       6       6       0   .text       
-     _LOR_RC                                   2F95       6       6       0   .text       
-     _LMUL                                     2F9B       6       6       0   .text       
-     _LDIVS                                    2FA1       6       6       0   .text       
-     _LLSR                                     2FA7      16      22       0   .text       
-     _LLSL                                     2FBD      16      22       0   .text       
-     _LCMP                                     2FD3       6       6       0   .text       
-     _LCMP_RC                                  2FD9       6       6       0   .text       
-     _COPY                                     2FDF      30      48       0   .text       
-     _POP32                                    300F      1A      26       0   .text       
-     _SEXT16_32                                3029       D      13       0   .text       
+     _PUSH_ARGS_L                              2DAA      20      32       2   .text       
+     _ENTER_UNARY_L                            2DCA      29      41       2   .text       
+     _ENTER_BINARY_L                           2DF3      16      22       5   .text       
+     _ENTER_BINARY_L_RC                        2E09      19      25       3   .text       
+     _IDIVMOD                                  2E22      69     105       1   .text       
+     _LADD_k_is_k_plus_j                       2E8B      1F      31       1   .text       
+     _k_is_k_plus_j_l                          2EAA      1E      30       2   .text       
+     _k_is_k_plus_j_i                          2EC8      12      18       3   .text       
+     _LAND_k_is_k_and_j                        2EDA      1F      31       1   .text       
+     _LOR_k_is_k_or_j                          2EF9      1F      31       2   .text       
+     _LMUL_k_is_k_mul_j                        2F18      81     129       1   .text       
+     _LDIVMOD                                  2F99      A4     164       1   .text       
+     _LDIVU_k_is_k_div_j                       303D      17      23       1   .text       
+     _LCMP_k_rel_j                             3054      1F      31       2   .text       
+     _IMUL_STAR08                              3073      27      39       2   .text       
+     _IDIVU_STAR08                             309A       D      13       2   .text       
+     _LADD                                     30A7       6       6       2   .text       
+     _LAND_RC                                  30AD       6       6       4   .text       
+     _LOR                                      30B3       6       6       2   .text       
+     _LOR_RC                                   30B9       6       6       3   .text       
+     _LMUL                                     30BF       6       6       2   .text       
+     _LDIVU                                    30C5       6       6       2   .text       
+     _LLSR                                     30CB      16      22       3   .text       
+     _LLSL                                     30E1      16      22       3   .text       
+     _LCMP                                     30F7       6       6       1   .text       
+     _LCMP_RC                                  30FD       6       6       1   .text       
+     _COPY                                     3103      30      48       2   .text       
+     _POP32                                    3133      1A      26       8   .text       
 - VARIABLES:
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
-  Events_c.obj                                 1    266      0
+  Events_c.obj                                 1    270      0
   main_c.obj                                   0     22      0
   start08_c.obj                                0    132      0
   ADCH_c.obj                                  69    684     16
   CAN_c.obj                                    2   1054      0
-  Cpu_c.obj                                    2    287      2
+  Cpu_c.obj                                    2    278      2
   IO_Map_c.obj                               211      0      0
   SPI_c.obj                                    0     15      0
   TI_10ms_c.obj                                0     28      0
   TI_1ms_c.obj                                 1     65      0
   Vectors_c.obj                                0      0     64
   StateMachineManagement_c.obj                 0     50      0
-  SysParameters_c.obj                        122    425    180
-  TaskSchedule_c.obj                          15   2025      0
-  rtshc08.o (ansiis.lib)                       0    875      0
+  SysParameters_c.obj                        130    439    180
+  TaskSchedule_c.obj                          17   2239      0
+  rtshc08.o (ansiis.lib)                       0    931      0
   other                                      128     14     18
 
 *********************************************************************************************
@@ -657,18 +656,19 @@ SECTION: ".text"
   TI_1ms_Init TI_1ms_Interrupt StateMachineManagement SysParametersInit SysInit 
   CANMsgBuffersConfig SystemADData_Int TaskSchedule Task_ADCHSProcess 
   Calc_ADData_NTC Calc_ADData_H2Con Calc_ADData_P_H2Tank Calc_ADData_P_H2Mid 
-  AD_Lagrange TLE_SPI_SendCMD Task_TLE6232UpdateProcess Task_CANTXD_Process 
+  TLE_SPI_SendCMD TLECMD_Open1Channel TLECMD_Close1Channel TLE_CMDset 
+  GetTLEFault1 GetTLEFault2 TLE_Update Task_TLE6232Process Task_CANTXD_Process 
   CANTXD_MsgBufferUpdate CANDownLoad Task_FCUCMD_Process _PUSH_ARGS_L 
-  _ENTER_UNARY_L _ENTER_BINARY_L _ENTER_BINARY_L_RC _LADD_k_is_k_plus_j 
-  _k_is_k_plus_j_l _k_is_k_plus_j_i _LSUB_k_is_k_minus_j _LAND_k_is_k_and_j 
-  _LOR_k_is_k_or_j _LMUL_k_is_k_mul_j _LDIVMOD _NEG_L_HX _ABS_L_HX _SPLITSIGN_L 
-  _LDIVS_k_is_k_div_j _LCMP_k_rel_j _LADD _LSUB _LAND_RC _LOR _LOR_RC _LMUL 
-  _LDIVS _LLSR _LLSL _LCMP _LCMP_RC _COPY _POP32 _SEXT16_32 
+  _ENTER_UNARY_L _ENTER_BINARY_L _ENTER_BINARY_L_RC _IDIVMOD 
+  _LADD_k_is_k_plus_j _k_is_k_plus_j_l _k_is_k_plus_j_i _LAND_k_is_k_and_j 
+  _LOR_k_is_k_or_j _LMUL_k_is_k_mul_j _LDIVMOD _LDIVU_k_is_k_div_j 
+  _LCMP_k_rel_j _IMUL_STAR08 _IDIVU_STAR08 _LADD _LAND_RC _LOR _LOR_RC _LMUL 
+  _LDIVU _LLSR _LLSL _LCMP _LCMP_RC _COPY _POP32 
 SECTION: ".data"
   CAN_TXD_ID CAN_RXD_ID 
 SECTION: ".bss"
   watchpoint EnUser OutFlg SumChan ModeFlg SumCnt ErrFlag SerFlag EnUser 
-  Timer_100ms ADCHRawData PrtCANTXD tempCANMSG.3 
+  Timer_100ms ADCHRawData PrtCANTXD TLE_ON_count.1 TLE_OFF_count.2 tempCANMSG.3 
 SECTION: ".init"
   Cpu_Interrupt _EntryPoint PE_low_level_init 
 SECTION: ".rodata"
@@ -678,7 +678,8 @@ SECTION: ".rodata"
 SECTION: ".common"
   ADCH_SumV ADCH_OutV CCR_reg CCR_lock TaskFlags Timer_CAN SYSTEM_AD_DATA 
   HCUStatus InnerFalutFlags TLECMD TLECMDTarget TLEErrFlag_1 TLEErrFlag_2 
-  TLEFault1 TLEFault2 Msg_CAN_TXD Msg_CAN_RXD 
+  TLEFault1 TLEFault2 Msg_CAN_TXD Msg_CAN_RXD systemp_Timer1 systemp_Timer2 
+  systemp_Timer3 systemp_Timer4 
 SECTION: ".abs_section_ffbd"
   NVPROT_INIT 
 SECTION: ".abs_section_ffbf"
@@ -1062,23 +1063,23 @@ OBJECT LIST SORTED BY ADDRESS
      _PTBDD                                       3       1       1       0   .abs_section_3
      _PTCD                                        4       1       1       0   .abs_section_4
      _PTCDD                                       5       1       1       0   .abs_section_5
-     _PTDD                                        6       1       1       0   .abs_section_6
-     _PTDDD                                       7       1       1       0   .abs_section_7
-     _PTED                                        8       1       1       0   .abs_section_8
-     _PTEDD                                       9       1       1       0   .abs_section_9
+     _PTDD                                        6       1       1       6   .abs_section_6
+     _PTDDD                                       7       1       1       2   .abs_section_7
+     _PTED                                        8       1       1       6   .abs_section_8
+     _PTEDD                                       9       1       1       2   .abs_section_9
      _PTFD                                        A       1       1       0   .abs_section_a
      _PTFDD                                       B       1       1       0   .abs_section_b
-     _PTGD                                        C       1       1       0   .abs_section_c
-     _PTGDD                                       D       1       1       0   .abs_section_d
+     _PTGD                                        C       1       1       6   .abs_section_c
+     _PTGDD                                       D       1       1       2   .abs_section_d
      _ACMP1SC                                     E       1       1       0   .abs_section_e
      _ACMP2SC                                     F       1       1       0   .abs_section_f
-     _ADCSC1                                     10       1       1       0   .abs_section_10
-     _ADCSC2                                     11       1       1       0   .abs_section_11
-     _ADCR                                       12       2       2       0   .abs_section_12
+     _ADCSC1                                     10       1       1       5   .abs_section_10
+     _ADCSC2                                     11       1       1       1   .abs_section_11
+     _ADCR                                       12       2       2       3   .abs_section_12
      _ADCCV                                      14       2       2       0   .abs_section_14
-     _ADCCFG                                     16       1       1       0   .abs_section_16
-     _APCTL1                                     17       1       1       0   .abs_section_17
-     _APCTL2                                     18       1       1       0   .abs_section_18
+     _ADCCFG                                     16       1       1       1   .abs_section_16
+     _APCTL1                                     17       1       1       1   .abs_section_17
+     _APCTL2                                     18       1       1       1   .abs_section_18
      _APCTL3                                     19       1       1       0   .abs_section_19
      _IRQSC                                      1C       1       1       0   .abs_section_1c
      _TPM1SC                                     20       1       1       0   .abs_section_20
@@ -1110,71 +1111,77 @@ OBJECT LIST SORTED BY ADDRESS
      _SCI2S2                                     45       1       1       0   .abs_section_45
      _SCI2C3                                     46       1       1       0   .abs_section_46
      _SCI2D                                      47       1       1       0   .abs_section_47
-     _MCGC1                                      48       1       1       0   .abs_section_48
-     _MCGC2                                      49       1       1       0   .abs_section_49
-     _MCGTRM                                     4A       1       1       0   .abs_section_4a
-     _MCGSC                                      4B       1       1       0   .abs_section_4b
-     _MCGC3                                      4C       1       1       0   .abs_section_4c
-     _SPIC1                                      50       1       1       0   .abs_section_50
-     _SPIC2                                      51       1       1       0   .abs_section_51
-     _SPIBR                                      52       1       1       0   .abs_section_52
-     _SPIS                                       53       1       1       0   .abs_section_53
-     _SPID                                       55       1       1       0   .abs_section_55
+     _MCGC1                                      48       1       1       3   .abs_section_48
+     _MCGC2                                      49       1       1       3   .abs_section_49
+     _MCGTRM                                     4A       1       1       1   .abs_section_4a
+     _MCGSC                                      4B       1       1       7   .abs_section_4b
+     _MCGC3                                      4C       1       1       1   .abs_section_4c
+     _SPIC1                                      50       1       1       2   .abs_section_50
+     _SPIC2                                      51       1       1       1   .abs_section_51
+     _SPIBR                                      52       1       1       1   .abs_section_52
+     _SPIS                                       53       1       1       5   .abs_section_53
+     _SPID                                       55       1       1       5   .abs_section_55
      _IICA                                       58       1       1       0   .abs_section_58
      _IICF                                       59       1       1       0   .abs_section_59
      _IICC1                                      5A       1       1       0   .abs_section_5a
      _IICS                                       5B       1       1       0   .abs_section_5b
      _IICD                                       5C       1       1       0   .abs_section_5c
      _IICC2                                      5D       1       1       0   .abs_section_5d
-     _TPM2SC                                     60       1       1       0   .abs_section_60
-     _TPM2CNT                                    61       2       2       0   .abs_section_61
-     _TPM2MOD                                    63       2       2       0   .abs_section_63
-     _TPM2C0SC                                   65       1       1       0   .abs_section_65
-     _TPM2C0V                                    66       2       2       0   .abs_section_66
+     _TPM2SC                                     60       1       1       2   .abs_section_60
+     _TPM2CNT                                    61       2       2       1   .abs_section_61
+     _TPM2MOD                                    63       2       2       1   .abs_section_63
+     _TPM2C0SC                                   65       1       1       2   .abs_section_65
+     _TPM2C0V                                    66       2       2       2   .abs_section_66
      _TPM2C1SC                                   68       1       1       0   .abs_section_68
      _TPM2C1V                                    69       2       2       0   .abs_section_69
-     _RTCSC                                      6C       1       1       0   .abs_section_6c
+     _RTCSC                                      6C       1       1       5   .abs_section_6c
      _RTCCNT                                     6D       1       1       0   .abs_section_6d
-     _RTCMOD                                     6E       1       1       0   .abs_section_6e
-     CAN_TXD_ID                                  A0       8       8       0   .data       
-     CAN_RXD_ID                                  A8       4       4       0   .data       
-     watchpoint                                  AC       1       1       0   .bss        
-     EnUser                                      AD       1       1       0   .bss        
-     OutFlg                                      AE       1       1       0   .bss        
-     SumChan                                     AF       1       1       0   .bss        
-     ModeFlg                                     B0       1       1       0   .bss        
-     SumCnt                                      B1       1       1       0   .bss        
-     ErrFlag                                     B2       1       1       0   .bss        
-     SerFlag                                     B3       1       1       0   .bss        
-     EnUser                                      B4       1       1       0   .bss        
-     Timer_100ms                                 B5       1       1       0   .bss        
-     ADCHRawData                                 B6      20      32       0   .bss        
-     PrtCANTXD                                   D6       1       1       0   .bss        
-     tempCANMSG.3                                D7       F      15       0   .bss        
-     ADCH_SumV                                   E6      20      32       0   .common     
-     ADCH_OutV                                  106      20      32       0   .common     
-     CCR_reg                                    126       1       1       0   .common     
-     CCR_lock                                   127       1       1       0   .common     
-     TaskFlags                                  128       2       2       0   .common     
-     Timer_CAN                                  12A       1       1       0   .common     
-     SYSTEM_AD_DATA                             12B       F      15       0   .common     
-     HCUStatus                                  13A       1       1       0   .common     
-     InnerFalutFlags                            13B       2       2       0   .common     
-     TLECMD                                     13D       2       2       0   .common     
-     TLECMDTarget                               13F       2       2       0   .common     
-     TLEErrFlag_1                               141       2       2       0   .common     
-     TLEErrFlag_2                               143       2       2       0   .common     
-     TLEFault1                                  145       1       1       0   .common     
-     TLEFault2                                  146       1       1       0   .common     
-     Msg_CAN_TXD                                147      1E      30       0   .common     
-     Msg_CAN_RXD                                165       F      15       0   .common     
-     _SRS                                      1800       1       1       0   .abs_section_1800
+     _RTCMOD                                     6E       1       1       3   .abs_section_6e
+     CAN_TXD_ID                                  A0       8       8       2   .data       
+     CAN_RXD_ID                                  A8       4       4       1   .data       
+     watchpoint                                  AC       1       1       1   .bss        
+     EnUser                                      AD       1       1       3   .bss        
+     OutFlg                                      AE       1       1       4   .bss        
+     SumChan                                     AF       1       1       7   .bss        
+     ModeFlg                                     B0       1       1      10   .bss        
+     SumCnt                                      B1       1       1       4   .bss        
+     ErrFlag                                     B2       1       1       5   .bss        
+     SerFlag                                     B3       1       1       6   .bss        
+     EnUser                                      B4       1       1       6   .bss        
+     Timer_100ms                                 B5       1       1       3   .bss        
+     ADCHRawData                                 B6      20      32       2   .bss        
+     PrtCANTXD                                   D6       1       1       8   .bss        
+     TLE_ON_count.1                              D7       1       1       3   .bss        
+     TLE_OFF_count.2                             D8       1       1       3   .bss        
+     tempCANMSG.3                                D9       F      15      11   .bss        
+     ADCH_SumV                                   E8      20      32      51   .common     
+     ADCH_OutV                                  108      20      32      32   .common     
+     CCR_reg                                    128       1       1       7   .common     
+     CCR_lock                                   129       1       1      14   .common     
+     TaskFlags                                  12A       2       2      14   .common     
+     Timer_CAN                                  12C       1       1       3   .common     
+     SYSTEM_AD_DATA                             12D       F      15      14   .common     
+     HCUStatus                                  13C       1       1      11   .common     
+     InnerFalutFlags                            13D       2       2      17   .common     
+     TLECMD                                     13F       2       2      53   .common     
+     TLECMDTarget                               141       2       2      40   .common     
+     TLEErrFlag_1                               143       2       2       6   .common     
+     TLEErrFlag_2                               145       2       2       6   .common     
+     TLEFault1                                  147       1       1       2   .common     
+     TLEFault2                                  148       1       1       2   .common     
+     Msg_CAN_TXD                                149      1E      30      21   .common     
+     Msg_CAN_RXD                                167       F      15      12   .common     
+     systemp_Timer1                             176       2       2       3   .common     
+     systemp_Timer2                             178       2       2       3   .common     
+     systemp_Timer3                             17A       2       2       1   .common     
+     systemp_Timer4                             17C       2       2       1   .common     
+     _SRS                                      1800       1       1       4   .abs_section_1800
      _SBDFR                                    1801       1       1       0   .abs_section_1801
-     _SOPT1                                    1802       1       1       0   .abs_section_1802
-     _SOPT2                                    1803       1       1       0   .abs_section_1803
+     _SOPT1                                    1802       1       1       1   .abs_section_1802
+     _SOPT2                                    1803       1       1       1   .abs_section_1803
      _SDID                                     1806       2       2       0   .abs_section_1806
-     _SPMSC1                                   1809       1       1       0   .abs_section_1809
-     _SPMSC2                                   180A       1       1       0   .abs_section_180a
+     _SPMSC1                                   1809       1       1       1   .abs_section_1809
+     _SPMSC2                                   180A       1       1       1   .abs_section_180a
      _DBGCA                                    1810       2       2       0   .abs_section_1810
      _DBGCB                                    1812       2       2       0   .abs_section_1812
      _DBGF                                     1814       2       2       0   .abs_section_1814
@@ -1188,68 +1195,68 @@ OBJECT LIST SORTED BY ADDRESS
      _FSTAT                                    1825       1       1       0   .abs_section_1825
      _FCMD                                     1826       1       1       0   .abs_section_1826
      _PTAPE                                    1840       1       1       0   .abs_section_1840
-     _PTASE                                    1841       1       1       0   .abs_section_1841
-     _PTADS                                    1842       1       1       0   .abs_section_1842
+     _PTASE                                    1841       1       1       1   .abs_section_1841
+     _PTADS                                    1842       1       1       1   .abs_section_1842
      _PTASC                                    1844       1       1       0   .abs_section_1844
      _PTAPS                                    1845       1       1       0   .abs_section_1845
      _PTAES                                    1846       1       1       0   .abs_section_1846
      _PTBPE                                    1848       1       1       0   .abs_section_1848
-     _PTBSE                                    1849       1       1       0   .abs_section_1849
-     _PTBDS                                    184A       1       1       0   .abs_section_184a
+     _PTBSE                                    1849       1       1       1   .abs_section_1849
+     _PTBDS                                    184A       1       1       1   .abs_section_184a
      _PTBSC                                    184C       1       1       0   .abs_section_184c
      _PTBPS                                    184D       1       1       0   .abs_section_184d
      _PTBES                                    184E       1       1       0   .abs_section_184e
      _PTCPE                                    1850       1       1       0   .abs_section_1850
-     _PTCSE                                    1851       1       1       0   .abs_section_1851
-     _PTCDS                                    1852       1       1       0   .abs_section_1852
-     _PTDPE                                    1858       1       1       0   .abs_section_1858
-     _PTDSE                                    1859       1       1       0   .abs_section_1859
-     _PTDDS                                    185A       1       1       0   .abs_section_185a
+     _PTCSE                                    1851       1       1       1   .abs_section_1851
+     _PTCDS                                    1852       1       1       1   .abs_section_1852
+     _PTDPE                                    1858       1       1       1   .abs_section_1858
+     _PTDSE                                    1859       1       1       1   .abs_section_1859
+     _PTDDS                                    185A       1       1       1   .abs_section_185a
      _PTDSC                                    185C       1       1       0   .abs_section_185c
      _PTDPS                                    185D       1       1       0   .abs_section_185d
      _PTDES                                    185E       1       1       0   .abs_section_185e
-     _PTEPE                                    1860       1       1       0   .abs_section_1860
-     _PTESE                                    1861       1       1       0   .abs_section_1861
-     _PTEDS                                    1862       1       1       0   .abs_section_1862
+     _PTEPE                                    1860       1       1       1   .abs_section_1860
+     _PTESE                                    1861       1       1       1   .abs_section_1861
+     _PTEDS                                    1862       1       1       1   .abs_section_1862
      _PTFPE                                    1868       1       1       0   .abs_section_1868
-     _PTFSE                                    1869       1       1       0   .abs_section_1869
-     _PTFDS                                    186A       1       1       0   .abs_section_186a
-     _PTGPE                                    1870       1       1       0   .abs_section_1870
-     _PTGSE                                    1871       1       1       0   .abs_section_1871
-     _PTGDS                                    1872       1       1       0   .abs_section_1872
-     _CANCTL0                                  1880       1       1       0   .abs_section_1880
-     _CANCTL1                                  1881       1       1       0   .abs_section_1881
-     _CANBTR0                                  1882       1       1       0   .abs_section_1882
-     _CANBTR1                                  1883       1       1       0   .abs_section_1883
-     _CANRFLG                                  1884       1       1       0   .abs_section_1884
-     _CANRIER                                  1885       1       1       0   .abs_section_1885
-     _CANTFLG                                  1886       1       1       0   .abs_section_1886
-     _CANTIER                                  1887       1       1       0   .abs_section_1887
+     _PTFSE                                    1869       1       1       1   .abs_section_1869
+     _PTFDS                                    186A       1       1       1   .abs_section_186a
+     _PTGPE                                    1870       1       1       1   .abs_section_1870
+     _PTGSE                                    1871       1       1       1   .abs_section_1871
+     _PTGDS                                    1872       1       1       1   .abs_section_1872
+     _CANCTL0                                  1880       1       1       6   .abs_section_1880
+     _CANCTL1                                  1881       1       1       7   .abs_section_1881
+     _CANBTR0                                  1882       1       1       1   .abs_section_1882
+     _CANBTR1                                  1883       1       1       1   .abs_section_1883
+     _CANRFLG                                  1884       1       1       6   .abs_section_1884
+     _CANRIER                                  1885       1       1       3   .abs_section_1885
+     _CANTFLG                                  1886       1       1       4   .abs_section_1886
+     _CANTIER                                  1887       1       1       7   .abs_section_1887
      _CANTARQ                                  1888       1       1       0   .abs_section_1888
      _CANTAAK                                  1889       1       1       0   .abs_section_1889
-     _CANTBSEL                                 188A       1       1       0   .abs_section_188a
-     _CANIDAC                                  188B       1       1       0   .abs_section_188b
+     _CANTBSEL                                 188A       1       1       3   .abs_section_188a
+     _CANIDAC                                  188B       1       1       1   .abs_section_188b
      _CANMISC                                  188D       1       1       0   .abs_section_188d
      _CANRXERR                                 188E       1       1       0   .abs_section_188e
      _CANTXERR                                 188F       1       1       0   .abs_section_188f
-     _CANIDAR0                                 1890       1       1       0   .abs_section_1890
-     _CANIDAR1                                 1891       1       1       0   .abs_section_1891
-     _CANIDAR2                                 1892       1       1       0   .abs_section_1892
-     _CANIDAR3                                 1893       1       1       0   .abs_section_1893
-     _CANIDMR0                                 1894       1       1       0   .abs_section_1894
-     _CANIDMR1                                 1895       1       1       0   .abs_section_1895
-     _CANIDMR2                                 1896       1       1       0   .abs_section_1896
-     _CANIDMR3                                 1897       1       1       0   .abs_section_1897
-     _CANIDAR4                                 1898       1       1       0   .abs_section_1898
-     _CANIDAR5                                 1899       1       1       0   .abs_section_1899
-     _CANIDAR6                                 189A       1       1       0   .abs_section_189a
-     _CANIDAR7                                 189B       1       1       0   .abs_section_189b
-     _CANIDMR4                                 189C       1       1       0   .abs_section_189c
-     _CANIDMR5                                 189D       1       1       0   .abs_section_189d
-     _CANIDMR6                                 189E       1       1       0   .abs_section_189e
-     _CANIDMR7                                 189F       1       1       0   .abs_section_189f
-     _CANRIDR                                  18A0       4       4       0   .abs_section_18a0
-     _CANRDSR0                                 18A4       1       1       0   .abs_section_18a4
+     _CANIDAR0                                 1890       1       1       2   .abs_section_1890
+     _CANIDAR1                                 1891       1       1       2   .abs_section_1891
+     _CANIDAR2                                 1892       1       1       2   .abs_section_1892
+     _CANIDAR3                                 1893       1       1       2   .abs_section_1893
+     _CANIDMR0                                 1894       1       1       2   .abs_section_1894
+     _CANIDMR1                                 1895       1       1       2   .abs_section_1895
+     _CANIDMR2                                 1896       1       1       2   .abs_section_1896
+     _CANIDMR3                                 1897       1       1       2   .abs_section_1897
+     _CANIDAR4                                 1898       1       1       2   .abs_section_1898
+     _CANIDAR5                                 1899       1       1       2   .abs_section_1899
+     _CANIDAR6                                 189A       1       1       2   .abs_section_189a
+     _CANIDAR7                                 189B       1       1       2   .abs_section_189b
+     _CANIDMR4                                 189C       1       1       2   .abs_section_189c
+     _CANIDMR5                                 189D       1       1       2   .abs_section_189d
+     _CANIDMR6                                 189E       1       1       2   .abs_section_189e
+     _CANIDMR7                                 189F       1       1       2   .abs_section_189f
+     _CANRIDR                                  18A0       4       4       6   .abs_section_18a0
+     _CANRDSR0                                 18A4       1       1       1   .abs_section_18a4
      _CANRDSR1                                 18A5       1       1       0   .abs_section_18a5
      _CANRDSR2                                 18A6       1       1       0   .abs_section_18a6
      _CANRDSR3                                 18A7       1       1       0   .abs_section_18a7
@@ -1257,9 +1264,9 @@ OBJECT LIST SORTED BY ADDRESS
      _CANRDSR5                                 18A9       1       1       0   .abs_section_18a9
      _CANRDSR6                                 18AA       1       1       0   .abs_section_18aa
      _CANRDSR7                                 18AB       1       1       0   .abs_section_18ab
-     _CANRDLR                                  18AC       1       1       0   .abs_section_18ac
+     _CANRDLR                                  18AC       1       1       1   .abs_section_18ac
      _CANRTSR                                  18AE       2       2       0   .abs_section_18ae
-     _CANTIDR                                  18B0       4       4       0   .abs_section_18b0
+     _CANTIDR                                  18B0       4       4       1   .abs_section_18b0
      _CANTDSR0                                 18B4       1       1       0   .abs_section_18b4
      _CANTDSR1                                 18B5       1       1       0   .abs_section_18b5
      _CANTDSR2                                 18B6       1       1       0   .abs_section_18b6
@@ -1268,103 +1275,105 @@ OBJECT LIST SORTED BY ADDRESS
      _CANTDSR5                                 18B9       1       1       0   .abs_section_18b9
      _CANTDSR6                                 18BA       1       1       0   .abs_section_18ba
      _CANTDSR7                                 18BB       1       1       0   .abs_section_18bb
-     _CANTDLR                                  18BC       1       1       0   .abs_section_18bc
+     _CANTDLR                                  18BC       1       1       1   .abs_section_18bc
      _CANTTBPR                                 18BD       1       1       0   .abs_section_18bd
      _CANTTSR                                  18BE       2       2       0   .abs_section_18be
-     Cpu_Interrupt                             1900       4       4       0   .init       
-     _EntryPoint                               1904      74     116       0   .init       
-     PE_low_level_init                         1978      A7     167       0   .init       
-     ADCH_OnEnd                                1A2D      24      36       0   .text       
-     CAN_OnFreeTxBuffer                        1A51      A8     168       0   .text       
-     CAN_OnFullRxBuffer                        1AF9       3       3       0   .text       
-     CAN_OnBusOff                              1AFC       6       6       0   .text       
-     TI_1ms_OnInterrupt                        1B02      1A      26       0   .text       
-     TI_10ms_OnInterrupt                       1B1C      1B      27       0   .text       
-     main                                      1B37      16      22       0   .text       
-     loadByte                                  1B4D       E      14       0   .text       
-     Init                                      1B5B      6D     109       0   .text       
-     _Startup                                  1BC8       9       9       0   .text       
-     ADCH_Interrupt                            1BD1     115     277       0   .text       
-     ClrSumV                                   1CE6      33      51       0   .text       
-     ADCH_HWEnDi                               1D19      24      36       0   .text       
-     ADCH_Start                                1D3D      19      25       0   .text       
-     ADCH_Stop                                 1D56      11      17       0   .text       
-     ADCH_GetValue                             1D67      FF     255       0   .text       
-     ADCH_Init                                 1E66      17      23       0   .text       
-     CAN_SetAcceptanceCode                     1E7D      74     116       0   .text       
-     CAN_SendFrameExt                          1EF1     145     325       0   .text       
-     CAN_ReadFrame                             2036     107     263       0   .text       
-     CAN_Init                                  213D      76     118       0   .text       
-     CAN_SetAcceptanceMask                     21B3      74     116       0   .text       
-     CAN_InterruptTx                           2227      17      23       0   .text       
-     CAN_InterruptRx                           223E      28      40       0   .text       
-     CAN_InterruptError                        2266      35      53       0   .text       
-     SPI_Init                                  229B       F      15       0   .text       
-     TI_10ms_Init                              22AA      14      20       0   .text       
-     TI_10ms_Interrupt                         22BE       8       8       0   .text       
-     HWEnDi                                    22C6      10      16       0   .text       
-     TI_1ms_Enable                             22D6       E      14       0   .text       
-     TI_1ms_Disable                            22E4       D      13       0   .text       
-     TI_1ms_Init                               22F1       E      14       0   .text       
-     TI_1ms_Interrupt                          22FF       8       8       0   .text       
-     StateMachineManagement                    2307      32      50       0   .text       
-     SysParametersInit                         2339      39      57       0   .text       
-     SysInit                                   2372      42      66       0   .text       
-     CANMsgBuffersConfig                       23B4      ED     237       0   .text       
-     SystemADData_Int                          24A1      41      65       0   .text       
-     TaskSchedule                              24E2      29      41       0   .text       
-     Task_ADCHSProcess                         250B      C3     195       0   .text       
-     Calc_ADData_NTC                           25CE      35      53       0   .text       
-     Calc_ADData_H2Con                         2603      35      53       0   .text       
-     Calc_ADData_P_H2Tank                      2638      36      54       0   .text       
-     Calc_ADData_P_H2Mid                       266E      36      54       0   .text       
-     AD_Lagrange                               26A4     2EB     747       0   .text       
-     TLE_SPI_SendCMD                           298F     127     295       0   .text       
-     Task_TLE6232UpdateProcess                 2AB6      B1     177       0   .text       
-     Task_CANTXD_Process                       2B67      10      16       0   .text       
-     CANTXD_MsgBufferUpdate                    2B77      42      66       0   .text       
-     CANDownLoad                               2BB9      A0     160       0   .text       
-     Task_FCUCMD_Process                       2C59      72     114       0   .text       
-     _PUSH_ARGS_L                              2CCB      20      32       0   .text       
-     _ENTER_UNARY_L                            2CEB      29      41       0   .text       
-     _ENTER_BINARY_L                           2D14      16      22       0   .text       
-     _ENTER_BINARY_L_RC                        2D2A      19      25       0   .text       
-     _LADD_k_is_k_plus_j                       2D43      1F      31       0   .text       
-     _k_is_k_plus_j_l                          2D62      1E      30       0   .text       
-     _k_is_k_plus_j_i                          2D80      12      18       0   .text       
-     _LSUB_k_is_k_minus_j                      2D92      1F      31       0   .text       
-     _LAND_k_is_k_and_j                        2DB1      1F      31       0   .text       
-     _LOR_k_is_k_or_j                          2DD0      1F      31       0   .text       
-     _LMUL_k_is_k_mul_j                        2DEF      81     129       0   .text       
-     _LDIVMOD                                  2E70      A4     164       0   .text       
-     _NEG_L_HX                                 2F14      13      19       0   .text       
-     _ABS_L_HX                                 2F27       6       6       0   .text       
-     _SPLITSIGN_L                              2F2D       A      10       0   .text       
-     _LDIVS_k_is_k_div_j                       2F37      27      39       0   .text       
-     _LCMP_k_rel_j                             2F5E      1F      31       0   .text       
-     _LADD                                     2F7D       6       6       0   .text       
-     _LSUB                                     2F83       6       6       0   .text       
-     _LAND_RC                                  2F89       6       6       0   .text       
-     _LOR                                      2F8F       6       6       0   .text       
-     _LOR_RC                                   2F95       6       6       0   .text       
-     _LMUL                                     2F9B       6       6       0   .text       
-     _LDIVS                                    2FA1       6       6       0   .text       
-     _LLSR                                     2FA7      16      22       0   .text       
-     _LLSL                                     2FBD      16      22       0   .text       
-     _LCMP                                     2FD3       6       6       0   .text       
-     _LCMP_RC                                  2FD9       6       6       0   .text       
-     _COPY                                     2FDF      30      48       0   .text       
-     _POP32                                    300F      1A      26       0   .text       
-     _SEXT16_32                                3029       D      13       0   .text       
-     Channels                                  3036      10      16       0   .rodata     
-     TRawData_Table                            3046      4E      78       0   .rodata     
-     TData_Table                               3094      4E      78       0   .rodata     
-     H2ConRawData_Table                        30E2       4       4       0   .rodata     
-     H2ConData_Table                           30E6       4       4       0   .rodata     
-     P_H2TankRawData_Table                     30EA       4       4       0   .rodata     
-     P_H2TankData_Table                        30EE       4       4       0   .rodata     
-     P_H2MidRawData_Table                      30F2       4       4       0   .rodata     
-     P_H2MidData_Table                         30F6       4       4       0   .rodata     
+     Cpu_Interrupt                             1900       4       4      25   .init       
+     _EntryPoint                               1904      74     116       1   .init       
+     PE_low_level_init                         1978      9E     158       1   .init       
+     ADCH_OnEnd                                1A24      24      36       1   .text       
+     CAN_OnFreeTxBuffer                        1A48      A8     168       3   .text       
+     CAN_OnFullRxBuffer                        1AF0       B      11       1   .text       
+     CAN_OnBusOff                              1AFB       6       6       1   .text       
+     TI_1ms_OnInterrupt                        1B01      1A      26       1   .text       
+     TI_10ms_OnInterrupt                       1B1B      17      23       1   .text       
+     main                                      1B32      16      22       1   .text       
+     loadByte                                  1B48       E      14       5   .text       
+     Init                                      1B56      6D     109       1   .text       
+     _Startup                                  1BC3       9       9       1   .text       
+     ADCH_Interrupt                            1BCC     115     277       4   .text       
+     ClrSumV                                   1CE1      33      51       1   .text       
+     ADCH_HWEnDi                               1D14      24      36       2   .text       
+     ADCH_Start                                1D38      19      25       2   .text       
+     ADCH_Stop                                 1D51      11      17       2   .text       
+     ADCH_GetValue                             1D62      FF     255       9   .text       
+     ADCH_Init                                 1E61      17      23       2   .text       
+     CAN_SetAcceptanceCode                     1E78      74     116       1   .text       
+     CAN_SendFrameExt                          1EEC     145     325       2   .text       
+     CAN_ReadFrame                             2031     107     263       2   .text       
+     CAN_Init                                  2138      76     118       2   .text       
+     CAN_SetAcceptanceMask                     21AE      74     116       1   .text       
+     CAN_InterruptTx                           2222      17      23       1   .text       
+     CAN_InterruptRx                           2239      28      40       1   .text       
+     CAN_InterruptError                        2261      35      53       1   .text       
+     SPI_Init                                  2296       F      15       1   .text       
+     TI_10ms_Init                              22A5      14      20       1   .text       
+     TI_10ms_Interrupt                         22B9       8       8       1   .text       
+     HWEnDi                                    22C1      10      16       3   .text       
+     TI_1ms_Enable                             22D1       E      14       1   .text       
+     TI_1ms_Disable                            22DF       D      13       1   .text       
+     TI_1ms_Init                               22EC       E      14       1   .text       
+     TI_1ms_Interrupt                          22FA       8       8       1   .text       
+     StateMachineManagement                    2302      32      50       1   .text       
+     SysParametersInit                         2334      47      71       1   .text       
+     SysInit                                   237B      20      32       1   .text       
+     CANMsgBuffersConfig                       239B     10F     271       2   .text       
+     SystemADData_Int                          24AA      41      65       1   .text       
+     TaskSchedule                              24EB      29      41       1   .text       
+     Task_ADCHSProcess                         2514      9F     159       1   .text       
+     Calc_ADData_NTC                           25B3      A8     168       8   .text       
+     Calc_ADData_H2Con                         265B      8A     138       1   .text       
+     Calc_ADData_P_H2Tank                      26E5      9C     156       1   .text       
+     Calc_ADData_P_H2Mid                       2781      9C     156       1   .text       
+     TLE_SPI_SendCMD                           281D     11A     282       8   .text       
+     TLECMD_Open1Channel                       2937      FC     252       1   .text       
+     TLECMD_Close1Channel                      2A33      FC     252       2   .text       
+     TLE_CMDset                                2B2F      50      80       1   .text       
+     GetTLEFault1                              2B7F       5       5       1   .text       
+     GetTLEFault2                              2B84       6       6       1   .text       
+     TLE_Update                                2B8A      A6     166       1   .text       
+     Task_TLE6232Process                       2C30       E      14       1   .text       
+     Task_CANTXD_Process                       2C3E      18      24       1   .text       
+     CANTXD_MsgBufferUpdate                    2C56      42      66       1   .text       
+     CANDownLoad                               2C98      A0     160       1   .text       
+     Task_FCUCMD_Process                       2D38      72     114       1   .text       
+     _PUSH_ARGS_L                              2DAA      20      32       2   .text       
+     _ENTER_UNARY_L                            2DCA      29      41       2   .text       
+     _ENTER_BINARY_L                           2DF3      16      22       5   .text       
+     _ENTER_BINARY_L_RC                        2E09      19      25       3   .text       
+     _IDIVMOD                                  2E22      69     105       1   .text       
+     _LADD_k_is_k_plus_j                       2E8B      1F      31       1   .text       
+     _k_is_k_plus_j_l                          2EAA      1E      30       2   .text       
+     _k_is_k_plus_j_i                          2EC8      12      18       3   .text       
+     _LAND_k_is_k_and_j                        2EDA      1F      31       1   .text       
+     _LOR_k_is_k_or_j                          2EF9      1F      31       2   .text       
+     _LMUL_k_is_k_mul_j                        2F18      81     129       1   .text       
+     _LDIVMOD                                  2F99      A4     164       1   .text       
+     _LDIVU_k_is_k_div_j                       303D      17      23       1   .text       
+     _LCMP_k_rel_j                             3054      1F      31       2   .text       
+     _IMUL_STAR08                              3073      27      39       2   .text       
+     _IDIVU_STAR08                             309A       D      13       2   .text       
+     _LADD                                     30A7       6       6       2   .text       
+     _LAND_RC                                  30AD       6       6       4   .text       
+     _LOR                                      30B3       6       6       2   .text       
+     _LOR_RC                                   30B9       6       6       3   .text       
+     _LMUL                                     30BF       6       6       2   .text       
+     _LDIVU                                    30C5       6       6       2   .text       
+     _LLSR                                     30CB      16      22       3   .text       
+     _LLSL                                     30E1      16      22       3   .text       
+     _LCMP                                     30F7       6       6       1   .text       
+     _LCMP_RC                                  30FD       6       6       1   .text       
+     _COPY                                     3103      30      48       2   .text       
+     _POP32                                    3133      1A      26       8   .text       
+     Channels                                  314D      10      16       2   .rodata     
+     TRawData_Table                            315D      4E      78       8   .rodata     
+     TData_Table                               31AB      4E      78       2   .rodata     
+     H2ConRawData_Table                        31F9       4       4       8   .rodata     
+     H2ConData_Table                           31FD       4       4       5   .rodata     
+     P_H2TankRawData_Table                     3201       4       4       7   .rodata     
+     P_H2TankData_Table                        3205       4       4       3   .rodata     
+     P_H2MidRawData_Table                      3209       4       4       7   .rodata     
+     P_H2MidData_Table                         320D       4       4       3   .rodata     
      NVPROT_INIT                               FFBD       1       1       0   .abs_section_ffbd
      NVOPT_INIT                                FFBF       1       1       0   .abs_section_ffbf
      _vect                                     FFC0      40      64       0   .abs_section_ffc0
@@ -1380,46 +1389,44 @@ CAN_c.obj:
 SPI_c.obj:
   SPI_CharsInRxBuf SPI_CharsInTxBuf 
 TaskSchedule_c.obj:
-  Task_TLE6232CMDsetProcess Task_ErrorDiagnosisProcess Set_ErrGrade 
+  AD_Lagrange Task_ErrorDiagnosisProcess Set_ErrGrade 
 rtshc08.o (ansiis.lib):
   _PUSH_ARGS_D _ENTER_UNARY_L64 _ENTER_UNARY_L64_4 _ENTER_BINARY_L_LC 
-  _ENTER_BINARY_L64 _ENTER_BINARY_L64_LC _ENTER_BINARY_L64_RC _IDIVMOD 
-  _SPLITSIGN _LXOR_k_is_k_xor_j _LMODU_k_is_k_mod_j _LDIVU_k_is_k_div_j 
-  _LMODS_k_is_k_mod_j _CMP24_k_rel_j _BMULS _BDIVS _BMODS _IMUL_STAR08 
-  _IDIVS_STAR08 _IDIVU_STAR08 _IMODS_STAR08 _IMODU_STAR08 _IDIVU_8 _IMODU_8 
-  _IASR _ILSR _ILSL _ICMP _LINC _LDEC _LNEG _LNOT _LADD_RC _LSUB_LC _LSUB_RC 
-  _LAND _LXOR _LXOR_RC _LMUL_RC _LDIVS_LC _LDIVS_RC _LDIVU _LDIVU_LC _LDIVU_RC 
-  _LMODS _LMODS_LC _LMODS_RC _LMODU _LMODU_LC _LMODU_RC _LASR _PUSH_ARGS_24 
-  _ENTER_BINARY_24_RC _ENTER_BINARY_24 _CMP24 _CMP24_RC _COPY_L _POP64 _STORE32 
-  _STORE64 _SEXT8_32 _CALL_STAR08 _CALL_STAR08_FAR _Jump_Table_Addr 
-  _Jump_Table_Offset _Jump_Table_Header_Addr _Jump_Table_Header_Offset 
-  _Search_Table_16_Addr _Search_Table_16_Offset _Search_Table_8_Addr 
-  _Search_Table_8_Offset _PUSH_CC _POP_CC _CONV_FAR_TO_NEAR _CONV_FAR_TO_LINEAR 
-  _CONV_LINEAR_TO_FAR 
+  _ENTER_BINARY_L64 _ENTER_BINARY_L64_LC _ENTER_BINARY_L64_RC _SPLITSIGN 
+  _LSUB_k_is_k_minus_j _LXOR_k_is_k_xor_j _NEG_L_HX _ABS_L_HX _SPLITSIGN_L 
+  _LMODU_k_is_k_mod_j _LMODS_k_is_k_mod_j _LDIVS_k_is_k_div_j _CMP24_k_rel_j 
+  _BMULS _BDIVS _BMODS _IDIVS_STAR08 _IMODS_STAR08 _IMODU_STAR08 _IDIVU_8 
+  _IMODU_8 _IASR _ILSR _ILSL _ICMP _LINC _LDEC _LNEG _LNOT _LADD_RC _LSUB 
+  _LSUB_LC _LSUB_RC _LAND _LXOR _LXOR_RC _LMUL_RC _LDIVS _LDIVS_LC _LDIVS_RC 
+  _LDIVU_LC _LDIVU_RC _LMODS _LMODS_LC _LMODS_RC _LMODU _LMODU_LC _LMODU_RC 
+  _LASR _PUSH_ARGS_24 _ENTER_BINARY_24_RC _ENTER_BINARY_24 _CMP24 _CMP24_RC 
+  _COPY_L _POP64 _STORE32 _STORE64 _SEXT8_32 _SEXT16_32 _CALL_STAR08 
+  _CALL_STAR08_FAR _Jump_Table_Addr _Jump_Table_Offset _Jump_Table_Header_Addr 
+  _Jump_Table_Header_Offset _Search_Table_16_Addr _Search_Table_16_Offset 
+  _Search_Table_8_Addr _Search_Table_8_Offset _PUSH_CC _POP_CC 
+  _CONV_FAR_TO_NEAR _CONV_FAR_TO_LINEAR _CONV_LINEAR_TO_FAR 
 NOT USED VARIABLES
 SysParameters_c.obj:
-  HCU_ErrorCode 
-TaskSchedule_c.obj:
-  TLE_ON_count.1 TLE_OFF_count.2 
+  HCU_ErrorCode systemp_rev systemp_error systemp_H systemp_L systemp_Flag 
 rtshc08.o (ansiis.lib):
   _PowOfTwo_8 _PowOfTwo_16 _PowOfTwo_32 errno 
 
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0x30FA ---- SIZE       4 ---
+------- ROM-ADDRESS: 0x3211 ---- SIZE       4 ---
 Filling bytes inserted
  000C00A0
-------- ROM-ADDRESS: 0x30FE ---- RAM-ADDRESS: 0xA0 ---- SIZE       8 ---
+------- ROM-ADDRESS: 0x3215 ---- RAM-ADDRESS: 0xA0 ---- SIZE       8 ---
 Name of initialized Object : CAN_TXD_ID
  18FF201018 FF2020
-------- ROM-ADDRESS: 0x3106 ---- SIZE       1 ---
+------- ROM-ADDRESS: 0x321D ---- SIZE       1 ---
 Filling bytes inserted
  00
-------- ROM-ADDRESS: 0x3107 ---- RAM-ADDRESS: 0xA9 ---- SIZE       3 ---
+------- ROM-ADDRESS: 0x321E ---- RAM-ADDRESS: 0xA9 ---- SIZE       3 ---
 Name of initialized Object : CAN_RXD_ID:1
  FF2001
-------- ROM-ADDRESS: 0x310A ---- SIZE       2 ---
+------- ROM-ADDRESS: 0x3221 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -1429,15 +1436,14 @@ OBJECT-DEPENDENCIES SECTION
 _EntryPoint               USES _SOPT1 _SOPT2 _SPMSC1 _SPMSC2 _MCGTRM _MCGSC 
                                 _MCGC2 _MCGC1 _MCGC3 _Startup _SRS 
 PE_low_level_init         USES _APCTL1 _APCTL2 _PTED _PTEPE _PTEDD _PTDD 
-                                _PTDPE _PTDDD _PTCPE _PTCDD _PTGD _PTGPE _PTGDD 
-                                _PTASE _PTBSE _PTCSE _PTDSE _PTESE _PTFSE _PTGSE 
-                                _PTADS _PTBDS _PTCDS _PTDDS _PTEDS _PTFDS _PTGDS 
-                                CAN_Init _SRS ADCH_Init SPI_Init TI_1ms_Init 
-                                TI_10ms_Init CCR_lock 
+                                _PTDPE _PTDDD _PTGD _PTGPE _PTGDD _PTASE _PTBSE 
+                                _PTCSE _PTDSE _PTESE _PTFSE _PTGSE _PTADS _PTBDS 
+                                _PTCDS _PTDDS _PTEDS _PTFDS _PTGDS CAN_Init _SRS 
+                                ADCH_Init SPI_Init TI_1ms_Init TI_10ms_Init CCR_lock 
 ADCH_OnEnd                USES TaskFlags ADCH_Stop InnerFalutFlags 
 CAN_OnFreeTxBuffer        USES PrtCANTXD CAN_OnFreeTxBuffer Msg_CAN_TXD 
                                 _LOR_RC CAN_SendFrameExt watchpoint _CANTIER 
-CAN_OnFullRxBuffer        USES CANDownLoad 
+CAN_OnFullRxBuffer        USES systemp_Timer2 CANDownLoad 
 CAN_OnBusOff              USES CAN_Init CANMsgBuffersConfig 
 TI_1ms_OnInterrupt        USES Timer_CAN TaskFlags TI_1ms_Disable 
 TI_10ms_OnInterrupt       USES Timer_100ms TaskFlags 
@@ -1486,30 +1492,39 @@ StateMachineManagement    USES HCUStatus
 SysParametersInit         USES HCUStatus InnerFalutFlags TaskFlags 
                                 SystemADData_Int CANMsgBuffersConfig TLECMD TLECMDTarget 
                                 TLEFault1 TLEFault2 TLEErrFlag_1 TLEErrFlag_2 
-SysInit                   USES SysParametersInit CAN_SetAcceptanceCode 
-                                CAN_SetAcceptanceMask _PTGD ADCH_Start InnerFalutFlags 
-CANMsgBuffersConfig       USES Msg_CAN_TXD CAN_TXD_ID _COPY Msg_CAN_RXD 
-                                CAN_RXD_ID 
+                                systemp_Timer1 systemp_Timer2 systemp_Timer3 systemp_Timer4 
+SysInit                   USES SysParametersInit _PTGD ADCH_Start 
+                                InnerFalutFlags 
+CANMsgBuffersConfig       USES CAN_SetAcceptanceCode CAN_SetAcceptanceMask 
+                                Msg_CAN_TXD CAN_TXD_ID _COPY Msg_CAN_RXD CAN_RXD_ID 
 SystemADData_Int          USES SYSTEM_AD_DATA 
-TaskSchedule              USES TaskFlags Task_ADCHSProcess 
-                                Task_TLE6232UpdateProcess Task_CANTXD_Process Task_FCUCMD_Process 
+TaskSchedule              USES TaskFlags Task_ADCHSProcess Task_TLE6232Process 
+                                Task_CANTXD_Process Task_FCUCMD_Process 
 Task_ADCHSProcess         USES ADCHRawData ADCH_GetValue InnerFalutFlags 
                                 Calc_ADData_NTC SYSTEM_AD_DATA Calc_ADData_H2Con 
                                 Calc_ADData_P_H2Tank Calc_ADData_P_H2Mid ADCH_Stop ADCH_Init 
                                 ADCH_Start TaskFlags 
-Calc_ADData_NTC           USES TRawData_Table TData_Table AD_Lagrange 
-Calc_ADData_H2Con         USES H2ConRawData_Table H2ConData_Table AD_Lagrange 
-Calc_ADData_P_H2Tank      USES P_H2TankRawData_Table P_H2TankData_Table 
-                                AD_Lagrange 
-Calc_ADData_P_H2Mid       USES P_H2MidRawData_Table P_H2MidData_Table 
-                                AD_Lagrange 
-AD_Lagrange               USES AD_Lagrange _SEXT16_32 _LSUB _LMUL _LDIVS _LADD 
-                                _POP32 _COPY 
-TLE_SPI_SendCMD           USES _PTDD _PTED TLE_SPI_SendCMD _SPIS _SPID 
+Calc_ADData_NTC           USES Calc_ADData_NTC TRawData_Table _IMUL_STAR08 
+                                _IDIVU_STAR08 TData_Table 
+Calc_ADData_H2Con         USES H2ConRawData_Table H2ConData_Table _IMUL_STAR08 
+                                _IDIVU_STAR08 
+Calc_ADData_P_H2Tank      USES P_H2TankRawData_Table P_H2TankData_Table _LMUL 
+                                _POP32 _LDIVU _LADD 
+Calc_ADData_P_H2Mid       USES P_H2MidRawData_Table P_H2MidData_Table _LMUL 
+                                _POP32 _LDIVU _LADD 
+TLE_SPI_SendCMD           USES _PTDD _PTED _SPIS _SPID TLE_SPI_SendCMD 
                                 InnerFalutFlags 
-Task_TLE6232UpdateProcess USES _PTDD TLEFault1 _PTCD TLEFault2 TLE_SPI_SendCMD 
-                                TLEErrFlag_1 TLECMD TLEErrFlag_2 TaskFlags 
-Task_CANTXD_Process       USES CANTXD_MsgBufferUpdate _CANTIER TaskFlags 
+TLECMD_Open1Channel       USES TLECMDTarget TLECMD 
+TLECMD_Close1Channel      USES TLECMDTarget TLECMD 
+TLE_CMDset                USES HCUStatus TLE_ON_count.1 TLECMD_Open1Channel 
+                                TLE_OFF_count.2 TLECMD_Close1Channel 
+GetTLEFault1              USES _PTDD 
+GetTLEFault2              USES _PTDD 
+TLE_Update                USES GetTLEFault1 TLEFault1 GetTLEFault2 TLEFault2 
+                                TLE_SPI_SendCMD TLEErrFlag_1 TLECMD TLEErrFlag_2 
+Task_TLE6232Process       USES TLE_CMDset TLE_Update TaskFlags 
+Task_CANTXD_Process       USES systemp_Timer1 CANTXD_MsgBufferUpdate _CANTIER 
+                                TaskFlags 
 CANTXD_MsgBufferUpdate    USES SYSTEM_AD_DATA Msg_CAN_TXD HCUStatus 
 CANDownLoad               USES tempCANMSG.3 CAN_ReadFrame Msg_CAN_RXD _LCMP 
                                 TI_1ms_Enable TaskFlags 
@@ -1517,16 +1532,14 @@ Task_FCUCMD_Process       USES Msg_CAN_RXD TLECMDTarget TaskFlags
 _ENTER_BINARY_L           USES _PUSH_ARGS_L 
 _ENTER_BINARY_L_RC        USES _PUSH_ARGS_L 
 _LMUL_k_is_k_mul_j        USES _k_is_k_plus_j_l _k_is_k_plus_j_i 
-_ABS_L_HX                 USES _NEG_L_HX 
-_SPLITSIGN_L              USES _ABS_L_HX 
-_LDIVS_k_is_k_div_j       USES _SPLITSIGN_L _LDIVMOD _NEG_L_HX 
+_LDIVU_k_is_k_div_j       USES _LDIVMOD 
+_IDIVU_STAR08             USES _IDIVMOD 
 _LADD                     USES _ENTER_BINARY_L _LADD_k_is_k_plus_j 
-_LSUB                     USES _ENTER_BINARY_L _LSUB_k_is_k_minus_j 
 _LAND_RC                  USES _ENTER_BINARY_L_RC _LAND_k_is_k_and_j 
 _LOR                      USES _ENTER_BINARY_L _LOR_k_is_k_or_j 
 _LOR_RC                   USES _ENTER_BINARY_L_RC _LOR_k_is_k_or_j 
 _LMUL                     USES _ENTER_BINARY_L _LMUL_k_is_k_mul_j 
-_LDIVS                    USES _ENTER_BINARY_L _LDIVS_k_is_k_div_j 
+_LDIVU                    USES _ENTER_BINARY_L _LDIVU_k_is_k_div_j 
 _LLSR                     USES _ENTER_UNARY_L 
 _LLSL                     USES _ENTER_UNARY_L 
 _LCMP                     USES _ENTER_BINARY_L _LCMP_k_rel_j 
@@ -1568,12 +1581,12 @@ DEPENDENCY TREE
  |  |  |  |    
  |  |  |  +- CANMsgBuffersConfig 
  |  |  |     | 
+ |  |  |     +- CAN_SetAcceptanceCode
+ |  |  |     |    
+ |  |  |     +- CAN_SetAcceptanceMask
+ |  |  |     |    
  |  |  |     +- _COPY               
  |  |  |          
- |  |  +- CAN_SetAcceptanceCode
- |  |  |    
- |  |  +- CAN_SetAcceptanceMask
- |  |  |    
  |  |  +- ADCH_Start          
  |  |     | 
  |  |     +- ADCH_HWEnDi          (see above)
@@ -1588,65 +1601,57 @@ DEPENDENCY TREE
  |     |  |    
  |     |  +- Calc_ADData_NTC     
  |     |  |  | 
- |     |  |  +- AD_Lagrange         
+ |     |  |  +- _IMUL_STAR08        
+ |     |  |  |    
+ |     |  |  +- _IDIVU_STAR08       
  |     |  |     | 
- |     |  |     +- _SEXT16_32          
- |     |  |     |    
- |     |  |     +- _LSUB               
- |     |  |     |  | 
- |     |  |     |  +- _ENTER_BINARY_L     
- |     |  |     |  |  | 
- |     |  |     |  |  +- _PUSH_ARGS_L        
- |     |  |     |  |       
- |     |  |     |  +- _LSUB_k_is_k_minus_j
- |     |  |     |       
- |     |  |     +- _LMUL               
- |     |  |     |  | 
- |     |  |     |  +- _ENTER_BINARY_L      (see above)
- |     |  |     |  |  
- |     |  |     |  +- _LMUL_k_is_k_mul_j  
- |     |  |     |     | 
- |     |  |     |     +- _k_is_k_plus_j_l    
- |     |  |     |     |    
- |     |  |     |     +- _k_is_k_plus_j_i    
- |     |  |     |          
- |     |  |     +- _LDIVS              
- |     |  |     |  | 
- |     |  |     |  +- _ENTER_BINARY_L      (see above)
- |     |  |     |  |  
- |     |  |     |  +- _LDIVS_k_is_k_div_j 
- |     |  |     |     | 
- |     |  |     |     +- _SPLITSIGN_L        
- |     |  |     |     |  | 
- |     |  |     |     |  +- _ABS_L_HX           
- |     |  |     |     |     | 
- |     |  |     |     |     +- _NEG_L_HX           
- |     |  |     |     |          
- |     |  |     |     +- _LDIVMOD            
- |     |  |     |     |    
- |     |  |     |     +- _NEG_L_HX            (see above)
- |     |  |     |        
- |     |  |     +- _LADD               
- |     |  |     |  | 
- |     |  |     |  +- _ENTER_BINARY_L      (see above)
- |     |  |     |  |  
- |     |  |     |  +- _LADD_k_is_k_plus_j 
- |     |  |     |       
- |     |  |     +- _POP32              
- |     |  |     |    
- |     |  |     +- _COPY                (see above)
- |     |  |        
+ |     |  |     +- _IDIVMOD            
+ |     |  |          
  |     |  +- Calc_ADData_H2Con   
  |     |  |  | 
- |     |  |  +- AD_Lagrange          (see above)
+ |     |  |  +- _IMUL_STAR08         (see above)
+ |     |  |  |  
+ |     |  |  +- _IDIVU_STAR08        (see above)
  |     |  |     
  |     |  +- Calc_ADData_P_H2Tank
  |     |  |  | 
- |     |  |  +- AD_Lagrange          (see above)
- |     |  |     
+ |     |  |  +- _LMUL               
+ |     |  |  |  | 
+ |     |  |  |  +- _ENTER_BINARY_L     
+ |     |  |  |  |  | 
+ |     |  |  |  |  +- _PUSH_ARGS_L        
+ |     |  |  |  |       
+ |     |  |  |  +- _LMUL_k_is_k_mul_j  
+ |     |  |  |     | 
+ |     |  |  |     +- _k_is_k_plus_j_l    
+ |     |  |  |     |    
+ |     |  |  |     +- _k_is_k_plus_j_i    
+ |     |  |  |          
+ |     |  |  +- _POP32              
+ |     |  |  |    
+ |     |  |  +- _LDIVU              
+ |     |  |  |  | 
+ |     |  |  |  +- _ENTER_BINARY_L      (see above)
+ |     |  |  |  |  
+ |     |  |  |  +- _LDIVU_k_is_k_div_j 
+ |     |  |  |     | 
+ |     |  |  |     +- _LDIVMOD            
+ |     |  |  |          
+ |     |  |  +- _LADD               
+ |     |  |     | 
+ |     |  |     +- _ENTER_BINARY_L      (see above)
+ |     |  |     |  
+ |     |  |     +- _LADD_k_is_k_plus_j 
+ |     |  |          
  |     |  +- Calc_ADData_P_H2Mid 
  |     |  |  | 
- |     |  |  +- AD_Lagrange          (see above)
+ |     |  |  +- _LMUL                (see above)
+ |     |  |  |  
+ |     |  |  +- _POP32               (see above)
+ |     |  |  |  
+ |     |  |  +- _LDIVU               (see above)
+ |     |  |  |  
+ |     |  |  +- _LADD                (see above)
  |     |  |     
  |     |  +- ADCH_Stop           
  |     |  |    
@@ -1654,10 +1659,22 @@ DEPENDENCY TREE
  |     |  |  
  |     |  +- ADCH_Start           (see above)
  |     |     
- |     +- Task_TLE6232UpdateProcess
+ |     +- Task_TLE6232Process 
  |     |  | 
- |     |  +- TLE_SPI_SendCMD     
- |     |       
+ |     |  +- TLE_CMDset          
+ |     |  |  | 
+ |     |  |  +- TLECMD_Open1Channel 
+ |     |  |  |    
+ |     |  |  +- TLECMD_Close1Channel
+ |     |  |       
+ |     |  +- TLE_Update          
+ |     |     | 
+ |     |     +- GetTLEFault1        
+ |     |     |    
+ |     |     +- GetTLEFault2        
+ |     |     |    
+ |     |     +- TLE_SPI_SendCMD     
+ |     |          
  |     +- Task_CANTXD_Process 
  |     |  | 
  |     |  +- CANTXD_MsgBufferUpdate
@@ -1782,6 +1799,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 0
-Total size of all blocks to be downloaded: 0
+Number of blocks to be downloaded: 7
+Total size of all blocks to be downloaded: 6501
 

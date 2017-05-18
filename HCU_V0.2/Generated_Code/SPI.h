@@ -6,7 +6,7 @@
 **     Component   : SynchroMaster
 **     Version     : Component 02.347, Driver 01.30, CPU db: 3.00.026
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-15, 16:12, # CodeGen: 0
+**     Date/Time   : 2017-05-16, 22:41, # CodeGen: 4
 **     Abstract    :
 **         This component "SynchroMaster" implements MASTER part of synchronous
 **         serial master-slave communication.

@@ -111,6 +111,7 @@ void CAN_OnFreeTxBuffer(word BufferMask)
 void CAN_OnFullRxBuffer(void)
 {
 	/* Write your code here ... */
+	systemp_Timer2++;
 	CANDownLoad();
 }
 
@@ -152,7 +153,7 @@ void TI_1ms_OnInterrupt(void)
 {
 	/* Write your code here ... */
 	Timer_CAN++;
-	if (Timer_CAN==CAN_Send_Delay)
+	if (Timer_CAN>=CAN_Send_Delay)
 	{
 		Task_CANTXD = 1;
 		(void)TI_1ms_Disable();
@@ -162,9 +163,9 @@ void TI_1ms_OnInterrupt(void)
 
 /*
 ** ===================================================================
-**     Event       :  TI_10ms_OnInterrupt (module Events)
+**     Event       :  TI_20ms_OnInterrupt (module Events)
 **
-**     Component   :  TI_10ms [TimerInt]
+**     Component   :  TI_20ms [TimerInt]
 **     Description :
 **         When a timer interrupt occurs this event is called (only
 **         when the component is enabled - <Enable> and the events are
@@ -174,15 +175,14 @@ void TI_1ms_OnInterrupt(void)
 **     Returns     : Nothing
 ** ===================================================================
 */
-void TI_10ms_OnInterrupt(void)
+void TI_20ms_OnInterrupt(void)
 {
   /* Write your code here ... */
 	Timer_100ms++;
-	if (Timer_100ms == 10)
+	if (Timer_100ms == 5)
 	{
 		Timer_100ms = 0;
-		Task_TLE6232Update = 1;
-		Task_TLE6232CMDSet = 1;
+		Task_TLE6232 = 1;
 	}
 }
 

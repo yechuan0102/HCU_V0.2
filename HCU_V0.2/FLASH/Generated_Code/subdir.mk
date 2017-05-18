@@ -21,8 +21,8 @@ C_SRCS_QUOTED += \
 "../Generated_Code/SPI_DriverINH_2.c" \
 "../Generated_Code/SPI_DriverSS_1.c" \
 "../Generated_Code/SPI_DriverSS_2.c" \
-"../Generated_Code/TI_10ms.c" \
 "../Generated_Code/TI_1ms.c" \
+"../Generated_Code/TI_20ms.c" \
 "../Generated_Code/Vectors.c" \
 "../Generated_Code/WDog_1S.c" \
 
@@ -42,8 +42,8 @@ C_SRCS += \
 ../Generated_Code/SPI_DriverINH_2.c \
 ../Generated_Code/SPI_DriverSS_1.c \
 ../Generated_Code/SPI_DriverSS_2.c \
-../Generated_Code/TI_10ms.c \
 ../Generated_Code/TI_1ms.c \
+../Generated_Code/TI_20ms.c \
 ../Generated_Code/Vectors.c \
 ../Generated_Code/WDog_1S.c \
 
@@ -63,8 +63,8 @@ OBJS += \
 ./Generated_Code/SPI_DriverINH_2_c.obj \
 ./Generated_Code/SPI_DriverSS_1_c.obj \
 ./Generated_Code/SPI_DriverSS_2_c.obj \
-./Generated_Code/TI_10ms_c.obj \
 ./Generated_Code/TI_1ms_c.obj \
+./Generated_Code/TI_20ms_c.obj \
 ./Generated_Code/Vectors_c.obj \
 ./Generated_Code/WDog_1S_c.obj \
 
@@ -84,8 +84,8 @@ OBJS_QUOTED += \
 "./Generated_Code/SPI_DriverINH_2_c.obj" \
 "./Generated_Code/SPI_DriverSS_1_c.obj" \
 "./Generated_Code/SPI_DriverSS_2_c.obj" \
-"./Generated_Code/TI_10ms_c.obj" \
 "./Generated_Code/TI_1ms_c.obj" \
+"./Generated_Code/TI_20ms_c.obj" \
 "./Generated_Code/Vectors_c.obj" \
 "./Generated_Code/WDog_1S_c.obj" \
 
@@ -105,8 +105,8 @@ C_DEPS += \
 ./Generated_Code/SPI_DriverINH_2_c.d \
 ./Generated_Code/SPI_DriverSS_1_c.d \
 ./Generated_Code/SPI_DriverSS_2_c.d \
-./Generated_Code/TI_10ms_c.d \
 ./Generated_Code/TI_1ms_c.d \
+./Generated_Code/TI_20ms_c.d \
 ./Generated_Code/Vectors_c.d \
 ./Generated_Code/WDog_1S_c.d \
 
@@ -126,8 +126,8 @@ C_DEPS_QUOTED += \
 "./Generated_Code/SPI_DriverINH_2_c.d" \
 "./Generated_Code/SPI_DriverSS_1_c.d" \
 "./Generated_Code/SPI_DriverSS_2_c.d" \
-"./Generated_Code/TI_10ms_c.d" \
 "./Generated_Code/TI_1ms_c.d" \
+"./Generated_Code/TI_20ms_c.d" \
 "./Generated_Code/Vectors_c.d" \
 "./Generated_Code/WDog_1S_c.d" \
 
@@ -147,8 +147,8 @@ OBJS_OS_FORMAT += \
 ./Generated_Code/SPI_DriverINH_2_c.obj \
 ./Generated_Code/SPI_DriverSS_1_c.obj \
 ./Generated_Code/SPI_DriverSS_2_c.obj \
-./Generated_Code/TI_10ms_c.obj \
 ./Generated_Code/TI_1ms_c.obj \
+./Generated_Code/TI_20ms_c.obj \
 ./Generated_Code/Vectors_c.obj \
 ./Generated_Code/WDog_1S_c.obj \
 
@@ -279,19 +279,19 @@ Generated_Code/SPI_DriverSS_2_c.obj: ../Generated_Code/SPI_DriverSS_2.c
 	@echo 'Finished building: $<'
 	@echo ' '
 
-Generated_Code/TI_10ms_c.obj: ../Generated_Code/TI_10ms.c
+Generated_Code/TI_1ms_c.obj: ../Generated_Code/TI_1ms.c
 	@echo 'Building file: $<'
 	@echo 'Executing target #19 $<'
 	@echo 'Invoking: HCS08 Compiler'
-	"$(HC08ToolsEnv)/chc08" -ArgFile"Generated_Code/TI_10ms.args" -ObjN="Generated_Code/TI_10ms_c.obj" "$<" -Lm="$(@:%.obj=%.d)" -LmCfg=xilmou
+	"$(HC08ToolsEnv)/chc08" -ArgFile"Generated_Code/TI_1ms.args" -ObjN="Generated_Code/TI_1ms_c.obj" "$<" -Lm="$(@:%.obj=%.d)" -LmCfg=xilmou
 	@echo 'Finished building: $<'
 	@echo ' '
 
-Generated_Code/TI_1ms_c.obj: ../Generated_Code/TI_1ms.c
+Generated_Code/TI_20ms_c.obj: ../Generated_Code/TI_20ms.c
 	@echo 'Building file: $<'
 	@echo 'Executing target #20 $<'
 	@echo 'Invoking: HCS08 Compiler'
-	"$(HC08ToolsEnv)/chc08" -ArgFile"Generated_Code/TI_1ms.args" -ObjN="Generated_Code/TI_1ms_c.obj" "$<" -Lm="$(@:%.obj=%.d)" -LmCfg=xilmou
+	"$(HC08ToolsEnv)/chc08" -ArgFile"Generated_Code/TI_20ms.args" -ObjN="Generated_Code/TI_20ms_c.obj" "$<" -Lm="$(@:%.obj=%.d)" -LmCfg=xilmou
 	@echo 'Finished building: $<'
 	@echo ' '
 

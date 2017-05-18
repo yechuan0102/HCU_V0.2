@@ -817,7 +817,7 @@ push-pull
     <Enabled v="Y" />
     <Properties>
       <Component_name v="SPI_DriverFault_2" />
-      <Pin_for_I_O v="PTC6_ADP22" />
+      <Pin_for_I_O v="PTD1_PID1_TPM2CH1" />
       <Pull_resistor v="pull up" />
       <Open_drain sel_value="The settings is irrelevant for input direction">
         
@@ -825,8 +825,8 @@ push-pull
 
         <EmptySection_DummyValue />
       </Open_drain>
-      <Slew_rate_control_for_PTC6 v="no" />
-      <Drive_strength_for_PTC6 v="High" />
+      <Slew_rate_control_for_PTD1 v="no" />
+      <Drive_strength_for_PTD1 v="High" />
       <Direction v="Input" />
       <group name="Initialization">
         <Init__direction v="Input" />
@@ -931,17 +931,17 @@ push-pull
       </event>
     </Events>
   </Bean>
-  <Bean name="TI_10ms" type="TimerInt">
+  <Bean name="TI_20ms" type="TimerInt">
     <Enabled v="Y" />
     <Properties>
-      <Component_name v="TI_10ms" />
+      <Component_name v="TI_20ms" />
       <Periodic_interrupt_source v="TPM20" />
       <Counter v="TPM2" />
       <boolgroup name="Interrupt service/event" v="Enabled">
         <Interrupt v="Vtpm2ch0" />
         <Interrupt_priority v="medium priority" />
       </boolgroup>
-      <Interrupt_period v="10 ms" />
+      <Interrupt_period v="20 ms" />
       <Same_period_in_modes v="yes" />
       <Component_uses_entire_timer v="no" />
       <group name="Initialization">
@@ -975,7 +975,7 @@ push-pull
       <event name="BeforeNewSpeed" v="don&amp;apos;t generate code" />
       <event name="AfterNewSpeed" v="don&amp;apos;t generate code" />
       <event name="OnInterrupt" v="generate code">
-        <Event_procedure_name v="TI_10ms_OnInterrupt" />
+        <Event_procedure_name v="TI_20ms_OnInterrupt" />
         <Priority v="same as interrupt" />
       </event>
     </Events>

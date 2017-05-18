@@ -17,8 +17,7 @@ void TaskSchedule(void)
 {
 	if (Task_ADCHS)				Task_ADCHSProcess();
 		
-	//if (Task_TLE6232CMDSet)		Task_TLE6232CMDsetProcess();
-	if (Task_TLE6232Update)		Task_TLE6232UpdateProcess();
+	if (Task_TLE6232)			Task_TLE6232Process();
 
 	if (Task_CANTXD)			Task_CANTXD_Process();
 	if (Task_FCUCMD)			Task_FCUCMD_Process();
@@ -47,23 +46,23 @@ void Task_ADCHSProcess(void)
 	{
 		InnerFault_ADProcess = 0;
 		/*Tank Temperature*/
-		SYSTEM_AD_DATA.NTC_T[0] = Calc_ADData_NTC(RawData_NTC_T0);
-		SYSTEM_AD_DATA.NTC_T[1] = Calc_ADData_NTC(RawData_NTC_T1);
-		SYSTEM_AD_DATA.NTC_T[2] = Calc_ADData_NTC(RawData_NTC_T2);
-		SYSTEM_AD_DATA.NTC_T[3] = Calc_ADData_NTC(RawData_NTC_T3);
-		SYSTEM_AD_DATA.NTC_T[4] = Calc_ADData_NTC(RawData_NTC_T4);
+		SYSTEM_AD_DATA.NTC_T[0] = Calc_ADData_NTC(737);
+		SYSTEM_AD_DATA.NTC_T[1] = Calc_ADData_NTC(700);
+		SYSTEM_AD_DATA.NTC_T[2] = Calc_ADData_NTC(665);
+		SYSTEM_AD_DATA.NTC_T[3] = Calc_ADData_NTC(4028);
+		SYSTEM_AD_DATA.NTC_T[4] = Calc_ADData_NTC(302);
 		SYSTEM_AD_DATA.NTC_T[5] = Calc_ADData_NTC(RawData_NTC_T5);
 		
 		/*H2Con */
-		SYSTEM_AD_DATA.H2Con[0] = Calc_ADData_H2Con(RawData_H2Con0);
-		SYSTEM_AD_DATA.H2Con[1] = Calc_ADData_H2Con(RawData_H2Con1);
-		SYSTEM_AD_DATA.H2Con[2] = Calc_ADData_H2Con(RawData_H2Con2);
-		SYSTEM_AD_DATA.H2Con[3] = Calc_ADData_H2Con(RawData_H2Con3);
-		SYSTEM_AD_DATA.H2Con[4] = Calc_ADData_H2Con(RawData_H2Con4);
-
+		SYSTEM_AD_DATA.H2Con[0] = Calc_ADData_H2Con(1000);
+//		SYSTEM_AD_DATA.H2Con[1] = Calc_ADData_H2Con(RawData_H2Con1);
+//		SYSTEM_AD_DATA.H2Con[2] = Calc_ADData_H2Con(1000);
+//		SYSTEM_AD_DATA.H2Con[3] = Calc_ADData_H2Con(RawData_H2Con3);
+//		SYSTEM_AD_DATA.H2Con[4] = Calc_ADData_H2Con(RawData_H2Con4);
+//
 		/*H2 Pressure */
-		SYSTEM_AD_DATA.P_Tank	= Calc_ADData_P_H2Tank(RawData_P_H2Tank);
-		SYSTEM_AD_DATA.P_Mid	= Calc_ADData_P_H2Mid(RawData_P_H2Mid);
+		SYSTEM_AD_DATA.P_Tank	= Calc_ADData_P_H2Tank(3500);
+		SYSTEM_AD_DATA.P_Mid	= Calc_ADData_P_H2Mid(2000);
 
 	}
 	else 
@@ -92,39 +91,56 @@ Others:         //	NA
 ****************************************************************************************/
 unsigned char Calc_ADData_NTC(unsigned int Temp_RawData)//-40~150 C   0-190   0.37-4.92V	
 {
-	long Temp_Data;
+	unsigned int Temp_Data;
+	unsigned char i;
 	if (Temp_RawData > TDataRawLimitH) return 0xFF;	//sensor error
 	if (Temp_RawData < TDataRawLimitL) return 0xFF;	//sensor error
-	Temp_Data = AD_Lagrange(TRawData_Table, TData_Table, TData_Table_Len, (int)Temp_RawData);
+	for (i = 1; i < TData_Table_Len; i++)
+	{
+		if ((TRawData_Table[i] <= Temp_RawData) && (Temp_RawData <= TRawData_Table[i - 1]))
+		{
+			Temp_Data = TData_Table[i] - ((Temp_RawData - TRawData_Table[i]) * 5 )/ (TRawData_Table[i - 1] - TRawData_Table[i]);
+			break;
+		}
+	}
+	
+
 	return (unsigned char)Temp_Data;
 }
 unsigned char Calc_ADData_H2Con(unsigned int Temp_RawData)//0-20000ppm  0-200  0.5-4.5V  
 {
-	long Temp_Data;
+	unsigned long Temp_Data;
 	if (Temp_RawData > H2ConRawLimitH)	return 0xFF;	//sensor error
-	if (Temp_RawData < H2ConRawLimitL)	return 0xFF;	//sensor error
-	Temp_Data = AD_Lagrange(H2ConRawData_Table, H2ConData_Table, H2ConData_Table_Len, (int)Temp_RawData);
+	else if (Temp_RawData < H2ConRawLimitL)	return 0xFF;	//sensor error
+	
+	if (Temp_RawData < H2ConRawData_Table[1]) return (unsigned char)H2ConData_Table[1];
+	else if (Temp_RawData > H2ConRawData_Table[0]) return (unsigned char)H2ConData_Table[0];
+	Temp_Data = ((unsigned long)(Temp_RawData- H2ConRawData_Table[1])*(H2ConData_Table[0] - H2ConData_Table[1])) / (H2ConRawData_Table[0] - H2ConRawData_Table[1]) + H2ConData_Table[1];
 	return (unsigned char)Temp_Data;
 }
 unsigned int Calc_ADData_P_H2Tank(unsigned int Temp_RawData) //0-500barg  0-50000  1-5V
 {
-	long Temp_Data;
+	unsigned long Temp_Data;
 	if (Temp_RawData > P_H2TankDataRawLimitH)	return 0xFFFF;	//sensor error
-	if (Temp_RawData < P_H2TankDataRawLimitL)	return 0xFFFF;	//sensor error
-	Temp_Data = AD_Lagrange(P_H2TankRawData_Table, P_H2TankData_Table, P_H2TankData_Table_Len, (int)Temp_RawData);
+	else if (Temp_RawData < P_H2TankDataRawLimitL)	return 0xFFFF;	//sensor error
+	
+	if (Temp_RawData < P_H2TankRawData_Table[1]) return P_H2TankData_Table[1];
+	Temp_Data = ((unsigned long)(Temp_RawData - P_H2TankRawData_Table[1]) * (P_H2TankData_Table[0] - P_H2TankData_Table[1])) / (P_H2TankRawData_Table[0] - P_H2TankRawData_Table[1]) + P_H2TankData_Table[1];
 	return (unsigned int)Temp_Data;
 }
-unsigned int Calc_ADData_P_H2Mid(unsigned int Temp_RawData) //0-50barg   0-5000  1-5V
+unsigned int Calc_ADData_P_H2Mid(unsigned int Temp_RawData) //0-20barg   0-2000  1-5V
 {
-	long Temp_Data;
+	unsigned long Temp_Data;
 	if (Temp_RawData > P_H2MidDataRawLimitH)	return 0xFFFF;	//sensor error
-	if (Temp_RawData < P_H2MidDataRawLimitL)	return 0xFFFF;	//sensor error
-	Temp_Data = AD_Lagrange(P_H2MidRawData_Table, P_H2MidData_Table, P_H2MidData_Table_Len, (int)Temp_RawData);
+	else if (Temp_RawData < P_H2MidDataRawLimitL)	return 0xFFFF;	//sensor error
+	
+	if (Temp_RawData < P_H2MidRawData_Table[1]) 	return P_H2MidData_Table[1];
+	Temp_Data = ((unsigned long)(Temp_RawData - P_H2MidRawData_Table[1]) * (P_H2MidData_Table[0] - P_H2MidData_Table[1])) / (P_H2MidRawData_Table[0] - P_H2MidRawData_Table[1]) + P_H2MidData_Table[1];
 	return (unsigned int)Temp_Data;
 }
 
 /**************************************************************************************
-Function:       // AD_Lagrange
+Function:       //	AD_Lagrange
 Called By:      //	Calc_ADData_NTC
 				//	Calc_ADData_H2Con
 				//	Calc_ADData_P_H2Tank
@@ -134,12 +150,12 @@ Input:          //	const int x[]		RawData_Table
 					const int len,	Data_Table_len
 					int xh		ADCHRawData
 Return:         //	yh			ADCHData
-Others:         // NA
+Others:         //	NA
 ****************************************************************************************/
-long AD_Lagrange(const unsigned int x[], const unsigned int y[], const int len, int xh)
+unsigned int AD_Lagrange(const unsigned int x[], const unsigned int y[], const int len, unsigned int xh)
 {
-	long yh,yh0,yh1,yh2;
-	long y0,y1,y2,x0,x1,x2;
+	unsigned long yh;
+	unsigned int y0,y1,x0,x1;
 	int i;
 	if (len == 2)
 	{
@@ -147,8 +163,9 @@ long AD_Lagrange(const unsigned int x[], const unsigned int y[], const int len, 
 		y1 = y[1];
 		x0 = x[0];
 		x1 = x[1];
-		yh = y0 * (xh - x1) / (x0 - x1) +
-			y1 * (xh - x0) / (x1 - x0);
+		yh = (y0-y1);
+		yh= xh*yh;
+		yh = yh/(x0-x1)+y0;
 	}
 	else
 	{
@@ -157,26 +174,19 @@ long AD_Lagrange(const unsigned int x[], const unsigned int y[], const int len, 
 			if (x[i] <= xh)	break;
 		}
 		if (i == 0)		i = 1;
-		else if (i >= (len - 1))	i = len - 2;
-		if (i > 0 && i < (len - 1))
+		else if (i > (len - 1))	i = len - 1;
+		if (i > 0 && i <= (len - 1))
 		{
 			y0 = y[i - 1];
 			y1 = y[i];
-			y2 = y[i + 1];
 			x0 = x[i - 1];
-			x1 = x[i];
-			x2 = x[i + 1];
-			yh0 = y1 * (xh - x0)*(xh - x2);
-			yh0 = yh0 / ((x1 - x0)*(x1 - x2));
-			yh1 = y0 * (xh - x1)*(xh - x2);
-			yh1 = yh1 / ((x0 - x1)*(x0 - x2));
-			yh2 = y2 * (xh - x1)*(xh - x0);
-			yh2 = yh2 / ((x2 - x1)*(x2 - x0));
-			yh = yh0 + yh1 + yh2;
+			x1 = x[i];			
+			yh = xh*(y0-y1);
+			yh	=y0-yh/(x1-x0);
 		}			
 	}
 	
-	if (yh < 0)		yh = 0;
+	//if (yh < 0)		yh = 0;
 	return yh;
 
 }
@@ -201,12 +211,11 @@ unsigned int TLE_SPI_SendCMD(unsigned char ControlByte, unsigned char DataByte ,
 {
 	volatile unsigned int timer;
 	unsigned char tempResult = 0xFF;
-	unsigned char * tempDateH = 0;
-	unsigned char * tempDateL = 0;
+	unsigned char tempDateH = 0;
+	unsigned char tempDateL = 0;
 	unsigned int	tempData = 0;
 	unsigned char SPICOMFlag;
 	unsigned char i=0;
-	
 	if (TLEType == TLE_1)
 	{
 		SPI_DriverINH_1_SetVal(); //Quit Reset State
@@ -220,30 +229,27 @@ unsigned int TLE_SPI_SendCMD(unsigned char ControlByte, unsigned char DataByte ,
 		for(i=0;i<10;i++);
 	}
 	else {}
-	
 	SPICOMFlag = 0x00;
 	for (timer = 0; timer<SPIWaitStepLimit; timer++) { tempResult = SPI_SendChar(ControlByte); if (ERR_OK == tempResult) { SPICOMFlag |= 0X01; break; } }//Write the high byte   
-	for (timer = 0; timer<SPIWaitStepLimit; timer++) { tempResult = SPI_RecvChar(tempDateH); if (ERR_OK == tempResult) { SPICOMFlag |= 0X02; break; } }//Read SPI Driver status high byte
+	for (timer = 0; timer<SPIWaitStepLimit; timer++) { tempResult = SPI_RecvChar(&tempDateH); if (ERR_OK == tempResult) { SPICOMFlag |= 0X02; break; } }//Read SPI Driver status high byte
 	for (timer = 0; timer<SPIWaitStepLimit; timer++) { tempResult = SPI_SendChar(DataByte); if (ERR_OK == tempResult) { SPICOMFlag |= 0X04; break; } }//Write the high byte   
-	for (timer = 0; timer<SPIWaitStepLimit; timer++) { tempResult = SPI_RecvChar(tempDateL); if (ERR_OK == tempResult) { SPICOMFlag |= 0X08; break; } }//Read SPI Driver status high byte
+	for (timer = 0; timer<SPIWaitStepLimit; timer++) { tempResult = SPI_RecvChar(&tempDateL); if (ERR_OK == tempResult) { SPICOMFlag |= 0X08; break; } }//Read SPI Driver status high byte
 	if (TLEType == TLE_1)	
-		{
-			for(i=0;i<10;i++);
-			SPI_DriverSS_1_SetVal(); //Disable SPI Driver Chip
+	{
+		for(i=0;i<10;i++);
+		SPI_DriverSS_1_SetVal(); //Disable SPI Driver Chip
 			
-		}
-
+	}
 	else if (TLEType == TLE_2)	
-		{
-			for(i=0;i<10;i++);
-			SPI_DriverSS_2_SetVal(); //Disable SPI Driver Chip
-		}
+	{
+		for(i=0;i<10;i++);
+		SPI_DriverSS_2_SetVal(); //Disable SPI Driver Chip
+	}
 	else{}
-	
 	if (SPICOMFlag & 0x0F == 0X0F)
 	{
 		InnerFault_SPIPorcess = 0;
-		tempData = (((unsigned int)(*tempDateH)) << 8) + ((unsigned int)(*tempDateL));
+		tempData = (((unsigned int)(tempDateH)) << 8) + ((unsigned int)(tempDateL));
 	}
 	else
 	{
@@ -253,9 +259,99 @@ unsigned int TLE_SPI_SendCMD(unsigned char ControlByte, unsigned char DataByte ,
 	return tempData;
 }
 
+
 /**************************************************************************************
-Function:       // Task_TLE6232UpdateProcess
-Called By:      // 100ms Interrupt
+Function:       // TLECMD_Open1Channel
+Called By:      // TLE6232CMDsetProcess
+Input:          // NA
+Return:         // NA
+Others:         // NA
+****************************************************************************************/
+void TLECMD_Open1Channel(void)
+{
+	if		(isTLE_OUT1_CMD_ON && !isTLE_OUT1_ON)		TLE_OUT1_ON;
+	else if (isTLE_OUT2_CMD_ON && !isTLE_OUT2_ON)		TLE_OUT2_ON;
+	else if (isTLE_OUT3_CMD_ON && !isTLE_OUT3_ON)		TLE_OUT3_ON;
+	else if (isTLE_OUT4_CMD_ON && !isTLE_OUT4_ON)		TLE_OUT4_ON;
+	else if (isTLE_OUT5_CMD_ON && !isTLE_OUT5_ON)		TLE_OUT5_ON;
+	else if (isTLE_OUT6_CMD_ON && !isTLE_OUT6_ON)		TLE_OUT6_ON;
+	else if (isTLE_OUT7_CMD_ON && !isTLE_OUT7_ON)		TLE_OUT7_ON;
+	else if (isTLE_OUT8_CMD_ON && !isTLE_OUT8_ON)		TLE_OUT8_ON;
+	else if (isTLE_OUT9_CMD_ON && !isTLE_OUT9_ON)		TLE_OUT9_ON;
+	else if (isTLE_OUT10_CMD_ON && !isTLE_OUT10_ON)		TLE_OUT10_ON;
+	else if (isTLE_OUT11_CMD_ON && !isTLE_OUT11_ON)		TLE_OUT11_ON;
+	else if (isTLE_OUT12_CMD_ON && !isTLE_OUT12_ON)		TLE_OUT12_ON;
+}
+/**************************************************************************************
+Function:       // TLECMD_Close1Channel
+Called By:      // TLE6232CMDsetProcess
+Input:          // NA
+Return:         // NA
+Others:         // NA
+****************************************************************************************/
+void TLECMD_Close1Channel(void)
+{
+	if		(!isTLE_OUT1_CMD_ON && isTLE_OUT1_ON)		TLE_OUT1_OFF;
+	else if (!isTLE_OUT2_CMD_ON && isTLE_OUT2_ON)		TLE_OUT2_OFF;
+	else if (!isTLE_OUT3_CMD_ON && isTLE_OUT3_ON)		TLE_OUT3_OFF;
+	else if (!isTLE_OUT4_CMD_ON && isTLE_OUT4_ON)		TLE_OUT4_OFF;
+	else if (!isTLE_OUT5_CMD_ON && isTLE_OUT5_ON)		TLE_OUT5_OFF;
+	else if (!isTLE_OUT6_CMD_ON && isTLE_OUT6_ON)		TLE_OUT6_OFF;
+	else if (!isTLE_OUT7_CMD_ON && isTLE_OUT7_ON)		TLE_OUT7_OFF;
+	else if (!isTLE_OUT8_CMD_ON && isTLE_OUT8_ON)		TLE_OUT8_OFF;
+	else if (!isTLE_OUT9_CMD_ON && isTLE_OUT9_ON)		TLE_OUT9_OFF;
+	else if (!isTLE_OUT10_CMD_ON && isTLE_OUT10_ON)		TLE_OUT10_OFF;
+	else if (!isTLE_OUT11_CMD_ON && isTLE_OUT11_ON)		TLE_OUT11_OFF;
+	else if (!isTLE_OUT12_CMD_ON && isTLE_OUT12_ON)		TLE_OUT12_OFF;
+}
+
+/**************************************************************************************
+Function:       // TLE_CMDset
+Called By:      // Task_TLE6232Process 
+Input:          // NA
+Return:         // NA
+Others:         // NA
+****************************************************************************************/
+void TLE_CMDset(void)
+{
+	static unsigned char TLE_ON_count = 0;
+	static unsigned char TLE_OFF_count = 0;
+	unsigned int i;
+	if (IsStateEnable)
+	{
+		TLE_ON_count++;
+		if (TLE_ON_count >= 10)	//  only 1 channel will be open in 1s
+		{
+			TLECMD_Open1Channel();
+			TLE_ON_count = 0;
+		}
+		TLE_OFF_count++;
+		if (TLE_OFF_count >= 10)//  only 1 channel will be close in 1s
+		{
+			TLECMD_Close1Channel();
+			TLE_OFF_count = 0;
+		}
+	}
+	if (IsStateError)
+	{
+		for (i = 0; i < 12; i++) { TLECMD_Close1Channel(); }
+	}
+}
+
+
+unsigned char GetTLEFault1(void)
+{
+	return (SPI_DriverFault_1_GetVal());
+}
+unsigned char GetTLEFault2(void)
+{
+	return (SPI_DriverFault_2_GetVal()>>1);
+}
+
+
+/**************************************************************************************
+Function:       // TLE_Update
+Called By:      // Task_TLE6232Process 
 Input:          // NA
 Return:         // NA
 Others:         // NA
@@ -265,13 +361,12 @@ Others:         // NA
 ** and read channels and chip state; Because the flag bit in routine is not as same as chip logic **
 ** so flip it first before write to chips, also the hardware logic should be checked               **
 *****************************************************************************************************/
-void Task_TLE6232UpdateProcess(void)
+void TLE_Update(void)
 {
-	
-	unsigned int tempResult=0x03ff;
+	unsigned int tempResult = 0x03ff;
 	unsigned int tempREV;
-	TLEFault1 = SPI_DriverFault_1_GetVal();
-	TLEFault2 = SPI_DriverFault_2_GetVal();
+	TLEFault1 = GetTLEFault1();
+	TLEFault2 = GetTLEFault2();
 	/*************************TLE1 CMD Send*************************/
 	//Write MUX Register, Channel 1-6 Controled by SPI
 	tempREV = TLE_SPI_SendCMD(TLE_WR_MUX, TLE_SET_MUX_SER, TLE_1);
@@ -279,7 +374,7 @@ void Task_TLE6232UpdateProcess(void)
 	//Write SCON Register, Send CMD
 	tempREV = TLE_SPI_SendCMD(TLE_WR_SCON, TLECMD.DriverCMDBytes.DriverCMD1, TLE_1);
 	if (tempREV != (TLE_SEND_FAILED))	TLEErrFlag_1.TLEErrFlag = tempREV;
-	/*If there is any fault flag in 6 channels
+	/*If there is any fault flag in [HCUA channel1(out2) channel4(out3)][HCUB channel1(out2) channel4(out3)]
 	*Read and clear error flags by read diagnosis register
 	*Using the 0x8000 */
 	tempResult = TLEErrFlag_1.TLEErrFlag & TLEERRORMASK_1;
@@ -295,7 +390,7 @@ void Task_TLE6232UpdateProcess(void)
 	//Write SCON Register, Send CMD
 	tempREV = TLE_SPI_SendCMD(TLE_WR_SCON, TLECMD.DriverCMDBytes.DriverCMD2, TLE_2);
 	if (tempREV != (TLE_SEND_FAILED))	TLEErrFlag_2.TLEErrFlag = tempREV;
-	/*If there is any fault flag in 6 channels
+	/*If there is any fault flag in [HCUA channel1(out7) channel2(out5) channel3(out4)]
 	*Read and clear error flags by read diagnosis register
 	*Using the 0x8000 */
 	tempResult = TLEErrFlag_2.TLEErrFlag & TLEERRORMASK_2;
@@ -304,64 +399,22 @@ void Task_TLE6232UpdateProcess(void)
 		tempREV = TLE_SPI_SendCMD(TLE_RD_DIAG, TLE_NULL, TLE_2);
 		if (tempREV != (TLE_SEND_FAILED))	TLEErrFlag_2.TLEErrFlag = tempREV;
 	}
-	
-	/*** Clear Task Flag. DON'T MODIFY THIS CODE!!! ***/
-	Task_TLE6232Update = 0;
 }
-
 /**************************************************************************************
-Function:       // Task_TLE6232CMDsetProcess
+Function:       // Task_TLE6232Process
 Called By:      // 100ms Interrupt
 Input:          // NA
 Return:         // NA
 Others:         // NA
 ****************************************************************************************/
-void Task_TLE6232CMDsetProcess(void)
+void Task_TLE6232Process(void)
 {
-	static int TLE_ON_count=0;
-	static int TLE_OFF_count = 0;
-	if (HCUStatus.MergedBits.StateMachine == StateEnable)
-	{
-		TLE_ON_count++;
-		if (TLE_ON_count == 10)	//  only 1 channel will be open in 1s
-		{
-			if		(isTLE_OUT1_CMD_ON && !isTLE_OUT1_ON)		TLE_OUT1_ON;
-			else if (isTLE_OUT2_CMD_ON && !isTLE_OUT2_ON)		TLE_OUT2_ON;
-			else if (isTLE_OUT3_CMD_ON && !isTLE_OUT3_ON)		TLE_OUT3_ON;
-			else if (isTLE_OUT4_CMD_ON && !isTLE_OUT4_ON)		TLE_OUT4_ON;
-			else if (isTLE_OUT5_CMD_ON && !isTLE_OUT5_ON)		TLE_OUT5_ON;
-			else if (isTLE_OUT6_CMD_ON && !isTLE_OUT6_ON)		TLE_OUT6_ON;
-			else if (isTLE_OUT7_CMD_ON && !isTLE_OUT7_ON)		TLE_OUT7_ON;
-			else if (isTLE_OUT8_CMD_ON && !isTLE_OUT8_ON)		TLE_OUT8_ON;
-			else if (isTLE_OUT9_CMD_ON && !isTLE_OUT9_ON)		TLE_OUT9_ON;
-			else if (isTLE_OUT10_CMD_ON && !isTLE_OUT10_ON)		TLE_OUT10_ON;
-			else if (isTLE_OUT11_CMD_ON && !isTLE_OUT11_ON)		TLE_OUT11_ON;
-			else if (isTLE_OUT12_CMD_ON && !isTLE_OUT12_ON)		TLE_OUT12_ON;
-			TLE_ON_count = 0;
-		}
-		TLE_OFF_count++;
-		if (TLE_OFF_count == 10)//  only 1 channel will be close in 1s
-		{
-			if		(!isTLE_OUT1_CMD_ON && isTLE_OUT1_ON)		TLE_OUT1_OFF;
-			else if (!isTLE_OUT2_CMD_ON && isTLE_OUT2_ON)		TLE_OUT2_OFF;
-			else if (!isTLE_OUT3_CMD_ON && isTLE_OUT3_ON)		TLE_OUT3_OFF;
-			else if (!isTLE_OUT4_CMD_ON && isTLE_OUT4_ON)		TLE_OUT4_OFF;
-			else if (!isTLE_OUT5_CMD_ON && isTLE_OUT5_ON)		TLE_OUT5_OFF;
-			else if (!isTLE_OUT6_CMD_ON && isTLE_OUT6_ON)		TLE_OUT6_OFF;
-			else if (!isTLE_OUT7_CMD_ON && isTLE_OUT7_ON)		TLE_OUT7_OFF;
-			else if (!isTLE_OUT8_CMD_ON && isTLE_OUT8_ON)		TLE_OUT8_OFF;
-			else if (!isTLE_OUT9_CMD_ON && isTLE_OUT9_ON)		TLE_OUT9_OFF;
-			else if (!isTLE_OUT10_CMD_ON && isTLE_OUT10_ON)		TLE_OUT10_OFF;
-			else if (!isTLE_OUT11_CMD_ON && isTLE_OUT11_ON)		TLE_OUT11_OFF;
-			else if (!isTLE_OUT12_CMD_ON && isTLE_OUT12_ON)		TLE_OUT12_OFF;
-			TLE_OFF_count = 0;
-		}
-		
-	}
+	TLE_CMDset();
+	TLE_Update();
+	
 	/*** Clear Task Flag. DON'T MODIFY THIS CODE!!! ***/
-	Task_TLE6232CMDSet = 0;
+	Task_TLE6232 = 0;
 }
-
 
 /*
 **********************************************************************
@@ -380,6 +433,7 @@ Others:         // NA
 ****************************************************************************************/
 void Task_CANTXD_Process(void)
 {
+	systemp_Timer1++;
 	CANTXD_MsgBufferUpdate();
 	EnableCANTXD;
 	/*** Clear Task Flag. DON'T MODIFY THIS CODE!!! ***/

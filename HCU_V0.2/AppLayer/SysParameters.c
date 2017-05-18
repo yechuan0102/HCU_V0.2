@@ -76,6 +76,24 @@ volatile CAN_Message Msg_CAN_TXD[CAN_TXD_NUM], Msg_CAN_RXD[CAN_RXD_NUM];
 volatile CAN_ID CAN_TXD_ID[CAN_TXD_NUM] = { ID_HCU2FCU_Msg1,ID_HCU2FCU_Msg2 };
 volatile CAN_ID CAN_RXD_ID[CAN_RXD_NUM] = { ID_FCU2HCU_Msg};
 
+/*
+**********************************************************************
+** ===================================================================
+**                  Sys Temp Variables Parameters
+** ===================================================================
+**********************************************************************
+*/
+volatile int systemp_rev;
+volatile int systemp_error;
+volatile int systemp_H;
+volatile int systemp_L;
+volatile int systemp_Flag;
+volatile int systemp_Timer1;
+volatile int systemp_Timer2;
+volatile int systemp_Timer3;
+volatile int systemp_Timer4;
+
+
 void SysParametersInit(void)
 {
 	SetStatePowerUp;
@@ -90,6 +108,10 @@ void SysParametersInit(void)
 	TLEFault2 = 1;
 	TLEErrFlag_1.TLEErrFlag = 0xffff;
 	TLEErrFlag_2.TLEErrFlag = 0xffff;
+	systemp_Timer1=0;
+	systemp_Timer2=0;
+	systemp_Timer3=0;
+	systemp_Timer4=0;
 	//SystemError.System_Error[0] = 0;
 	//SystemError.System_Error[1] = 0;
 }
@@ -97,8 +119,6 @@ void SysParametersInit(void)
 void SysInit(void)
 {
 	SysParametersInit();
-	(void)CAN_SetAcceptanceCode(CAN_AcceptanceCode1, CAN_AcceptanceCode2);
-	(void)CAN_SetAcceptanceMask(CAN_AcceptanceMask1, CAN_AcceptanceMask2);
 	LED1_ON;
 	LED2_ON;
 	LED3_ON;
@@ -118,6 +138,9 @@ Others:         // NA
 void CANMsgBuffersConfig(void)
 {
 	unsigned char index,i;
+	//****************CAN AcceptanceCode CAN AcceptanceMask*********
+	(void)CAN_SetAcceptanceCode(CAN_AcceptanceCode1, CAN_AcceptanceCode2);
+	(void)CAN_SetAcceptanceMask(CAN_AcceptanceMask1, CAN_AcceptanceMask2);
 	//*****************CAN_TXD***************
 	for (index = 0; index<CAN_TXD_NUM; index++)
 	{
