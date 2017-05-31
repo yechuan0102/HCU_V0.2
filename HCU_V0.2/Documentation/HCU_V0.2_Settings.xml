@@ -504,7 +504,7 @@ asm(BGND);
         <A_D_interrupt v="Vadc" />
         <A_D_interrupt_priority v="low priority" />
       </boolgroup>
-      <list name="A/D channels" v="16">
+      <list name="A/D channels" v="13">
         <group name="Channel0">
           <A_D_channel__pin_ v="PTA0_PIA0_ADP0_MCLK" />
         </group>
@@ -544,22 +544,8 @@ asm(BGND);
         <group name="Channel12">
           <A_D_channel__pin_ v="PTB4_PIB4_ADP12" />
         </group>
-        <group name="Channel13">
-          <A_D_channel__pin_ v="PTB5_PIB5_ADP13" />
-        </group>
-        <group name="Channel14">
-          <A_D_channel__pin_ v="PTB6_PIB6_ADP14" />
-        </group>
-        <group name="Channel15">
-          <A_D_channel__pin_ v="PTB7_PIB7_ADP15" />
-        </group>
       </list>
-      <A_D_resolution sel_value="12 bits">
-        
-Autoselect
-
-        <EmptySection_DummyValue />
-      </A_D_resolution>
+      <A_D_resolution v="12 bits" />
       <Conversion_time v="23 &amp;#181;s" />
       <Low_power_mode v="Disabled" />
       <Sample_time v="long" />
@@ -945,7 +931,7 @@ push-pull
       <Same_period_in_modes v="yes" />
       <Component_uses_entire_timer v="no" />
       <group name="Initialization">
-        <Enabled_in_init__code v="yes" />
+        <Enabled_in_init__code v="no" />
         <Events_enabled_in_init_ v="yes" />
       </group>
       <group name="CPU clock/speed selection">
@@ -955,8 +941,8 @@ push-pull
       </group>
     </Properties>
     <Methods>
-      <Enable v="don&amp;apos;t generate code" />
-      <Disable v="don&amp;apos;t generate code" />
+      <Enable v="generate code" />
+      <Disable v="generate code" />
       <EnableEvent v="don&amp;apos;t generate code" />
       <DisableEvent v="don&amp;apos;t generate code" />
       <SetPeriodMode v="don&amp;apos;t generate code" />

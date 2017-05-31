@@ -51,9 +51,6 @@ void ADCH_OnEnd(void)
 {
 	/* Write your code here ... */
 	Task_ADCHS = 1;
-	if (ERR_OK == ADCH_Stop())	InnerFault_ADProcess = 0;
-	else						InnerFault_ADProcess = 1;
-	Task_ErrorDiagnosis = 1;
 }
 
 
@@ -111,7 +108,6 @@ void CAN_OnFreeTxBuffer(word BufferMask)
 void CAN_OnFullRxBuffer(void)
 {
 	/* Write your code here ... */
-	systemp_Timer2++;
 	CANDownLoad();
 }
 
@@ -184,6 +180,8 @@ void TI_20ms_OnInterrupt(void)
 		Timer_100ms = 0;
 		Task_TLE6232 = 1;
 	}
+	Task_ADreStart = 1;
+	Task_ErrorDiagnosis = 1;
 }
 
 /* END Events */

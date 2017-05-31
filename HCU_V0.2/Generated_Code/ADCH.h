@@ -6,7 +6,7 @@
 **     Component   : ADC
 **     Version     : Component 01.690, Driver 01.30, CPU db: 3.00.026
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-16, 22:41, # CodeGen: 4
+**     Date/Time   : 2017-05-18, 19:05, # CodeGen: 11
 **     Abstract    :
 **         This device "ADC" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -17,7 +17,7 @@
 **          Interrupt service/event                        : Enabled
 **            A/D interrupt                                : Vadc
 **            A/D interrupt priority                       : low priority
-**          A/D channels                                   : 16
+**          A/D channels                                   : 13
 **            Channel0                                     : 
 **              A/D channel (pin)                          : PTA0_PIA0_ADP0_MCLK
 **              A/D channel (pin) signal                   : 
@@ -57,16 +57,7 @@
 **            Channel12                                    : 
 **              A/D channel (pin)                          : PTB4_PIB4_ADP12
 **              A/D channel (pin) signal                   : 
-**            Channel13                                    : 
-**              A/D channel (pin)                          : PTB5_PIB5_ADP13
-**              A/D channel (pin) signal                   : 
-**            Channel14                                    : 
-**              A/D channel (pin)                          : PTB6_PIB6_ADP14
-**              A/D channel (pin) signal                   : 
-**            Channel15                                    : 
-**              A/D channel (pin)                          : PTB7_PIB7_ADP15
-**              A/D channel (pin) signal                   : 
-**          A/D resolution                                 : Autoselect
+**          A/D resolution                                 : 12 bits
 **          Conversion time                                : 23 ?s
 **          Low-power mode                                 : Disabled
 **          Sample time                                    : long

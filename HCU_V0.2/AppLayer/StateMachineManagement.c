@@ -23,14 +23,14 @@ void StateMachineManagement(void)
 	}
 	else if (IsStateReady)
 	{
-		SetStateEnable;
+		if(1)	SetStateEnable;//CAN Message Received
 	}
 	else if (IsStateEnable)
 	{
-
+		
 	}
 	else if (IsStateError)
 	{
-
+		
 	}
 }

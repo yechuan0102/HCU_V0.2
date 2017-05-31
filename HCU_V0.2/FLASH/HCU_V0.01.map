@@ -20,8 +20,8 @@ CAN_c.obj                               Model: SMALL,         Lang: ANSI-C
 Cpu_c.obj                               Model: SMALL,         Lang: ANSI-C
 IO_Map_c.obj                            Model: SMALL,         Lang: ANSI-C
 SPI_c.obj                               Model: SMALL,         Lang: ANSI-C
-TI_10ms_c.obj                           Model: SMALL,         Lang: ANSI-C
 TI_1ms_c.obj                            Model: SMALL,         Lang: ANSI-C
+TI_20ms_c.obj                           Model: SMALL,         Lang: ANSI-C
 Vectors_c.obj                           Model: SMALL,         Lang: ANSI-C
 StateMachineManagement_c.obj            Model: SMALL,         Lang: ANSI-C
 SysParameters_c.obj                     Model: SMALL,         Lang: ANSI-C
@@ -32,11 +32,11 @@ rtshc08.o (ansiis.lib)                  Model: SMALL,         Lang: ANSI-C
 STARTUP SECTION
 ---------------------------------------------------------------------------------------------
 Entry point: 0x1904 (_EntryPoint)
-_startupData is allocated at 0x1A16 and uses 6 Bytes
+_startupData is allocated at 0x1A19 and uses 6 Bytes
 extern struct _tagStartup {
   unsigned nofZeroOut     1
-  _Range   pZeroOut       0xA0     222
-  _Copy    *toCopyDownBeg 0x3211
+  _Range   pZeroOut       0xA0     267
+  _Copy    *toCopyDownBeg 0x37A5
 } _startupData;
 
 *********************************************************************************************
@@ -44,8 +44,8 @@ SECTION-ALLOCATION SECTION
 Section Name                    Size  Type     From       To       Segment
 ---------------------------------------------------------------------------------------------
 .data                             12   R/W       0xA0       0xAB   RAM
-.text                           5929     R     0x1A24     0x314C   ROM
-.rodata                          196     R     0x314D     0x3210   ROM
+.text                           7357     R     0x1A27     0x36E3   ROM
+.rodata                          193     R     0x36E4     0x37A4   ROM
 .abs_section_ffbd                  1     R     0xFFBD     0xFFBD   .absSeg0
 .abs_section_ffbf                  1     R     0xFFBF     0xFFBF   .absSeg1
 .abs_section_0                     1   N/I        0x0        0x0   .absSeg2
@@ -232,16 +232,16 @@ Section Name                    Size  Type     From       To       Segment
 .abs_section_18a0                  4   N/I     0x18A0     0x18A3   .absSeg183
 .abs_section_18b0                  4   N/I     0x18B0     0x18B3   .absSeg184
 .abs_section_ffc0                 64     R     0xFFC0     0xFFFF   .absSeg185
-.bss                              60   R/W       0xAC       0xE7   RAM
-.startData                        14     R     0x1A16     0x1A23   ROM
-.init                            278     R     0x1900     0x1A15   ROM
-.common                          150   R/W       0xE8      0x17D   RAM
-.stack                           128   R/W      0x17E      0x1FD   RAM
-.copy                             18     R     0x3211     0x3222   ROM
+.bss                              76   R/W       0xAC       0xF7   RAM
+.startData                        14     R     0x1A19     0x1A26   ROM
+.init                            281     R     0x1900     0x1A18   ROM
+.common                          179   R/W       0xF8      0x1AA   RAM
+.stack                           128   R/W      0x1AB      0x22A   RAM
+.copy                             18     R     0x37A5     0x37B6   ROM
 
 Summary of section sizes per section type:
-READ_ONLY (R):        1965 (dec:     6501)
-READ_WRITE (R/W):      15E (dec:      350)
+READ_ONLY (R):        1EF9 (dec:     7929)
+READ_WRITE (R/W):      18B (dec:      395)
 NO_INIT (N/I):          D3 (dec:      211)
 
 *********************************************************************************************
@@ -255,55 +255,54 @@ OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 MODULE:                 -- Events_c.obj --
 - PROCEDURES:
-     ADCH_OnEnd                                1A24      24      36       1   .text       
-     CAN_OnFreeTxBuffer                        1A48      A8     168       3   .text       
-     CAN_OnFullRxBuffer                        1AF0       B      11       1   .text       
-     CAN_OnBusOff                              1AFB       6       6       1   .text       
-     TI_1ms_OnInterrupt                        1B01      1A      26       1   .text       
-     TI_10ms_OnInterrupt                       1B1B      17      23       1   .text       
+     ADCH_OnEnd                                1A27       8       8       1   .text       
+     CAN_OnFreeTxBuffer                        1A2F      A8     168       3   .text       
+     CAN_OnFullRxBuffer                        1AD7       3       3       1   .text       
+     CAN_OnBusOff                              1ADA       6       6       1   .text       
+     TI_1ms_OnInterrupt                        1AE0      1A      26       1   .text       
+     TI_20ms_OnInterrupt                       1AFA      22      34       1   .text       
 - VARIABLES:
      watchpoint                                  AC       1       1       1   .bss        
 MODULE:                 -- main_c.obj --
 - PROCEDURES:
-     main                                      1B32      16      22       1   .text       
+     main                                      1B1C      16      22       1   .text       
 - VARIABLES:
 MODULE:                 -- start08_c.obj --
 - PROCEDURES:
-     loadByte                                  1B48       E      14       5   .text       
-     Init                                      1B56      6D     109       1   .text       
-     _Startup                                  1BC3       9       9       1   .text       
+     loadByte                                  1B32       E      14       5   .text       
+     Init                                      1B40      6D     109       1   .text       
+     _Startup                                  1BAD       9       9       1   .text       
 - VARIABLES:
-     _startupData                              1A16       6       6       4   .startData  
+     _startupData                              1A19       6       6       4   .startData  
 - LABELS:
-     __SEG_END_SSTACK                           1FE       0       0       1               
+     __SEG_END_SSTACK                           22B       0       0       1               
 MODULE:                 -- ADCH_c.obj --
 - PROCEDURES:
-     ADCH_Interrupt                            1BCC     115     277       4   .text       
-     ClrSumV                                   1CE1      33      51       1   .text       
-     ADCH_HWEnDi                               1D14      24      36       2   .text       
-     ADCH_Start                                1D38      19      25       2   .text       
-     ADCH_Stop                                 1D51      11      17       2   .text       
-     ADCH_GetValue                             1D62      FF     255       9   .text       
-     ADCH_Init                                 1E61      17      23       2   .text       
+     ADCH_Interrupt                            1BB6      FA     250       4   .text       
+     ClrSumV                                   1CB0      2A      42       1   .text       
+     ADCH_HWEnDi                               1CDA      24      36       2   .text       
+     ADCH_Measure                              1CFE      28      40       2   .text       
+     ADCH_GetValue                             1D26      D2     210       6   .text       
+     ADCH_Init                                 1DF8      17      23       1   .text       
 - VARIABLES:
-     Channels                                  314D      10      16       2   .rodata     
+     Channels                                  36E4       D      13       2   .rodata     
      EnUser                                      AD       1       1       3   .bss        
      OutFlg                                      AE       1       1       4   .bss        
      SumChan                                     AF       1       1       7   .bss        
-     ModeFlg                                     B0       1       1      10   .bss        
+     ModeFlg                                     B0       1       1       9   .bss        
      SumCnt                                      B1       1       1       4   .bss        
-     ADCH_SumV                                   E8      20      32      51   .common     
-     ADCH_OutV                                  108      20      32      32   .common     
+     ADCH_SumV                                   F8      1A      26      42   .common     
+     ADCH_OutV                                  112      1A      26      26   .common     
 MODULE:                 -- CAN_c.obj --
 - PROCEDURES:
-     CAN_SetAcceptanceCode                     1E78      74     116       1   .text       
-     CAN_SendFrameExt                          1EEC     145     325       2   .text       
-     CAN_ReadFrame                             2031     107     263       2   .text       
-     CAN_Init                                  2138      76     118       2   .text       
-     CAN_SetAcceptanceMask                     21AE      74     116       1   .text       
-     CAN_InterruptTx                           2222      17      23       1   .text       
-     CAN_InterruptRx                           2239      28      40       1   .text       
-     CAN_InterruptError                        2261      35      53       1   .text       
+     CAN_SetAcceptanceCode                     1E0F      74     116       1   .text       
+     CAN_SendFrameExt                          1E83     145     325       2   .text       
+     CAN_ReadFrame                             1FC8     107     263       2   .text       
+     CAN_Init                                  20CF      76     118       2   .text       
+     CAN_SetAcceptanceMask                     2145      74     116       1   .text       
+     CAN_InterruptTx                           21B9      17      23       1   .text       
+     CAN_InterruptRx                           21D0      28      40       1   .text       
+     CAN_InterruptError                        21F8      35      53       1   .text       
 - VARIABLES:
      ErrFlag                                     B2       1       1       5   .bss        
      SerFlag                                     B3       1       1       6   .bss        
@@ -311,12 +310,12 @@ MODULE:                 -- Cpu_c.obj --
 - PROCEDURES:
      Cpu_Interrupt                             1900       4       4      25   .init       
      _EntryPoint                               1904      74     116       1   .init       
-     PE_low_level_init                         1978      9E     158       1   .init       
+     PE_low_level_init                         1978      A1     161       1   .init       
 - VARIABLES:
      NVPROT_INIT                               FFBD       1       1       0   .abs_section_ffbd
      NVOPT_INIT                                FFBF       1       1       0   .abs_section_ffbf
-     CCR_reg                                    128       1       1       7   .common     
-     CCR_lock                                   129       1       1      14   .common     
+     CCR_reg                                    12C       1       1       7   .common     
+     CCR_lock                                   12D       1       1      14   .common     
 MODULE:                 -- IO_Map_c.obj --
 - PROCEDURES:
 - VARIABLES:
@@ -336,11 +335,11 @@ MODULE:                 -- IO_Map_c.obj --
      _PTGDD                                       D       1       1       2   .abs_section_d
      _ACMP1SC                                     E       1       1       0   .abs_section_e
      _ACMP2SC                                     F       1       1       0   .abs_section_f
-     _ADCSC1                                     10       1       1       5   .abs_section_10
+     _ADCSC1                                     10       1       1       4   .abs_section_10
      _ADCSC2                                     11       1       1       1   .abs_section_11
      _ADCCFG                                     16       1       1       1   .abs_section_16
      _APCTL1                                     17       1       1       1   .abs_section_17
-     _APCTL2                                     18       1       1       1   .abs_section_18
+     _APCTL2                                     18       1       1       2   .abs_section_18
      _APCTL3                                     19       1       1       0   .abs_section_19
      _IRQSC                                      1C       1       1       0   .abs_section_1c
      _TPM1SC                                     20       1       1       0   .abs_section_20
@@ -378,7 +377,7 @@ MODULE:                 -- IO_Map_c.obj --
      _IICS                                       5B       1       1       0   .abs_section_5b
      _IICD                                       5C       1       1       0   .abs_section_5c
      _IICC2                                      5D       1       1       0   .abs_section_5d
-     _TPM2SC                                     60       1       1       2   .abs_section_60
+     _TPM2SC                                     60       1       1       6   .abs_section_60
      _TPM2C0SC                                   65       1       1       2   .abs_section_65
      _TPM2C1SC                                   68       1       1       0   .abs_section_68
      _RTCSC                                      6C       1       1       5   .abs_section_6c
@@ -491,7 +490,7 @@ MODULE:                 -- IO_Map_c.obj --
      _TPM1C5V                                    35       2       2       0   .abs_section_35
      _SCI1BD                                     38       2       2       0   .abs_section_38
      _SCI2BD                                     40       2       2       0   .abs_section_40
-     _TPM2CNT                                    61       2       2       1   .abs_section_61
+     _TPM2CNT                                    61       2       2       2   .abs_section_61
      _TPM2MOD                                    63       2       2       1   .abs_section_63
      _TPM2C0V                                    66       2       2       2   .abs_section_66
      _TPM2C1V                                    69       2       2       0   .abs_section_69
@@ -505,141 +504,158 @@ MODULE:                 -- IO_Map_c.obj --
      _CANTIDR                                  18B0       4       4       1   .abs_section_18b0
 MODULE:                 -- SPI_c.obj --
 - PROCEDURES:
-     SPI_Init                                  2296       F      15       1   .text       
-- VARIABLES:
-MODULE:                 -- TI_10ms_c.obj --
-- PROCEDURES:
-     TI_10ms_Init                              22A5      14      20       1   .text       
-     TI_10ms_Interrupt                         22B9       8       8       1   .text       
+     SPI_Init                                  222D       F      15       1   .text       
 - VARIABLES:
 MODULE:                 -- TI_1ms_c.obj --
 - PROCEDURES:
-     HWEnDi                                    22C1      10      16       3   .text       
-     TI_1ms_Enable                             22D1       E      14       1   .text       
-     TI_1ms_Disable                            22DF       D      13       1   .text       
-     TI_1ms_Init                               22EC       E      14       1   .text       
-     TI_1ms_Interrupt                          22FA       8       8       1   .text       
+     HWEnDi                                    223C      10      16       3   .text       
+     TI_1ms_Enable                             224C       E      14       1   .text       
+     TI_1ms_Disable                            225A       D      13       1   .text       
+     TI_1ms_Init                               2267       E      14       1   .text       
+     TI_1ms_Interrupt                          2275       8       8       1   .text       
 - VARIABLES:
      EnUser                                      B4       1       1       6   .bss        
+MODULE:                 -- TI_20ms_c.obj --
+- PROCEDURES:
+     HWEnDi                                    227D      11      17       2   .text       
+     TI_20ms_Enable                            228E       E      14       1   .text       
+     TI_20ms_Init                              229C      1E      30       1   .text       
+     TI_20ms_Interrupt                         22BA       8       8       1   .text       
+- VARIABLES:
+     EnUser                                      B5       1       1       4   .bss        
 MODULE:                 -- Vectors_c.obj --
 - PROCEDURES:
 - VARIABLES:
      _vect                                     FFC0      40      64       0   .abs_section_ffc0
 MODULE:                 -- StateMachineManagement_c.obj --
 - PROCEDURES:
-     StateMachineManagement                    2302      32      50       1   .text       
+     StateMachineManagement                    22C2      32      50       1   .text       
 - VARIABLES:
 MODULE:                 -- SysParameters_c.obj --
 - PROCEDURES:
-     SysParametersInit                         2334      47      71       1   .text       
-     SysInit                                   237B      20      32       1   .text       
-     CANMsgBuffersConfig                       239B     10F     271       2   .text       
-     SystemADData_Int                          24AA      41      65       1   .text       
+     SysParametersInit                         22F4      AD     173       1   .text       
+     SysInit                                   23A1      12      18       1   .text       
+     CANMsgBuffersConfig                       23B3     10F     271       2   .text       
+     SystemADData_Int                          24C2      41      65       1   .text       
 - VARIABLES:
-     TRawData_Table                            315D      4E      78       8   .rodata     
-     TData_Table                               31AB      4E      78       2   .rodata     
-     H2ConRawData_Table                        31F9       4       4       8   .rodata     
-     H2ConData_Table                           31FD       4       4       5   .rodata     
-     P_H2TankRawData_Table                     3201       4       4       7   .rodata     
-     P_H2TankData_Table                        3205       4       4       3   .rodata     
-     P_H2MidRawData_Table                      3209       4       4       7   .rodata     
-     P_H2MidData_Table                         320D       4       4       3   .rodata     
+     TRawData_Table                            36F1      4E      78       8   .rodata     
+     TData_Table                               373F      4E      78       2   .rodata     
+     H2ConRawData_Table                        378D       4       4       8   .rodata     
+     H2ConData_Table                           3791       4       4       4   .rodata     
+     P_H2TankRawData_Table                     3795       4       4       7   .rodata     
+     P_H2TankData_Table                        3799       4       4       3   .rodata     
+     P_H2MidRawData_Table                      379D       4       4       7   .rodata     
+     P_H2MidData_Table                         37A1       4       4       3   .rodata     
      CAN_TXD_ID                                  A0       8       8       2   .data       
      CAN_RXD_ID                                  A8       4       4       1   .data       
-     Timer_100ms                                 B5       1       1       3   .bss        
-     ADCHRawData                                 B6      20      32       2   .bss        
-     PrtCANTXD                                   D6       1       1       8   .bss        
-     TaskFlags                                  12A       2       2      14   .common     
-     Timer_CAN                                  12C       1       1       3   .common     
-     SYSTEM_AD_DATA                             12D       F      15      14   .common     
-     HCUStatus                                  13C       1       1      11   .common     
-     InnerFalutFlags                            13D       2       2      17   .common     
-     TLECMD                                     13F       2       2      53   .common     
-     TLECMDTarget                               141       2       2      40   .common     
-     TLEErrFlag_1                               143       2       2       6   .common     
-     TLEErrFlag_2                               145       2       2       6   .common     
-     TLEFault1                                  147       1       1       2   .common     
-     TLEFault2                                  148       1       1       2   .common     
-     Msg_CAN_TXD                                149      1E      30      21   .common     
-     Msg_CAN_RXD                                167       F      15      12   .common     
-     systemp_Timer1                             176       2       2       3   .common     
-     systemp_Timer2                             178       2       2       3   .common     
-     systemp_Timer3                             17A       2       2       1   .common     
-     systemp_Timer4                             17C       2       2       1   .common     
+     Timer_100ms                                 B6       1       1       3   .bss        
+     ADCHRawData                                 B7      20      32      14   .bss        
+     HCU_ErrorGrade_Current                      D7       1       1       3   .bss        
+     PrtCANTXD                                   D8       1       1       8   .bss        
+     TaskFlags                                  12E       2       2      16   .common     
+     Timer_CAN                                  130       1       1       3   .common     
+     SYSTEM_AD_DATA                             131       F      15      24   .common     
+     HCUStatus                                  140       1       1      14   .common     
+     HCU_ErrorCode                              141       1       1       3   .common     
+     HCU_ErrorCode_Current                      142       1       1       6   .common     
+     SysErrFlag                                 143      1A      26      75   .common     
+     ErrorTimer_CAN                             15D       1       1       5   .common     
+     InnerFalutFlags                            15E       2       2       5   .common     
+     TLECMD                                     160       2       2      53   .common     
+     TLECMDTarget                               162       2       2      40   .common     
+     TLEErrFlag_1                               164       2       2       7   .common     
+     TLEErrFlag_2                               166       2       2      12   .common     
+     TLEFault1                                  168       1       1       2   .common     
+     TLEFault2                                  169       1       1       2   .common     
+     TLEErrorOUT                                16A       C      12      14   .common     
+     Msg_CAN_TXD                                176      1E      30      21   .common     
+     Msg_CAN_RXD                                194       F      15      12   .common     
+     systemp_Timer1                             1A3       2       2       1   .common     
+     systemp_Timer2                             1A5       2       2       1   .common     
+     systemp_Timer3                             1A7       2       2       1   .common     
+     systemp_Timer4                             1A9       2       2       1   .common     
 MODULE:                 -- TaskSchedule_c.obj --
 - PROCEDURES:
-     TaskSchedule                              24EB      29      41       1   .text       
-     Task_ADCHSProcess                         2514      9F     159       1   .text       
-     Calc_ADData_NTC                           25B3      A8     168       8   .text       
-     Calc_ADData_H2Con                         265B      8A     138       1   .text       
-     Calc_ADData_P_H2Tank                      26E5      9C     156       1   .text       
-     Calc_ADData_P_H2Mid                       2781      9C     156       1   .text       
-     TLE_SPI_SendCMD                           281D     11A     282       8   .text       
-     TLECMD_Open1Channel                       2937      FC     252       1   .text       
-     TLECMD_Close1Channel                      2A33      FC     252       2   .text       
-     TLE_CMDset                                2B2F      50      80       1   .text       
-     GetTLEFault1                              2B7F       5       5       1   .text       
-     GetTLEFault2                              2B84       6       6       1   .text       
-     TLE_Update                                2B8A      A6     166       1   .text       
-     Task_TLE6232Process                       2C30       E      14       1   .text       
-     Task_CANTXD_Process                       2C3E      18      24       1   .text       
-     CANTXD_MsgBufferUpdate                    2C56      42      66       1   .text       
-     CANDownLoad                               2C98      A0     160       1   .text       
-     Task_FCUCMD_Process                       2D38      72     114       1   .text       
+     TaskSchedule                              2503      33      51       1   .text       
+     Task_ADCHSProcess                         2536      99     153       1   .text       
+     Calc_ADData_NTC                           25CF      A8     168       8   .text       
+     Calc_ADData_H2Con                         2677      B2     178       6   .text       
+     Calc_ADData_P_H2Tank                      2729      A6     166       2   .text       
+     Calc_ADData_P_H2Mid                       27CF      A6     166       2   .text       
+     TLE_SPI_SendCMD                           2875     11A     282       8   .text       
+     TLECMD_Open1Channel                       298F      FC     252       1   .text       
+     TLECMD_Close1Channel                      2A8B      FC     252       2   .text       
+     TLE_CMDset                                2B87      50      80       1   .text       
+     GetTLEFault1                              2BD7       5       5       1   .text       
+     GetTLEFault2                              2BDC       6       6       1   .text       
+     TLE_Update                                2BE2      A6     166       1   .text       
+     TLE_ErrorDIA                              2C88      73     115       1   .text       
+     Task_TLE6232Process                       2CFB      10      16       1   .text       
+     Task_CANTXD_Process                       2D0B      14      20       1   .text       
+     CANTXD_MsgBufferUpdate                    2D1F      42      66       1   .text       
+     CANDownLoad                               2D61      A0     160       1   .text       
+     Task_FCUCMD_Process                       2E01      72     114       1   .text       
+     Task_ErrorDiagnosisProcess                2E73       E      14       1   .text       
+     SetErrorFlag                              2E81     2A3     675      25   .text       
+     Set_ErrCode                               3124       E      14      16   .text       
+     ErrorReport                               3132     20F     527      53   .text       
 - VARIABLES:
-     TLE_ON_count.1                              D7       1       1       3   .bss        
-     TLE_OFF_count.2                             D8       1       1       3   .bss        
-     tempCANMSG.3                                D9       F      15      11   .bss        
+     TLE_ON_count.1                              D9       1       1       3   .bss        
+     TLE_OFF_count.2                             DA       1       1       3   .bss        
+     tempCANMSG.3                                DB       F      15      11   .bss        
+     ErrorTimer_H2Con.4                          EA       A      10      14   .bss        
+     ErrorTimer_P_H2Mid_H.5                      F4       2       2       5   .bss        
+     ErrorTimer_P_H2Mid_L.6                      F6       2       2       3   .bss        
 MODULE:                 -- rtshc08.o (ansiis.lib) --
 - PROCEDURES:
-     _PUSH_ARGS_L                              2DAA      20      32       2   .text       
-     _ENTER_UNARY_L                            2DCA      29      41       2   .text       
-     _ENTER_BINARY_L                           2DF3      16      22       5   .text       
-     _ENTER_BINARY_L_RC                        2E09      19      25       3   .text       
-     _IDIVMOD                                  2E22      69     105       1   .text       
-     _LADD_k_is_k_plus_j                       2E8B      1F      31       1   .text       
-     _k_is_k_plus_j_l                          2EAA      1E      30       2   .text       
-     _k_is_k_plus_j_i                          2EC8      12      18       3   .text       
-     _LAND_k_is_k_and_j                        2EDA      1F      31       1   .text       
-     _LOR_k_is_k_or_j                          2EF9      1F      31       2   .text       
-     _LMUL_k_is_k_mul_j                        2F18      81     129       1   .text       
-     _LDIVMOD                                  2F99      A4     164       1   .text       
-     _LDIVU_k_is_k_div_j                       303D      17      23       1   .text       
-     _LCMP_k_rel_j                             3054      1F      31       2   .text       
-     _IMUL_STAR08                              3073      27      39       2   .text       
-     _IDIVU_STAR08                             309A       D      13       2   .text       
-     _LADD                                     30A7       6       6       2   .text       
-     _LAND_RC                                  30AD       6       6       4   .text       
-     _LOR                                      30B3       6       6       2   .text       
-     _LOR_RC                                   30B9       6       6       3   .text       
-     _LMUL                                     30BF       6       6       2   .text       
-     _LDIVU                                    30C5       6       6       2   .text       
-     _LLSR                                     30CB      16      22       3   .text       
-     _LLSL                                     30E1      16      22       3   .text       
-     _LCMP                                     30F7       6       6       1   .text       
-     _LCMP_RC                                  30FD       6       6       1   .text       
-     _COPY                                     3103      30      48       2   .text       
-     _POP32                                    3133      1A      26       8   .text       
+     _PUSH_ARGS_L                              3341      20      32       2   .text       
+     _ENTER_UNARY_L                            3361      29      41       2   .text       
+     _ENTER_BINARY_L                           338A      16      22       5   .text       
+     _ENTER_BINARY_L_RC                        33A0      19      25       3   .text       
+     _IDIVMOD                                  33B9      69     105       1   .text       
+     _LADD_k_is_k_plus_j                       3422      1F      31       1   .text       
+     _k_is_k_plus_j_l                          3441      1E      30       2   .text       
+     _k_is_k_plus_j_i                          345F      12      18       3   .text       
+     _LAND_k_is_k_and_j                        3471      1F      31       1   .text       
+     _LOR_k_is_k_or_j                          3490      1F      31       2   .text       
+     _LMUL_k_is_k_mul_j                        34AF      81     129       1   .text       
+     _LDIVMOD                                  3530      A4     164       1   .text       
+     _LDIVU_k_is_k_div_j                       35D4      17      23       1   .text       
+     _LCMP_k_rel_j                             35EB      1F      31       2   .text       
+     _IMUL_STAR08                              360A      27      39       1   .text       
+     _IDIVU_STAR08                             3631       D      13       1   .text       
+     _LADD                                     363E       6       6       3   .text       
+     _LAND_RC                                  3644       6       6       4   .text       
+     _LOR                                      364A       6       6       2   .text       
+     _LOR_RC                                   3650       6       6       3   .text       
+     _LMUL                                     3656       6       6       3   .text       
+     _LDIVU                                    365C       6       6       3   .text       
+     _LLSR                                     3662      16      22       3   .text       
+     _LLSL                                     3678      16      22       3   .text       
+     _LCMP                                     368E       6       6       1   .text       
+     _LCMP_RC                                  3694       6       6       1   .text       
+     _COPY                                     369A      30      48       2   .text       
+     _POP32                                    36CA      1A      26       7   .text       
 - VARIABLES:
 
 *********************************************************************************************
 MODULE STATISTIC
   Name                                      Data   Code  Const
 ---------------------------------------------------------------------------------------------
-  Events_c.obj                                 1    270      0
+  Events_c.obj                                 1    245      0
   main_c.obj                                   0     22      0
   start08_c.obj                                0    132      0
-  ADCH_c.obj                                  69    684     16
+  ADCH_c.obj                                  57    601     13
   CAN_c.obj                                    2   1054      0
-  Cpu_c.obj                                    2    278      2
+  Cpu_c.obj                                    2    281      2
   IO_Map_c.obj                               211      0      0
   SPI_c.obj                                    0     15      0
-  TI_10ms_c.obj                                0     28      0
   TI_1ms_c.obj                                 1     65      0
+  TI_20ms_c.obj                                1     69      0
   Vectors_c.obj                                0      0     64
   StateMachineManagement_c.obj                 0     50      0
-  SysParameters_c.obj                        130    439    180
-  TaskSchedule_c.obj                          17   2239      0
+  SysParameters_c.obj                        172    527    180
+  TaskSchedule_c.obj                          31   3646      0
   rtshc08.o (ansiis.lib)                       0    931      0
   other                                      128     14     18
 
@@ -648,27 +664,30 @@ SECTION USE IN OBJECT-ALLOCATION SECTION
 ---------------------------------------------------------------------------------------------
 SECTION: ".text"
   ADCH_OnEnd CAN_OnFreeTxBuffer CAN_OnFullRxBuffer CAN_OnBusOff 
-  TI_1ms_OnInterrupt TI_10ms_OnInterrupt main loadByte Init _Startup 
-  ADCH_Interrupt ClrSumV ADCH_HWEnDi ADCH_Start ADCH_Stop ADCH_GetValue 
-  ADCH_Init CAN_SetAcceptanceCode CAN_SendFrameExt CAN_ReadFrame CAN_Init 
+  TI_1ms_OnInterrupt TI_20ms_OnInterrupt main loadByte Init _Startup 
+  ADCH_Interrupt ClrSumV ADCH_HWEnDi ADCH_Measure ADCH_GetValue ADCH_Init 
+  CAN_SetAcceptanceCode CAN_SendFrameExt CAN_ReadFrame CAN_Init 
   CAN_SetAcceptanceMask CAN_InterruptTx CAN_InterruptRx CAN_InterruptError 
-  SPI_Init TI_10ms_Init TI_10ms_Interrupt HWEnDi TI_1ms_Enable TI_1ms_Disable 
-  TI_1ms_Init TI_1ms_Interrupt StateMachineManagement SysParametersInit SysInit 
-  CANMsgBuffersConfig SystemADData_Int TaskSchedule Task_ADCHSProcess 
-  Calc_ADData_NTC Calc_ADData_H2Con Calc_ADData_P_H2Tank Calc_ADData_P_H2Mid 
-  TLE_SPI_SendCMD TLECMD_Open1Channel TLECMD_Close1Channel TLE_CMDset 
-  GetTLEFault1 GetTLEFault2 TLE_Update Task_TLE6232Process Task_CANTXD_Process 
-  CANTXD_MsgBufferUpdate CANDownLoad Task_FCUCMD_Process _PUSH_ARGS_L 
-  _ENTER_UNARY_L _ENTER_BINARY_L _ENTER_BINARY_L_RC _IDIVMOD 
-  _LADD_k_is_k_plus_j _k_is_k_plus_j_l _k_is_k_plus_j_i _LAND_k_is_k_and_j 
-  _LOR_k_is_k_or_j _LMUL_k_is_k_mul_j _LDIVMOD _LDIVU_k_is_k_div_j 
-  _LCMP_k_rel_j _IMUL_STAR08 _IDIVU_STAR08 _LADD _LAND_RC _LOR _LOR_RC _LMUL 
-  _LDIVU _LLSR _LLSL _LCMP _LCMP_RC _COPY _POP32 
+  SPI_Init HWEnDi TI_1ms_Enable TI_1ms_Disable TI_1ms_Init TI_1ms_Interrupt 
+  HWEnDi TI_20ms_Enable TI_20ms_Init TI_20ms_Interrupt StateMachineManagement 
+  SysParametersInit SysInit CANMsgBuffersConfig SystemADData_Int TaskSchedule 
+  Task_ADCHSProcess Calc_ADData_NTC Calc_ADData_H2Con Calc_ADData_P_H2Tank 
+  Calc_ADData_P_H2Mid TLE_SPI_SendCMD TLECMD_Open1Channel TLECMD_Close1Channel 
+  TLE_CMDset GetTLEFault1 GetTLEFault2 TLE_Update TLE_ErrorDIA 
+  Task_TLE6232Process Task_CANTXD_Process CANTXD_MsgBufferUpdate CANDownLoad 
+  Task_FCUCMD_Process Task_ErrorDiagnosisProcess SetErrorFlag Set_ErrCode 
+  ErrorReport _PUSH_ARGS_L _ENTER_UNARY_L _ENTER_BINARY_L _ENTER_BINARY_L_RC 
+  _IDIVMOD _LADD_k_is_k_plus_j _k_is_k_plus_j_l _k_is_k_plus_j_i 
+  _LAND_k_is_k_and_j _LOR_k_is_k_or_j _LMUL_k_is_k_mul_j _LDIVMOD 
+  _LDIVU_k_is_k_div_j _LCMP_k_rel_j _IMUL_STAR08 _IDIVU_STAR08 _LADD _LAND_RC 
+  _LOR _LOR_RC _LMUL _LDIVU _LLSR _LLSL _LCMP _LCMP_RC _COPY _POP32 
 SECTION: ".data"
   CAN_TXD_ID CAN_RXD_ID 
 SECTION: ".bss"
   watchpoint EnUser OutFlg SumChan ModeFlg SumCnt ErrFlag SerFlag EnUser 
-  Timer_100ms ADCHRawData PrtCANTXD TLE_ON_count.1 TLE_OFF_count.2 tempCANMSG.3 
+  EnUser Timer_100ms ADCHRawData HCU_ErrorGrade_Current PrtCANTXD 
+  TLE_ON_count.1 TLE_OFF_count.2 tempCANMSG.3 ErrorTimer_H2Con.4 
+  ErrorTimer_P_H2Mid_H.5 ErrorTimer_P_H2Mid_L.6 
 SECTION: ".init"
   Cpu_Interrupt _EntryPoint PE_low_level_init 
 SECTION: ".rodata"
@@ -677,8 +696,9 @@ SECTION: ".rodata"
   P_H2MidData_Table 
 SECTION: ".common"
   ADCH_SumV ADCH_OutV CCR_reg CCR_lock TaskFlags Timer_CAN SYSTEM_AD_DATA 
-  HCUStatus InnerFalutFlags TLECMD TLECMDTarget TLEErrFlag_1 TLEErrFlag_2 
-  TLEFault1 TLEFault2 Msg_CAN_TXD Msg_CAN_RXD systemp_Timer1 systemp_Timer2 
+  HCUStatus HCU_ErrorCode HCU_ErrorCode_Current SysErrFlag ErrorTimer_CAN 
+  InnerFalutFlags TLECMD TLECMDTarget TLEErrFlag_1 TLEErrFlag_2 TLEFault1 
+  TLEFault2 TLEErrorOUT Msg_CAN_TXD Msg_CAN_RXD systemp_Timer1 systemp_Timer2 
   systemp_Timer3 systemp_Timer4 
 SECTION: ".abs_section_ffbd"
   NVPROT_INIT 
@@ -1073,13 +1093,13 @@ OBJECT LIST SORTED BY ADDRESS
      _PTGDD                                       D       1       1       2   .abs_section_d
      _ACMP1SC                                     E       1       1       0   .abs_section_e
      _ACMP2SC                                     F       1       1       0   .abs_section_f
-     _ADCSC1                                     10       1       1       5   .abs_section_10
+     _ADCSC1                                     10       1       1       4   .abs_section_10
      _ADCSC2                                     11       1       1       1   .abs_section_11
      _ADCR                                       12       2       2       3   .abs_section_12
      _ADCCV                                      14       2       2       0   .abs_section_14
      _ADCCFG                                     16       1       1       1   .abs_section_16
      _APCTL1                                     17       1       1       1   .abs_section_17
-     _APCTL2                                     18       1       1       1   .abs_section_18
+     _APCTL2                                     18       1       1       2   .abs_section_18
      _APCTL3                                     19       1       1       0   .abs_section_19
      _IRQSC                                      1C       1       1       0   .abs_section_1c
      _TPM1SC                                     20       1       1       0   .abs_section_20
@@ -1127,8 +1147,8 @@ OBJECT LIST SORTED BY ADDRESS
      _IICS                                       5B       1       1       0   .abs_section_5b
      _IICD                                       5C       1       1       0   .abs_section_5c
      _IICC2                                      5D       1       1       0   .abs_section_5d
-     _TPM2SC                                     60       1       1       2   .abs_section_60
-     _TPM2CNT                                    61       2       2       1   .abs_section_61
+     _TPM2SC                                     60       1       1       6   .abs_section_60
+     _TPM2CNT                                    61       2       2       2   .abs_section_61
      _TPM2MOD                                    63       2       2       1   .abs_section_63
      _TPM2C0SC                                   65       1       1       2   .abs_section_65
      _TPM2C0V                                    66       2       2       2   .abs_section_66
@@ -1143,38 +1163,48 @@ OBJECT LIST SORTED BY ADDRESS
      EnUser                                      AD       1       1       3   .bss        
      OutFlg                                      AE       1       1       4   .bss        
      SumChan                                     AF       1       1       7   .bss        
-     ModeFlg                                     B0       1       1      10   .bss        
+     ModeFlg                                     B0       1       1       9   .bss        
      SumCnt                                      B1       1       1       4   .bss        
      ErrFlag                                     B2       1       1       5   .bss        
      SerFlag                                     B3       1       1       6   .bss        
      EnUser                                      B4       1       1       6   .bss        
-     Timer_100ms                                 B5       1       1       3   .bss        
-     ADCHRawData                                 B6      20      32       2   .bss        
-     PrtCANTXD                                   D6       1       1       8   .bss        
-     TLE_ON_count.1                              D7       1       1       3   .bss        
-     TLE_OFF_count.2                             D8       1       1       3   .bss        
-     tempCANMSG.3                                D9       F      15      11   .bss        
-     ADCH_SumV                                   E8      20      32      51   .common     
-     ADCH_OutV                                  108      20      32      32   .common     
-     CCR_reg                                    128       1       1       7   .common     
-     CCR_lock                                   129       1       1      14   .common     
-     TaskFlags                                  12A       2       2      14   .common     
-     Timer_CAN                                  12C       1       1       3   .common     
-     SYSTEM_AD_DATA                             12D       F      15      14   .common     
-     HCUStatus                                  13C       1       1      11   .common     
-     InnerFalutFlags                            13D       2       2      17   .common     
-     TLECMD                                     13F       2       2      53   .common     
-     TLECMDTarget                               141       2       2      40   .common     
-     TLEErrFlag_1                               143       2       2       6   .common     
-     TLEErrFlag_2                               145       2       2       6   .common     
-     TLEFault1                                  147       1       1       2   .common     
-     TLEFault2                                  148       1       1       2   .common     
-     Msg_CAN_TXD                                149      1E      30      21   .common     
-     Msg_CAN_RXD                                167       F      15      12   .common     
-     systemp_Timer1                             176       2       2       3   .common     
-     systemp_Timer2                             178       2       2       3   .common     
-     systemp_Timer3                             17A       2       2       1   .common     
-     systemp_Timer4                             17C       2       2       1   .common     
+     EnUser                                      B5       1       1       4   .bss        
+     Timer_100ms                                 B6       1       1       3   .bss        
+     ADCHRawData                                 B7      20      32      14   .bss        
+     HCU_ErrorGrade_Current                      D7       1       1       3   .bss        
+     PrtCANTXD                                   D8       1       1       8   .bss        
+     TLE_ON_count.1                              D9       1       1       3   .bss        
+     TLE_OFF_count.2                             DA       1       1       3   .bss        
+     tempCANMSG.3                                DB       F      15      11   .bss        
+     ErrorTimer_H2Con.4                          EA       A      10      14   .bss        
+     ErrorTimer_P_H2Mid_H.5                      F4       2       2       5   .bss        
+     ErrorTimer_P_H2Mid_L.6                      F6       2       2       3   .bss        
+     ADCH_SumV                                   F8      1A      26      42   .common     
+     ADCH_OutV                                  112      1A      26      26   .common     
+     CCR_reg                                    12C       1       1       7   .common     
+     CCR_lock                                   12D       1       1      14   .common     
+     TaskFlags                                  12E       2       2      16   .common     
+     Timer_CAN                                  130       1       1       3   .common     
+     SYSTEM_AD_DATA                             131       F      15      24   .common     
+     HCUStatus                                  140       1       1      14   .common     
+     HCU_ErrorCode                              141       1       1       3   .common     
+     HCU_ErrorCode_Current                      142       1       1       6   .common     
+     SysErrFlag                                 143      1A      26      75   .common     
+     ErrorTimer_CAN                             15D       1       1       5   .common     
+     InnerFalutFlags                            15E       2       2       5   .common     
+     TLECMD                                     160       2       2      53   .common     
+     TLECMDTarget                               162       2       2      40   .common     
+     TLEErrFlag_1                               164       2       2       7   .common     
+     TLEErrFlag_2                               166       2       2      12   .common     
+     TLEFault1                                  168       1       1       2   .common     
+     TLEFault2                                  169       1       1       2   .common     
+     TLEErrorOUT                                16A       C      12      14   .common     
+     Msg_CAN_TXD                                176      1E      30      21   .common     
+     Msg_CAN_RXD                                194       F      15      12   .common     
+     systemp_Timer1                             1A3       2       2       1   .common     
+     systemp_Timer2                             1A5       2       2       1   .common     
+     systemp_Timer3                             1A7       2       2       1   .common     
+     systemp_Timer4                             1A9       2       2       1   .common     
      _SRS                                      1800       1       1       4   .abs_section_1800
      _SBDFR                                    1801       1       1       0   .abs_section_1801
      _SOPT1                                    1802       1       1       1   .abs_section_1802
@@ -1280,100 +1310,106 @@ OBJECT LIST SORTED BY ADDRESS
      _CANTTSR                                  18BE       2       2       0   .abs_section_18be
      Cpu_Interrupt                             1900       4       4      25   .init       
      _EntryPoint                               1904      74     116       1   .init       
-     PE_low_level_init                         1978      9E     158       1   .init       
-     ADCH_OnEnd                                1A24      24      36       1   .text       
-     CAN_OnFreeTxBuffer                        1A48      A8     168       3   .text       
-     CAN_OnFullRxBuffer                        1AF0       B      11       1   .text       
-     CAN_OnBusOff                              1AFB       6       6       1   .text       
-     TI_1ms_OnInterrupt                        1B01      1A      26       1   .text       
-     TI_10ms_OnInterrupt                       1B1B      17      23       1   .text       
-     main                                      1B32      16      22       1   .text       
-     loadByte                                  1B48       E      14       5   .text       
-     Init                                      1B56      6D     109       1   .text       
-     _Startup                                  1BC3       9       9       1   .text       
-     ADCH_Interrupt                            1BCC     115     277       4   .text       
-     ClrSumV                                   1CE1      33      51       1   .text       
-     ADCH_HWEnDi                               1D14      24      36       2   .text       
-     ADCH_Start                                1D38      19      25       2   .text       
-     ADCH_Stop                                 1D51      11      17       2   .text       
-     ADCH_GetValue                             1D62      FF     255       9   .text       
-     ADCH_Init                                 1E61      17      23       2   .text       
-     CAN_SetAcceptanceCode                     1E78      74     116       1   .text       
-     CAN_SendFrameExt                          1EEC     145     325       2   .text       
-     CAN_ReadFrame                             2031     107     263       2   .text       
-     CAN_Init                                  2138      76     118       2   .text       
-     CAN_SetAcceptanceMask                     21AE      74     116       1   .text       
-     CAN_InterruptTx                           2222      17      23       1   .text       
-     CAN_InterruptRx                           2239      28      40       1   .text       
-     CAN_InterruptError                        2261      35      53       1   .text       
-     SPI_Init                                  2296       F      15       1   .text       
-     TI_10ms_Init                              22A5      14      20       1   .text       
-     TI_10ms_Interrupt                         22B9       8       8       1   .text       
-     HWEnDi                                    22C1      10      16       3   .text       
-     TI_1ms_Enable                             22D1       E      14       1   .text       
-     TI_1ms_Disable                            22DF       D      13       1   .text       
-     TI_1ms_Init                               22EC       E      14       1   .text       
-     TI_1ms_Interrupt                          22FA       8       8       1   .text       
-     StateMachineManagement                    2302      32      50       1   .text       
-     SysParametersInit                         2334      47      71       1   .text       
-     SysInit                                   237B      20      32       1   .text       
-     CANMsgBuffersConfig                       239B     10F     271       2   .text       
-     SystemADData_Int                          24AA      41      65       1   .text       
-     TaskSchedule                              24EB      29      41       1   .text       
-     Task_ADCHSProcess                         2514      9F     159       1   .text       
-     Calc_ADData_NTC                           25B3      A8     168       8   .text       
-     Calc_ADData_H2Con                         265B      8A     138       1   .text       
-     Calc_ADData_P_H2Tank                      26E5      9C     156       1   .text       
-     Calc_ADData_P_H2Mid                       2781      9C     156       1   .text       
-     TLE_SPI_SendCMD                           281D     11A     282       8   .text       
-     TLECMD_Open1Channel                       2937      FC     252       1   .text       
-     TLECMD_Close1Channel                      2A33      FC     252       2   .text       
-     TLE_CMDset                                2B2F      50      80       1   .text       
-     GetTLEFault1                              2B7F       5       5       1   .text       
-     GetTLEFault2                              2B84       6       6       1   .text       
-     TLE_Update                                2B8A      A6     166       1   .text       
-     Task_TLE6232Process                       2C30       E      14       1   .text       
-     Task_CANTXD_Process                       2C3E      18      24       1   .text       
-     CANTXD_MsgBufferUpdate                    2C56      42      66       1   .text       
-     CANDownLoad                               2C98      A0     160       1   .text       
-     Task_FCUCMD_Process                       2D38      72     114       1   .text       
-     _PUSH_ARGS_L                              2DAA      20      32       2   .text       
-     _ENTER_UNARY_L                            2DCA      29      41       2   .text       
-     _ENTER_BINARY_L                           2DF3      16      22       5   .text       
-     _ENTER_BINARY_L_RC                        2E09      19      25       3   .text       
-     _IDIVMOD                                  2E22      69     105       1   .text       
-     _LADD_k_is_k_plus_j                       2E8B      1F      31       1   .text       
-     _k_is_k_plus_j_l                          2EAA      1E      30       2   .text       
-     _k_is_k_plus_j_i                          2EC8      12      18       3   .text       
-     _LAND_k_is_k_and_j                        2EDA      1F      31       1   .text       
-     _LOR_k_is_k_or_j                          2EF9      1F      31       2   .text       
-     _LMUL_k_is_k_mul_j                        2F18      81     129       1   .text       
-     _LDIVMOD                                  2F99      A4     164       1   .text       
-     _LDIVU_k_is_k_div_j                       303D      17      23       1   .text       
-     _LCMP_k_rel_j                             3054      1F      31       2   .text       
-     _IMUL_STAR08                              3073      27      39       2   .text       
-     _IDIVU_STAR08                             309A       D      13       2   .text       
-     _LADD                                     30A7       6       6       2   .text       
-     _LAND_RC                                  30AD       6       6       4   .text       
-     _LOR                                      30B3       6       6       2   .text       
-     _LOR_RC                                   30B9       6       6       3   .text       
-     _LMUL                                     30BF       6       6       2   .text       
-     _LDIVU                                    30C5       6       6       2   .text       
-     _LLSR                                     30CB      16      22       3   .text       
-     _LLSL                                     30E1      16      22       3   .text       
-     _LCMP                                     30F7       6       6       1   .text       
-     _LCMP_RC                                  30FD       6       6       1   .text       
-     _COPY                                     3103      30      48       2   .text       
-     _POP32                                    3133      1A      26       8   .text       
-     Channels                                  314D      10      16       2   .rodata     
-     TRawData_Table                            315D      4E      78       8   .rodata     
-     TData_Table                               31AB      4E      78       2   .rodata     
-     H2ConRawData_Table                        31F9       4       4       8   .rodata     
-     H2ConData_Table                           31FD       4       4       5   .rodata     
-     P_H2TankRawData_Table                     3201       4       4       7   .rodata     
-     P_H2TankData_Table                        3205       4       4       3   .rodata     
-     P_H2MidRawData_Table                      3209       4       4       7   .rodata     
-     P_H2MidData_Table                         320D       4       4       3   .rodata     
+     PE_low_level_init                         1978      A1     161       1   .init       
+     ADCH_OnEnd                                1A27       8       8       1   .text       
+     CAN_OnFreeTxBuffer                        1A2F      A8     168       3   .text       
+     CAN_OnFullRxBuffer                        1AD7       3       3       1   .text       
+     CAN_OnBusOff                              1ADA       6       6       1   .text       
+     TI_1ms_OnInterrupt                        1AE0      1A      26       1   .text       
+     TI_20ms_OnInterrupt                       1AFA      22      34       1   .text       
+     main                                      1B1C      16      22       1   .text       
+     loadByte                                  1B32       E      14       5   .text       
+     Init                                      1B40      6D     109       1   .text       
+     _Startup                                  1BAD       9       9       1   .text       
+     ADCH_Interrupt                            1BB6      FA     250       4   .text       
+     ClrSumV                                   1CB0      2A      42       1   .text       
+     ADCH_HWEnDi                               1CDA      24      36       2   .text       
+     ADCH_Measure                              1CFE      28      40       2   .text       
+     ADCH_GetValue                             1D26      D2     210       6   .text       
+     ADCH_Init                                 1DF8      17      23       1   .text       
+     CAN_SetAcceptanceCode                     1E0F      74     116       1   .text       
+     CAN_SendFrameExt                          1E83     145     325       2   .text       
+     CAN_ReadFrame                             1FC8     107     263       2   .text       
+     CAN_Init                                  20CF      76     118       2   .text       
+     CAN_SetAcceptanceMask                     2145      74     116       1   .text       
+     CAN_InterruptTx                           21B9      17      23       1   .text       
+     CAN_InterruptRx                           21D0      28      40       1   .text       
+     CAN_InterruptError                        21F8      35      53       1   .text       
+     SPI_Init                                  222D       F      15       1   .text       
+     HWEnDi                                    223C      10      16       3   .text       
+     TI_1ms_Enable                             224C       E      14       1   .text       
+     TI_1ms_Disable                            225A       D      13       1   .text       
+     TI_1ms_Init                               2267       E      14       1   .text       
+     TI_1ms_Interrupt                          2275       8       8       1   .text       
+     HWEnDi                                    227D      11      17       2   .text       
+     TI_20ms_Enable                            228E       E      14       1   .text       
+     TI_20ms_Init                              229C      1E      30       1   .text       
+     TI_20ms_Interrupt                         22BA       8       8       1   .text       
+     StateMachineManagement                    22C2      32      50       1   .text       
+     SysParametersInit                         22F4      AD     173       1   .text       
+     SysInit                                   23A1      12      18       1   .text       
+     CANMsgBuffersConfig                       23B3     10F     271       2   .text       
+     SystemADData_Int                          24C2      41      65       1   .text       
+     TaskSchedule                              2503      33      51       1   .text       
+     Task_ADCHSProcess                         2536      99     153       1   .text       
+     Calc_ADData_NTC                           25CF      A8     168       8   .text       
+     Calc_ADData_H2Con                         2677      B2     178       6   .text       
+     Calc_ADData_P_H2Tank                      2729      A6     166       2   .text       
+     Calc_ADData_P_H2Mid                       27CF      A6     166       2   .text       
+     TLE_SPI_SendCMD                           2875     11A     282       8   .text       
+     TLECMD_Open1Channel                       298F      FC     252       1   .text       
+     TLECMD_Close1Channel                      2A8B      FC     252       2   .text       
+     TLE_CMDset                                2B87      50      80       1   .text       
+     GetTLEFault1                              2BD7       5       5       1   .text       
+     GetTLEFault2                              2BDC       6       6       1   .text       
+     TLE_Update                                2BE2      A6     166       1   .text       
+     TLE_ErrorDIA                              2C88      73     115       1   .text       
+     Task_TLE6232Process                       2CFB      10      16       1   .text       
+     Task_CANTXD_Process                       2D0B      14      20       1   .text       
+     CANTXD_MsgBufferUpdate                    2D1F      42      66       1   .text       
+     CANDownLoad                               2D61      A0     160       1   .text       
+     Task_FCUCMD_Process                       2E01      72     114       1   .text       
+     Task_ErrorDiagnosisProcess                2E73       E      14       1   .text       
+     SetErrorFlag                              2E81     2A3     675      25   .text       
+     Set_ErrCode                               3124       E      14      16   .text       
+     ErrorReport                               3132     20F     527      53   .text       
+     _PUSH_ARGS_L                              3341      20      32       2   .text       
+     _ENTER_UNARY_L                            3361      29      41       2   .text       
+     _ENTER_BINARY_L                           338A      16      22       5   .text       
+     _ENTER_BINARY_L_RC                        33A0      19      25       3   .text       
+     _IDIVMOD                                  33B9      69     105       1   .text       
+     _LADD_k_is_k_plus_j                       3422      1F      31       1   .text       
+     _k_is_k_plus_j_l                          3441      1E      30       2   .text       
+     _k_is_k_plus_j_i                          345F      12      18       3   .text       
+     _LAND_k_is_k_and_j                        3471      1F      31       1   .text       
+     _LOR_k_is_k_or_j                          3490      1F      31       2   .text       
+     _LMUL_k_is_k_mul_j                        34AF      81     129       1   .text       
+     _LDIVMOD                                  3530      A4     164       1   .text       
+     _LDIVU_k_is_k_div_j                       35D4      17      23       1   .text       
+     _LCMP_k_rel_j                             35EB      1F      31       2   .text       
+     _IMUL_STAR08                              360A      27      39       1   .text       
+     _IDIVU_STAR08                             3631       D      13       1   .text       
+     _LADD                                     363E       6       6       3   .text       
+     _LAND_RC                                  3644       6       6       4   .text       
+     _LOR                                      364A       6       6       2   .text       
+     _LOR_RC                                   3650       6       6       3   .text       
+     _LMUL                                     3656       6       6       3   .text       
+     _LDIVU                                    365C       6       6       3   .text       
+     _LLSR                                     3662      16      22       3   .text       
+     _LLSL                                     3678      16      22       3   .text       
+     _LCMP                                     368E       6       6       1   .text       
+     _LCMP_RC                                  3694       6       6       1   .text       
+     _COPY                                     369A      30      48       2   .text       
+     _POP32                                    36CA      1A      26       7   .text       
+     Channels                                  36E4       D      13       2   .rodata     
+     TRawData_Table                            36F1      4E      78       8   .rodata     
+     TData_Table                               373F      4E      78       2   .rodata     
+     H2ConRawData_Table                        378D       4       4       8   .rodata     
+     H2ConData_Table                           3791       4       4       4   .rodata     
+     P_H2TankRawData_Table                     3795       4       4       7   .rodata     
+     P_H2TankData_Table                        3799       4       4       3   .rodata     
+     P_H2MidRawData_Table                      379D       4       4       7   .rodata     
+     P_H2MidData_Table                         37A1       4       4       3   .rodata     
      NVPROT_INIT                               FFBD       1       1       0   .abs_section_ffbd
      NVOPT_INIT                                FFBF       1       1       0   .abs_section_ffbf
      _vect                                     FFC0      40      64       0   .abs_section_ffc0
@@ -1383,13 +1419,13 @@ UNUSED-OBJECTS SECTION
 ---------------------------------------------------------------------------------------------
 NOT USED PROCEDURES
 ADCH_c.obj:
-  ADCH_Enable ADCH_Disable ADCH_Measure 
+  ADCH_Enable ADCH_Disable ADCH_Start ADCH_Stop 
 CAN_c.obj:
   CAN_SetAcceptanceMode CAN_GetStateRX CAN_GetError CAN_SendFrame 
 SPI_c.obj:
   SPI_CharsInRxBuf SPI_CharsInTxBuf 
-TaskSchedule_c.obj:
-  AD_Lagrange Task_ErrorDiagnosisProcess Set_ErrGrade 
+TI_20ms_c.obj:
+  TI_20ms_Disable 
 rtshc08.o (ansiis.lib):
   _PUSH_ARGS_D _ENTER_UNARY_L64 _ENTER_UNARY_L64_4 _ENTER_BINARY_L_LC 
   _ENTER_BINARY_L64 _ENTER_BINARY_L64_LC _ENTER_BINARY_L64_RC _SPLITSIGN 
@@ -1407,26 +1443,26 @@ rtshc08.o (ansiis.lib):
   _CONV_FAR_TO_NEAR _CONV_FAR_TO_LINEAR _CONV_LINEAR_TO_FAR 
 NOT USED VARIABLES
 SysParameters_c.obj:
-  HCU_ErrorCode systemp_rev systemp_error systemp_H systemp_L systemp_Flag 
+  systemp_rev systemp_error systemp_H systemp_L systemp_Flag 
 rtshc08.o (ansiis.lib):
   _PowOfTwo_8 _PowOfTwo_16 _PowOfTwo_32 errno 
 
 *********************************************************************************************
 COPYDOWN SECTION
 ---------------------------------------------------------------------------------------------
-------- ROM-ADDRESS: 0x3211 ---- SIZE       4 ---
+------- ROM-ADDRESS: 0x37A5 ---- SIZE       4 ---
 Filling bytes inserted
  000C00A0
-------- ROM-ADDRESS: 0x3215 ---- RAM-ADDRESS: 0xA0 ---- SIZE       8 ---
+------- ROM-ADDRESS: 0x37A9 ---- RAM-ADDRESS: 0xA0 ---- SIZE       8 ---
 Name of initialized Object : CAN_TXD_ID
  18FF201018 FF2020
-------- ROM-ADDRESS: 0x321D ---- SIZE       1 ---
+------- ROM-ADDRESS: 0x37B1 ---- SIZE       1 ---
 Filling bytes inserted
  00
-------- ROM-ADDRESS: 0x321E ---- RAM-ADDRESS: 0xA9 ---- SIZE       3 ---
+------- ROM-ADDRESS: 0x37B2 ---- RAM-ADDRESS: 0xA9 ---- SIZE       3 ---
 Name of initialized Object : CAN_RXD_ID:1
  FF2001
-------- ROM-ADDRESS: 0x3221 ---- SIZE       2 ---
+------- ROM-ADDRESS: 0x37B5 ---- SIZE       2 ---
 Filling bytes inserted
  0000
 
@@ -1439,14 +1475,14 @@ PE_low_level_init         USES _APCTL1 _APCTL2 _PTED _PTEPE _PTEDD _PTDD
                                 _PTDPE _PTDDD _PTGD _PTGPE _PTGDD _PTASE _PTBSE 
                                 _PTCSE _PTDSE _PTESE _PTFSE _PTGSE _PTADS _PTBDS 
                                 _PTCDS _PTDDS _PTEDS _PTFDS _PTGDS CAN_Init _SRS 
-                                ADCH_Init SPI_Init TI_1ms_Init TI_10ms_Init CCR_lock 
-ADCH_OnEnd                USES TaskFlags ADCH_Stop InnerFalutFlags 
+                                ADCH_Init SPI_Init TI_1ms_Init TI_20ms_Init CCR_lock 
+ADCH_OnEnd                USES TaskFlags 
 CAN_OnFreeTxBuffer        USES PrtCANTXD CAN_OnFreeTxBuffer Msg_CAN_TXD 
                                 _LOR_RC CAN_SendFrameExt watchpoint _CANTIER 
-CAN_OnFullRxBuffer        USES systemp_Timer2 CANDownLoad 
+CAN_OnFullRxBuffer        USES CANDownLoad 
 CAN_OnBusOff              USES CAN_Init CANMsgBuffersConfig 
 TI_1ms_OnInterrupt        USES Timer_CAN TaskFlags TI_1ms_Disable 
-TI_10ms_OnInterrupt       USES Timer_100ms TaskFlags 
+TI_20ms_OnInterrupt       USES Timer_100ms TaskFlags 
 main                      USES PE_low_level_init SysInit 
                                 StateMachineManagement TaskSchedule _SRS 
 Init                      USES _startupData loadByte 
@@ -1456,8 +1492,7 @@ ADCH_Interrupt            USES ModeFlg _ADCR ADCH_Interrupt SumChan ADCH_SumV
 ClrSumV                   USES ADCH_SumV 
 ADCH_HWEnDi               USES EnUser ModeFlg SumCnt OutFlg SumChan ClrSumV 
                                 Channels _ADCSC1 
-ADCH_Start                USES EnUser ModeFlg ADCH_HWEnDi 
-ADCH_Stop                 USES ModeFlg _ADCSC1 
+ADCH_Measure              USES EnUser ModeFlg ADCH_HWEnDi 
 ADCH_GetValue             USES OutFlg ADCH_GetValue ADCH_OutV 
 ADCH_Init                 USES _ADCSC1 _ADCSC2 EnUser OutFlg ModeFlg _ADCCFG 
                                 ADCH_HWEnDi 
@@ -1481,37 +1516,40 @@ CAN_InterruptTx           USES _CANTIER _CANTFLG CAN_OnFreeTxBuffer
 CAN_InterruptRx           USES SerFlag ErrFlag CAN_OnFullRxBuffer _CANRFLG 
 CAN_InterruptError        USES _CANRFLG ErrFlag CAN_OnBusOff 
 SPI_Init                  USES _SPIS _SPID _SPIBR _SPIC2 _SPIC1 
-TI_10ms_Init              USES _TPM2SC _TPM2C0SC _TPM2C0V _TPM2MOD _TPM2CNT 
-TI_10ms_Interrupt         USES _TPM2C0SC TI_10ms_OnInterrupt 
 HWEnDi                    USES EnUser _RTCSC 
 TI_1ms_Enable             USES EnUser HWEnDi 
 TI_1ms_Disable            USES EnUser HWEnDi 
 TI_1ms_Init               USES _RTCSC EnUser _RTCMOD HWEnDi 
 TI_1ms_Interrupt          USES _RTCSC TI_1ms_OnInterrupt 
+HWEnDi                    USES EnUser _TPM2SC _TPM2CNT 
+TI_20ms_Enable            USES EnUser HWEnDi 
+TI_20ms_Init              USES _TPM2SC _TPM2C0SC EnUser _TPM2C0V _TPM2MOD 
+                                _TPM2CNT HWEnDi 
+TI_20ms_Interrupt         USES _TPM2C0SC TI_20ms_OnInterrupt 
 StateMachineManagement    USES HCUStatus 
-SysParametersInit         USES HCUStatus InnerFalutFlags TaskFlags 
-                                SystemADData_Int CANMsgBuffersConfig TLECMD TLECMDTarget 
-                                TLEFault1 TLEFault2 TLEErrFlag_1 TLEErrFlag_2 
+SysParametersInit         USES HCUStatus HCU_ErrorGrade_Current HCU_ErrorCode 
+                                HCU_ErrorCode_Current InnerFalutFlags TaskFlags SystemADData_Int 
+                                CANMsgBuffersConfig TLECMD TLECMDTarget TLEFault1 TLEFault2 
+                                TLEErrFlag_1 TLEErrFlag_2 SysErrFlag ErrorTimer_CAN 
                                 systemp_Timer1 systemp_Timer2 systemp_Timer3 systemp_Timer4 
-SysInit                   USES SysParametersInit _PTGD ADCH_Start 
-                                InnerFalutFlags 
+SysInit                   USES SysParametersInit _PTGD ADCH_Measure 
+                                TI_20ms_Enable 
 CANMsgBuffersConfig       USES CAN_SetAcceptanceCode CAN_SetAcceptanceMask 
                                 Msg_CAN_TXD CAN_TXD_ID _COPY Msg_CAN_RXD CAN_RXD_ID 
 SystemADData_Int          USES SYSTEM_AD_DATA 
 TaskSchedule              USES TaskFlags Task_ADCHSProcess Task_TLE6232Process 
-                                Task_CANTXD_Process Task_FCUCMD_Process 
+                                Task_CANTXD_Process Task_FCUCMD_Process Task_ErrorDiagnosisProcess 
 Task_ADCHSProcess         USES ADCHRawData ADCH_GetValue InnerFalutFlags 
                                 Calc_ADData_NTC SYSTEM_AD_DATA Calc_ADData_H2Con 
-                                Calc_ADData_P_H2Tank Calc_ADData_P_H2Mid ADCH_Stop ADCH_Init 
-                                ADCH_Start TaskFlags 
+                                Calc_ADData_P_H2Tank Calc_ADData_P_H2Mid TaskFlags ADCH_Measure 
 Calc_ADData_NTC           USES Calc_ADData_NTC TRawData_Table _IMUL_STAR08 
                                 _IDIVU_STAR08 TData_Table 
-Calc_ADData_H2Con         USES H2ConRawData_Table H2ConData_Table _IMUL_STAR08 
-                                _IDIVU_STAR08 
-Calc_ADData_P_H2Tank      USES P_H2TankRawData_Table P_H2TankData_Table _LMUL 
-                                _POP32 _LDIVU _LADD 
-Calc_ADData_P_H2Mid       USES P_H2MidRawData_Table P_H2MidData_Table _LMUL 
-                                _POP32 _LDIVU _LADD 
+Calc_ADData_H2Con         USES H2ConRawData_Table H2ConData_Table 
+                                Calc_ADData_H2Con _LMUL _LDIVU _LADD _POP32 
+Calc_ADData_P_H2Tank      USES P_H2TankRawData_Table P_H2TankData_Table 
+                                Calc_ADData_P_H2Tank _LMUL _LDIVU _LADD _POP32 
+Calc_ADData_P_H2Mid       USES P_H2MidRawData_Table P_H2MidData_Table 
+                                Calc_ADData_P_H2Mid _LMUL _LDIVU _LADD _POP32 
 TLE_SPI_SendCMD           USES _PTDD _PTED _SPIS _SPID TLE_SPI_SendCMD 
                                 InnerFalutFlags 
 TLECMD_Open1Channel       USES TLECMDTarget TLECMD 
@@ -1522,13 +1560,21 @@ GetTLEFault1              USES _PTDD
 GetTLEFault2              USES _PTDD 
 TLE_Update                USES GetTLEFault1 TLEFault1 GetTLEFault2 TLEFault2 
                                 TLE_SPI_SendCMD TLEErrFlag_1 TLECMD TLEErrFlag_2 
-Task_TLE6232Process       USES TLE_CMDset TLE_Update TaskFlags 
-Task_CANTXD_Process       USES systemp_Timer1 CANTXD_MsgBufferUpdate _CANTIER 
+TLE_ErrorDIA              USES TLEErrFlag_1 TLEErrorOUT TLEErrFlag_2 
+Task_TLE6232Process       USES TLE_CMDset TLE_Update TLE_ErrorDIA TaskFlags 
+Task_CANTXD_Process       USES CANTXD_MsgBufferUpdate ErrorTimer_CAN _CANTIER 
                                 TaskFlags 
 CANTXD_MsgBufferUpdate    USES SYSTEM_AD_DATA Msg_CAN_TXD HCUStatus 
 CANDownLoad               USES tempCANMSG.3 CAN_ReadFrame Msg_CAN_RXD _LCMP 
                                 TI_1ms_Enable TaskFlags 
 Task_FCUCMD_Process       USES Msg_CAN_RXD TLECMDTarget TaskFlags 
+Task_ErrorDiagnosisProcess USES SetErrorFlag ErrorReport TaskFlags 
+SetErrorFlag              USES ErrorTimer_H2Con.4 ErrorTimer_P_H2Mid_H.5 
+                                ErrorTimer_P_H2Mid_L.6 SYSTEM_AD_DATA SysErrFlag SetErrorFlag 
+                                TLEErrorOUT ErrorTimer_CAN 
+Set_ErrCode               USES HCU_ErrorCode_Current 
+ErrorReport               USES Set_ErrCode SysErrFlag ErrorReport 
+                                HCU_ErrorCode_Current HCU_ErrorGrade_Current HCUStatus HCU_ErrorCode 
 _ENTER_BINARY_L           USES _PUSH_ARGS_L 
 _ENTER_BINARY_L_RC        USES _PUSH_ARGS_L 
 _LMUL_k_is_k_mul_j        USES _k_is_k_plus_j_l _k_is_k_plus_j_i 
@@ -1546,7 +1592,7 @@ _LCMP                     USES _ENTER_BINARY_L _LCMP_k_rel_j
 _LCMP_RC                  USES _ENTER_BINARY_L_RC _LCMP_k_rel_j 
 _vect                     USES Cpu_Interrupt CAN_InterruptTx CAN_InterruptRx 
                                 CAN_InterruptError TI_1ms_Interrupt ADCH_Interrupt 
-                                TI_10ms_Interrupt _EntryPoint 
+                                TI_20ms_Interrupt _EntryPoint 
 
 *********************************************************************************************
 DEPENDENCY TREE
@@ -1571,8 +1617,10 @@ DEPENDENCY TREE
  |  |  |  | 
  |  |  |  +- HWEnDi              
  |  |  |       
- |  |  +- TI_10ms_Init        
- |  |       
+ |  |  +- TI_20ms_Init        
+ |  |     | 
+ |  |     +- HWEnDi              
+ |  |          
  |  +- SysInit             
  |  |  | 
  |  |  +- SysParametersInit   
@@ -1587,9 +1635,13 @@ DEPENDENCY TREE
  |  |  |     |    
  |  |  |     +- _COPY               
  |  |  |          
- |  |  +- ADCH_Start          
+ |  |  +- ADCH_Measure        
+ |  |  |  | 
+ |  |  |  +- ADCH_HWEnDi          (see above)
+ |  |  |     
+ |  |  +- TI_20ms_Enable      
  |  |     | 
- |  |     +- ADCH_HWEnDi          (see above)
+ |  |     +- HWEnDi               (see above)
  |  |        
  |  +- StateMachineManagement
  |  |    
@@ -1609,12 +1661,6 @@ DEPENDENCY TREE
  |     |  |          
  |     |  +- Calc_ADData_H2Con   
  |     |  |  | 
- |     |  |  +- _IMUL_STAR08         (see above)
- |     |  |  |  
- |     |  |  +- _IDIVU_STAR08        (see above)
- |     |  |     
- |     |  +- Calc_ADData_P_H2Tank
- |     |  |  | 
  |     |  |  +- _LMUL               
  |     |  |  |  | 
  |     |  |  |  +- _ENTER_BINARY_L     
@@ -1627,8 +1673,6 @@ DEPENDENCY TREE
  |     |  |  |     |    
  |     |  |  |     +- _k_is_k_plus_j_i    
  |     |  |  |          
- |     |  |  +- _POP32              
- |     |  |  |    
  |     |  |  +- _LDIVU              
  |     |  |  |  | 
  |     |  |  |  +- _ENTER_BINARY_L      (see above)
@@ -1638,26 +1682,34 @@ DEPENDENCY TREE
  |     |  |  |     +- _LDIVMOD            
  |     |  |  |          
  |     |  |  +- _LADD               
- |     |  |     | 
- |     |  |     +- _ENTER_BINARY_L      (see above)
- |     |  |     |  
- |     |  |     +- _LADD_k_is_k_plus_j 
- |     |  |          
- |     |  +- Calc_ADData_P_H2Mid 
+ |     |  |  |  | 
+ |     |  |  |  +- _ENTER_BINARY_L      (see above)
+ |     |  |  |  |  
+ |     |  |  |  +- _LADD_k_is_k_plus_j 
+ |     |  |  |       
+ |     |  |  +- _POP32              
+ |     |  |       
+ |     |  +- Calc_ADData_P_H2Tank
  |     |  |  | 
  |     |  |  +- _LMUL                (see above)
- |     |  |  |  
- |     |  |  +- _POP32               (see above)
  |     |  |  |  
  |     |  |  +- _LDIVU               (see above)
  |     |  |  |  
  |     |  |  +- _LADD                (see above)
+ |     |  |  |  
+ |     |  |  +- _POP32               (see above)
  |     |  |     
- |     |  +- ADCH_Stop           
- |     |  |    
- |     |  +- ADCH_Init            (see above)
- |     |  |  
- |     |  +- ADCH_Start           (see above)
+ |     |  +- Calc_ADData_P_H2Mid 
+ |     |  |  | 
+ |     |  |  +- _LMUL                (see above)
+ |     |  |  |  
+ |     |  |  +- _LDIVU               (see above)
+ |     |  |  |  
+ |     |  |  +- _LADD                (see above)
+ |     |  |  |  
+ |     |  |  +- _POP32               (see above)
+ |     |  |     
+ |     |  +- ADCH_Measure         (see above)
  |     |     
  |     +- Task_TLE6232Process 
  |     |  | 
@@ -1668,19 +1720,29 @@ DEPENDENCY TREE
  |     |  |  +- TLECMD_Close1Channel
  |     |  |       
  |     |  +- TLE_Update          
- |     |     | 
- |     |     +- GetTLEFault1        
- |     |     |    
- |     |     +- GetTLEFault2        
- |     |     |    
- |     |     +- TLE_SPI_SendCMD     
- |     |          
+ |     |  |  | 
+ |     |  |  +- GetTLEFault1        
+ |     |  |  |    
+ |     |  |  +- GetTLEFault2        
+ |     |  |  |    
+ |     |  |  +- TLE_SPI_SendCMD     
+ |     |  |       
+ |     |  +- TLE_ErrorDIA        
+ |     |       
  |     +- Task_CANTXD_Process 
  |     |  | 
  |     |  +- CANTXD_MsgBufferUpdate
  |     |       
  |     +- Task_FCUCMD_Process 
- |          
+ |     |    
+ |     +- Task_ErrorDiagnosisProcess
+ |        | 
+ |        +- SetErrorFlag        
+ |        |    
+ |        +- ErrorReport         
+ |           | 
+ |           +- Set_ErrCode         
+ |                
  +- _EntryPoint         
     | 
     +- _Startup            
@@ -1784,12 +1846,10 @@ DEPENDENCY TREE
  +- ADCH_Interrupt      
  |  | 
  |  +- ADCH_OnEnd          
- |     | 
- |     +- ADCH_Stop            (see above)
- |        
- +- TI_10ms_Interrupt   
+ |       
+ +- TI_20ms_Interrupt   
  |  | 
- |  +- TI_10ms_OnInterrupt 
+ |  +- TI_20ms_OnInterrupt 
  |       
  +- _EntryPoint          (see above)
     
@@ -1799,6 +1859,6 @@ STATISTIC SECTION
 
 ExeFile:
 --------
-Number of blocks to be downloaded: 7
-Total size of all blocks to be downloaded: 6501
+Number of blocks to be downloaded: 8
+Total size of all blocks to be downloaded: 7929
 

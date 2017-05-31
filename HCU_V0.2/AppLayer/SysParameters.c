@@ -51,8 +51,13 @@ const unsigned int  P_H2MidData_Table[P_H2MidData_Table_Len] =
 
 
 volatile StatusDef HCUStatus;
-volatile unsigned char HCU_ErrorCode = 0x00;
-//volatile SYSTEM_ERROR SystemError;
+volatile unsigned char HCU_ErrorGrade_Current = ErrorGradeOK;
+volatile HCU_ERROR_CODE HCU_ErrorCode;
+volatile HCU_ERROR_CODE HCU_ErrorCode_Current;
+
+volatile SYSTEM_ERROR_FLAG SysErrFlag;
+volatile unsigned char ErrorTimer_CAN;
+
 volatile WordFlags InnerFalutFlags;
 
 volatile TLEDeviceCMD TLECMD;
@@ -61,6 +66,7 @@ volatile TLEErrFlag TLEErrFlag_1;
 volatile TLEErrFlag TLEErrFlag_2;
 volatile unsigned char TLEFault1;
 volatile unsigned char TLEFault2;
+volatile unsigned char TLEErrorOUT[12];
 
 /*
 **********************************************************************
@@ -96,24 +102,39 @@ volatile int systemp_Timer4;
 
 void SysParametersInit(void)
 {
+	int i;
 	SetStatePowerUp;
 	HCUStatus.MergedBits.ErrGrade = ErrorGradeOK;
+	HCU_ErrorGrade_Current = ErrorGradeOK;
+	HCU_ErrorCode.ErrorCode = ErrorCodeOK;
+	HCU_ErrorCode_Current.ErrorCode = ErrorCodeOK;
 	InnerFalutFlags.flags = 0x00;
 	TaskFlags.flags = 0x0000;
 	SystemADData_Int();
 	CANMsgBuffersConfig();
+
 	TLECMD.DriverCMD = 0xffff;
 	TLECMDTarget.DriverCMD = 0xffff;
 	TLEFault1 = 1;
 	TLEFault2 = 1;
 	TLEErrFlag_1.TLEErrFlag = 0xffff;
 	TLEErrFlag_2.TLEErrFlag = 0xffff;
+
+	//ErrorFlag
+	for (i = 0; i < 5; i++)
+	{	SysErrFlag.H2Con[i].ErrorFlag=ErrorFlagOK;	}
+	for (i = 0; i < 6; i++)
+	{	SysErrFlag.NTC[i].ErrorFlag = ErrorFlagOK;	}
+	for (i = 0; i < 12; i++)
+	{	SysErrFlag.TLEOUT[i].ErrorFlag = ErrorFlagOK;	}
+	SysErrFlag.P_H2Mid.ErrorFlag = ErrorFlagOK;
+	SysErrFlag.P_H2Tank.ErrorFlag = ErrorFlagOK;
+	ErrorTimer_CAN = (0xff);
+
 	systemp_Timer1=0;
 	systemp_Timer2=0;
 	systemp_Timer3=0;
 	systemp_Timer4=0;
-	//SystemError.System_Error[0] = 0;
-	//SystemError.System_Error[1] = 0;
 }
 
 void SysInit(void)
@@ -123,8 +144,8 @@ void SysInit(void)
 	LED2_ON;
 	LED3_ON;
 	LED4_ON;
-	if (ERR_OK == ADCH_Start())	InnerFault_ADProcess = 0;
-	else						InnerFault_ADProcess = 1;
+	(void)ADCH_Measure(FALSE);
+	(void)TI_20ms_Enable();
 }
 
 

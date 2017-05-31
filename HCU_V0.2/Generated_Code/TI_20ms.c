@@ -6,7 +6,7 @@
 **     Component   : TimerInt
 **     Version     : Component 02.161, Driver 01.23, CPU db: 3.00.026
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-18, 09:06, # CodeGen: 7
+**     Date/Time   : 2017-05-31, 10:18, # CodeGen: 14
 **     Abstract    :
 **         This component "TimerInt" implements a periodic interrupt.
 **         When the component and its events are enabled, the "OnInterrupt"
@@ -32,7 +32,7 @@
 **         Runtime setting             : none
 **
 **         Initialization:
-**              Timer                  : Enabled
+**              Timer                  : Disabled
 **              Events                 : Enabled
 **
 **         Timer registers
@@ -47,7 +47,8 @@
 **         Flip-flop registers
 **              Mode                   : TPM2C0SC  [$0065]
 **     Contents    :
-**         No public methods
+**         Enable  - byte TI_20ms_Enable(void);
+**         Disable - byte TI_20ms_Disable(void);
 **
 **     Copyright : 1997 - 2014 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -106,6 +107,7 @@
 #pragma MESSAGE DISABLE C5703          /* WARNING C5703: Parameter X declared in function F but not referenced */
 #pragma MESSAGE DISABLE C4002          /* Disable warning C4002 "Result not used" */
 
+static bool EnUser;                    /* Enable device by user */
 /*** Internal macros and method prototypes ***/
 
 /*
@@ -121,8 +123,90 @@
 #define TI_20ms_SetCV(_Val) ( \
   TPM2MOD = (TPM2C0V = (word)(_Val)) )
 
+/*
+** ===================================================================
+**     Method      :  HWEnDi (component TimerInt)
+**
+**     Description :
+**         Enables or disables the peripheral(s) associated with the 
+**         component. The method is called automatically as a part of the 
+**         Enable and Disable methods and several internal methods.
+**         This method is internal. It is used by Processor Expert only.
+** ===================================================================
+*/
+static void HWEnDi(void);
+
 
 /*** End of internal method prototypes ***/
+
+/*
+** ===================================================================
+**     Method      :  HWEnDi (component TimerInt)
+**
+**     Description :
+**         Enables or disables the peripheral(s) associated with the 
+**         component. The method is called automatically as a part of the 
+**         Enable and Disable methods and several internal methods.
+**         This method is internal. It is used by Processor Expert only.
+** ===================================================================
+*/
+static void HWEnDi(void)
+{
+  if (EnUser) {
+    TPM2SC |= 0x08U;                   /* Run counter (set CLKSB:CLKSA) */
+  } else {
+    /* TPM2SC: CLKSB=0,CLKSA=0 */
+    clrReg8Bits(TPM2SC, 0x18U);        /* Stop counter (CLKSB:CLKSA = 00) */ 
+    /* TPM2CNTH: BIT15=0,BIT14=0,BIT13=0,BIT12=0,BIT11=0,BIT10=0,BIT9=0,BIT8=0 */
+    setReg8(TPM2CNTH, 0x00U);          /* Clear counter register - any write clears complete counter */ 
+  }
+}
+
+/*
+** ===================================================================
+**     Method      :  TI_20ms_Enable (component TimerInt)
+**     Description :
+**         This method enables the component - it starts the timer.
+**         Events may be generated (<DisableEvent>/<EnableEvent>).
+**     Parameters  : None
+**     Returns     :
+**         ---             - Error code, possible codes:
+**                           ERR_OK - OK
+**                           ERR_SPEED - This device does not work in
+**                           the active speed mode
+** ===================================================================
+*/
+byte TI_20ms_Enable(void)
+{
+  if (!EnUser) {                       /* Is the device disabled by user? */
+    EnUser = TRUE;                     /* If yes then set the flag "device enabled" */
+    HWEnDi();                          /* Enable the device */
+  }
+  return ERR_OK;                       /* OK */
+}
+
+/*
+** ===================================================================
+**     Method      :  TI_20ms_Disable (component TimerInt)
+**     Description :
+**         This method disables the component - it stops the timer. No
+**         events will be generated.
+**     Parameters  : None
+**     Returns     :
+**         ---             - Error code, possible codes:
+**                           ERR_OK - OK
+**                           ERR_SPEED - This device does not work in
+**                           the active speed mode
+** ===================================================================
+*/
+byte TI_20ms_Disable(void)
+{
+  if (EnUser) {                        /* Is the device enabled by user? */
+    EnUser = FALSE;                    /* If yes then set the flag "device disabled" */
+    HWEnDi();                          /* Disable the device */
+  }
+  return ERR_OK;                       /* OK */
+}
 
 /*
 ** ===================================================================
@@ -141,11 +225,12 @@ void TI_20ms_Init(void)
   setReg8(TPM2SC, 0x00U);              /* Stop HW; disable overflow interrupt and set prescaler to 0 */ 
   /* TPM2C0SC: CH0F=0,CH0IE=1,MS0B=0,MS0A=1,ELS0B=0,ELS0A=0,??=0,??=0 */
   setReg8(TPM2C0SC, 0x50U);            /* Set output compare mode and enable compare interrupt */ 
+  EnUser = FALSE;                      /* Disable device */
   TI_20ms_SetCV(0x9C3FU);              /* Initialize appropriate value to the compare/modulo/reload register */
+  clrSetReg8Bits(TPM2SC, 0x04U, 0x03U); /* Set prescaler */
   /* TPM2CNTH: BIT15=0,BIT14=0,BIT13=0,BIT12=0,BIT11=0,BIT10=0,BIT9=0,BIT8=0 */
   setReg8(TPM2CNTH, 0x00U);            /* Reset HW Counter */ 
-  /* TPM2SC: TOF=0,TOIE=0,CPWMS=0,CLKSB=0,CLKSA=1,PS2=0,PS1=1,PS0=1 */
-  setReg8(TPM2SC, 0x0BU);              /* Set prescaler and run counter */ 
+  HWEnDi();
 }
 
 

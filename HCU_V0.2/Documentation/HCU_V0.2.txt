@@ -126,6 +126,9 @@ Module "TI_1ms"    (component TimerInt)
    - TI_1ms_Disable -This method disables the component - it stops the timer. No events will be generated.
 
 Module "TI_20ms"   (component TimerInt)
+   - TI_20ms_Enable -This method enables the component - it starts the timer. Events may be generated 
+                (<DisableEvent>/<EnableEvent>).
+   - TI_20ms_Disable -This method disables the component - it stops the timer. No events will be generated.
 
 Module "LED1"      (component BitIO)
    - LED1_PutVal -The specified output value is set. If the direction is [input], the component saves the value to a memory or 

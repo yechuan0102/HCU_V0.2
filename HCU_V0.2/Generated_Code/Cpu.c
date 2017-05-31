@@ -7,7 +7,7 @@
 **     Version     : Component 01.076, Driver 01.40, CPU db: 3.00.026
 **     Datasheet   : MC9S08DZ60 Rev. 3 10/2007
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-18, 09:06, # CodeGen: 7
+**     Date/Time   : 2017-05-18, 15:06, # CodeGen: 9
 **     Abstract    :
 **         This component "MC9S08DZ60_64" contains initialization 
 **         of the CPU and provides basic methods and events for 
@@ -243,8 +243,8 @@ void PE_low_level_init(void)
   /* Common initialization of the CPU registers */
   /* APCTL1: ADPC7=1,ADPC6=1,ADPC5=1,ADPC4=1,ADPC3=1,ADPC2=1,ADPC1=1,ADPC0=1 */
   setReg8(APCTL1, 0xFFU);               
-  /* APCTL2: ADPC15=1,ADPC14=1,ADPC13=1,ADPC12=1,ADPC11=1,ADPC10=1,ADPC9=1,ADPC8=1 */
-  setReg8(APCTL2, 0xFFU);               
+  /* APCTL2: ADPC12=1,ADPC11=1,ADPC10=1,ADPC9=1,ADPC8=1 */
+  setReg8Bits(APCTL2, 0x1FU);           
   /* PTED: PTED3=0,PTED2=1,PTED0=1 */
   clrSetReg8Bits(PTED, 0x08U, 0x05U);   
   /* PTEPE: PTEPE2=1,PTEPE0=1 */

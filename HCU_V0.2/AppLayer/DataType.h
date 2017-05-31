@@ -187,96 +187,35 @@ typedef struct
 ** ===================================================================
 **********************************************************************
 */
-/*
+
 typedef union
 {
-	unsigned long System_Error[2];
-	struct
+	unsigned char ErrorFlag;
+	struct 
 	{
-//#if HCU_Type == HCUA
-		unsigned int TLEOUT1_OT		: 1;		//ErrorGradeAlarm
-		unsigned int TLEOUT1_SG		: 1;		//ErrorGradeError
-		unsigned int TLEOUT2_OT		: 1;		//ErrorGradeAlarm
-		unsigned int TLEOUT2_SG		: 1;		//ErrorGradeError
-		unsigned int TLEOUT3_OT		: 1;		//ErrorGradeAlarm
-		unsigned int TLEOUT3_SG		: 1;		//ErrorGradeError
-		unsigned int TLEOUT4_OT		: 1;		//ErrorGradeAlarm
-		unsigned int TLEOUT4_SG		: 1;		//ErrorGradeError
-		unsigned int TLEOUT5_OT		: 1;		//ErrorGradeAlarm
-		unsigned int TLEOUT5_SG		: 1;		//ErrorGradeError
-		unsigned int TLEOUT_ALL		: 1;		//ErrorGradeError
+		unsigned char ErrorType		: 4;
+		unsigned char ErrorGrade	: 4;
+	}Detail;
+}ERRORFLAG;
 
-		unsigned int T_Tank1_OT75	: 1;		//ErrorGradeAlarm
-		unsigned int T_Tank1_OT85	: 1;		//ErrorGradeError
-		unsigned int T_Tank1_SENSOR	: 1;		//ErrorGradeError
-		unsigned int T_Tank2_OT75	: 1;		//ErrorGradeAlarm
-		unsigned int T_Tank2_OT85	: 1;		//ErrorGradeError
-		unsigned int T_Tank2_SENSOR	: 1;		//ErrorGradeError
-		unsigned int T_Tank3_OT75	: 1;		//ErrorGradeAlarm
-		unsigned int T_Tank3_OT85	: 1;		//ErrorGradeError
-		unsigned int T_Tank3_SENSOR	: 1;		//ErrorGradeError
-		unsigned int T_Tank4_OT75	: 1;		//ErrorGradeAlarm
-		unsigned int T_Tank4_OT85	: 1;		//ErrorGradeError
-		unsigned int T_Tank4_SENSOR	: 1;		//ErrorGradeError
-		unsigned int T_Tank5_OT75	: 1;		//ErrorGradeAlarm
-		unsigned int T_Tank5_OT85	: 1;		//ErrorGradeError
-		unsigned int T_Tank5_SENSOR	: 1;		//ErrorGradeError
+typedef struct
+{
+	ERRORFLAG TLEOUT[12];
+	ERRORFLAG NTC[6];
+	ERRORFLAG H2Con[5];
+	ERRORFLAG P_H2Tank;
+	ERRORFLAG P_H2Mid;
+	ERRORFLAG CAN;
+}SYSTEM_ERROR_FLAG;
 
-		unsigned int H2Con1_Alarm		: 1;		//ErrorGradeAlarm
-		unsigned int H2Con1_Emergency	: 1;		//ErrorGradeEmergency
-		unsigned int H2Con1_Sensor		: 1;		//ErrorGradeEmergency
-		unsigned int H2Con2_Alarm		: 1;		//ErrorGradeAlarm
-		unsigned int H2Con2_Emergency	: 1;		//ErrorGradeEmergency
-		unsigned int H2Con2_Sensor		: 1;		//ErrorGradeEmergency
+typedef union
+{
+	unsigned char ErrorCode;
+	struct {
+		unsigned char ErrorType		:3;
+		unsigned char ErrorSort		:2;
+		unsigned char ErrorGrade	:3;
+	}MergedBits;
+}HCU_ERROR_CODE;
 
-		unsigned int CAN				: 1;		//ErrorGradeError
-		unsigned int resv0				: 15;
-		unsigned int resv1				: 16;
-//#endif // HCU_Type == HCUA
-#if HCU_Type == HCUB
-
-		unsigned int TLEOUT1_OT			: 1;		//ErrorGradeAlarm
-		unsigned int TLEOUT1_SG			: 1;		//ErrorGradeError
-		unsigned int TLEOUT2_OT			: 1;		//ErrorGradeAlarm
-		unsigned int TLEOUT2_SG			: 1;		//ErrorGradeError
-		unsigned int TLEOUT_ALL			: 1;		//ErrorGradeError
-
-		unsigned int T_Tank6_OT75		: 1;		//ErrorGradeAlarm
-		unsigned int T_Tank6_OT85		: 1;		//ErrorGradeError
-		unsigned int T_Tank6_SENSOR		: 1;		//ErrorGradeError
-		unsigned int T_Tank7_OT75		: 1;		//ErrorGradeAlarm
-		unsigned int T_Tank7_OT85		: 1;		//ErrorGradeError
-		unsigned int T_Tank7_SENSOR		: 1;		//ErrorGradeError
-
-
-		unsigned int H2Con3_Alarm		: 1;		//ErrorGradeAlarm
-		unsigned int H2Con3_Emergency	: 1;		//ErrorGradeEmergency
-		unsigned int H2Con3_Sensor		: 1;		//ErrorGradeEmergency
-		unsigned int H2Con4_Alarm		: 1;		//ErrorGradeAlarm
-		unsigned int H2Con4_Emergency	: 1;		//ErrorGradeEmergency
-		unsigned int H2Con4_Sensor		: 1;		//ErrorGradeEmergency
-		unsigned int H2Con5_Alarm		: 1;		//ErrorGradeAlarm
-		unsigned int H2Con5_Emergency	: 1;		//ErrorGradeEmergency
-		unsigned int H2Con5_Sensor		: 1;		//ErrorGradeEmergency
-		unsigned int H2Con6_Alarm		: 1;		//ErrorGradeAlarm
-		unsigned int H2Con6_Emergency	: 1;		//ErrorGradeEmergency
-		unsigned int H2Con6_Sensor		: 1;		//ErrorGradeEmergency
-		unsigned int H2Con7_Alarm		: 1;		//ErrorGradeAlarm
-		unsigned int H2Con7_Emergency	: 1;		//ErrorGradeEmergency
-		unsigned int H2Con7_Sensor		: 1;		//ErrorGradeEmergency
-
-		unsigned int P_H2Tank_OP350		: 1;		//ErrorGradeError
-		unsigned int P_H2Tank_Sensor	: 1;		//ErrorGradeEmergency
-		unsigned int P_H2Mid_OP10		: 1;		//ErrorGradeError
-		unsigned int P_H2Mid_LP7		: 1;		//ErrorGradeAlarm
-		unsigned int P_H2Mid_Sensor		: 1;		//ErrorGradeError
-
-		unsigned int CAN				: 1;		//ErrorGradeError
-		unsigned long resv0;
-
-#endif // HCU_Type == HCUB
-	}Bits;
-}SYSTEM_ERROR;
-
-*/
 #endif /* DATATYPE_H_ */

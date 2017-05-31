@@ -8,6 +8,17 @@
 #ifndef INCLUDES_H_
 #define INCLUDES_H_
 
+ /*
+ **********************************************************************
+ ** ===================================================================
+ **                  System Type
+ ** ===================================================================
+ **********************************************************************
+ */
+#define HCUA (0)
+#define HCUB (1)
+#define HCU_Type HCUA
+
 /* Including needed modules to compile this module/procedure */
 #include "Cpu.h"
 #include "Events.h"
@@ -22,7 +33,7 @@
 #include "SPI_DriverFault_2.h"
 #include "SPI_DriverINH_2.h"
 #include "TI_1ms.h"
-#include "TI_10ms.h"
+#include "TI_20ms.h"
 #include "LED1.h"
 #include "LED2.h"
 #include "LED3.h"

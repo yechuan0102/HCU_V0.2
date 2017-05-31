@@ -19,7 +19,7 @@ Generated_Code/TI_1ms_c.obj: \
 	C:/Users/YE\ CHUAN/Documents/GitHub/HCU_V0.2/HCU_V0.2/Generated_Code/SPI_DriverFault_2.h \
 	C:/Users/YE\ CHUAN/Documents/GitHub/HCU_V0.2/HCU_V0.2/Generated_Code/SPI_DriverINH_2.h \
 	C:/Users/YE\ CHUAN/Documents/GitHub/HCU_V0.2/HCU_V0.2/Generated_Code/TI_1ms.h \
-	C:/Users/YE\ CHUAN/Documents/GitHub/HCU_V0.2/HCU_V0.2/Generated_Code/TI_10ms.h \
+	C:/Users/YE\ CHUAN/Documents/GitHub/HCU_V0.2/HCU_V0.2/Generated_Code/TI_20ms.h \
 	C:/Users/YE\ CHUAN/Documents/GitHub/HCU_V0.2/HCU_V0.2/Generated_Code/LED1.h \
 	C:/Users/YE\ CHUAN/Documents/GitHub/HCU_V0.2/HCU_V0.2/Generated_Code/LED2.h \
 	C:/Users/YE\ CHUAN/Documents/GitHub/HCU_V0.2/HCU_V0.2/Generated_Code/LED3.h \

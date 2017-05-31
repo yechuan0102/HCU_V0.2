@@ -25,34 +25,11 @@
 **  @{
 */         
 /* MODULE main */
-
-
 /* Including needed modules to compile this module/procedure */
-#include "Cpu.h"
-#include "Events.h"
-#include "CAN.h"
-#include "WDog_1S.h"
-#include "ADCH.h"
-#include "SPI.h"
-#include "SPI_DriverSS_1.h"
-#include "SPI_DriverSS_2.h"
-#include "SPI_DriverINH_1.h"
-#include "SPI_DriverFault_1.h"
-#include "SPI_DriverFault_2.h"
-#include "SPI_DriverINH_2.h"
-#include "TI_1ms.h"
-#include "TI_20ms.h"
-#include "LED1.h"
-#include "LED2.h"
-#include "LED3.h"
-#include "LED4.h"
-/* Include shared modules, which are used for whole project */
-#include "PE_Types.h"
-#include "PE_Error.h"
-#include "PE_Const.h"
-#include "IO_Map.h"
 
-/* User includes (#include below this line is not maintained by Processor Expert) */
+/* Include shared modules, which are used for whole project */
+
+ /* User includes (#include below this line is not maintained by Processor Expert) */
 #include "Includes.h"
 
 void main(void)
@@ -62,12 +39,7 @@ void main(void)
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
   PE_low_level_init();
   /*** End of Processor Expert internal initialization.                    ***/
-	Timer_100ms++;
-	if (Timer_100ms == 10)
-	{
-		Timer_100ms = 0;
-		Task_TLE6232 = 1;
-	}
+	
   /* Write your code here */
   /* For example: for(;;) { } */
   SysInit();

@@ -6,7 +6,7 @@
 **     Component   : TimerInt
 **     Version     : Component 02.161, Driver 01.23, CPU db: 3.00.026
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-18, 09:06, # CodeGen: 7
+**     Date/Time   : 2017-05-31, 10:18, # CodeGen: 14
 **     Abstract    :
 **         This component "TimerInt" implements a periodic interrupt.
 **         When the component and its events are enabled, the "OnInterrupt"
@@ -32,7 +32,7 @@
 **         Runtime setting             : none
 **
 **         Initialization:
-**              Timer                  : Enabled
+**              Timer                  : Disabled
 **              Events                 : Enabled
 **
 **         Timer registers
@@ -47,7 +47,8 @@
 **         Flip-flop registers
 **              Mode                   : TPM2C0SC  [$0065]
 **     Contents    :
-**         No public methods
+**         Enable  - byte TI_20ms_Enable(void);
+**         Disable - byte TI_20ms_Disable(void);
 **
 **     Copyright : 1997 - 2014 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -107,6 +108,38 @@
 #include "PE_Const.h"
 #include "IO_Map.h"
 #include "Cpu.h"
+
+byte TI_20ms_Enable(void);
+/*
+** ===================================================================
+**     Method      :  TI_20ms_Enable (component TimerInt)
+**     Description :
+**         This method enables the component - it starts the timer.
+**         Events may be generated (<DisableEvent>/<EnableEvent>).
+**     Parameters  : None
+**     Returns     :
+**         ---             - Error code, possible codes:
+**                           ERR_OK - OK
+**                           ERR_SPEED - This device does not work in
+**                           the active speed mode
+** ===================================================================
+*/
+
+byte TI_20ms_Disable(void);
+/*
+** ===================================================================
+**     Method      :  TI_20ms_Disable (component TimerInt)
+**     Description :
+**         This method disables the component - it stops the timer. No
+**         events will be generated.
+**     Parameters  : None
+**     Returns     :
+**         ---             - Error code, possible codes:
+**                           ERR_OK - OK
+**                           ERR_SPEED - This device does not work in
+**                           the active speed mode
+** ===================================================================
+*/
 
 __interrupt void TI_20ms_Interrupt(void);
 /*

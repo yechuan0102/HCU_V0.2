@@ -504,7 +504,7 @@ asm(BGND);
         <A_D_interrupt v="Vadc" />
         <A_D_interrupt_priority v="low priority" />
       </boolgroup>
-      <list name="A/D channels" v="16">
+      <list name="A/D channels" v="13">
         <group name="Channel0">
           <A_D_channel__pin_ v="PTA0_PIA0_ADP0_MCLK" />
         </group>
@@ -544,22 +544,8 @@ asm(BGND);
         <group name="Channel12">
           <A_D_channel__pin_ v="PTB4_PIB4_ADP12" />
         </group>
-        <group name="Channel13">
-          <A_D_channel__pin_ v="PTB5_PIB5_ADP13" />
-        </group>
-        <group name="Channel14">
-          <A_D_channel__pin_ v="PTB6_PIB6_ADP14" />
-        </group>
-        <group name="Channel15">
-          <A_D_channel__pin_ v="PTB7_PIB7_ADP15" />
-        </group>
       </list>
-      <A_D_resolution sel_value="12 bits">
-        
-Autoselect
-
-        <EmptySection_DummyValue />
-      </A_D_resolution>
+      <A_D_resolution v="12 bits" />
       <Conversion_time v="23 &amp;#181;s" />
       <Low_power_mode v="Disabled" />
       <Sample_time v="long" />
@@ -931,17 +917,17 @@ push-pull
       </event>
     </Events>
   </Bean>
-  <Bean name="TI_10ms" type="TimerInt">
+  <Bean name="TI_20ms" type="TimerInt">
     <Enabled v="Y" />
     <Properties>
-      <Component_name v="TI_10ms" />
+      <Component_name v="TI_20ms" />
       <Periodic_interrupt_source v="TPM20" />
       <Counter v="TPM2" />
       <boolgroup name="Interrupt service/event" v="Enabled">
         <Interrupt v="Vtpm2ch0" />
         <Interrupt_priority v="medium priority" />
       </boolgroup>
-      <Interrupt_period v="10 ms" />
+      <Interrupt_period v="20 ms" />
       <Same_period_in_modes v="yes" />
       <Component_uses_entire_timer v="no" />
       <group name="Initialization">
@@ -975,7 +961,7 @@ push-pull
       <event name="BeforeNewSpeed" v="don&amp;apos;t generate code" />
       <event name="AfterNewSpeed" v="don&amp;apos;t generate code" />
       <event name="OnInterrupt" v="generate code">
-        <Event_procedure_name v="TI_10ms_OnInterrupt" />
+        <Event_procedure_name v="TI_20ms_OnInterrupt" />
         <Priority v="same as interrupt" />
       </event>
     </Events>

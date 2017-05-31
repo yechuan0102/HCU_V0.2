@@ -9,16 +9,6 @@
 #define SYSPARAMETERS_H_
 
 
- /*
- **********************************************************************
- ** ===================================================================
- **                  System Type
- ** ===================================================================
- **********************************************************************
- */
-#define HCUA (0)
-#define HCUB (1)
-#define HCU_Type HCUA
 
  /*
  **********************************************************************
@@ -35,6 +25,7 @@ extern volatile unsigned char Timer_CAN;
 #define Task_TLE6232			TaskFlags.Bits.flag1//100ms ISR
 #define Task_CANTXD				TaskFlags.Bits.flag2//After Timer_CAN=CAN_Send_Delay
 #define Task_FCUCMD				TaskFlags.Bits.flag3//CAN REV ISR
+#define	Task_ADreStart			TaskFlags.Bits.flag4//ADC InnerFault 20ms ISR
 #define Task_ErrorDiagnosis		TaskFlags.Bits.flag5//ADC OnEnd ISR
 
 /*
@@ -47,23 +38,23 @@ extern volatile unsigned char Timer_CAN;
 extern volatile unsigned int  ADCHRawData[16];
 extern volatile AD_Date SYSTEM_AD_DATA;
 #if HCU_Type==HCUA
-#define T_Tank1		SYSTEM_AD_DATA.NTC_T[0]
-#define T_Tank2		SYSTEM_AD_DATA.NTC_T[1]
-#define T_Tank3		SYSTEM_AD_DATA.NTC_T[2]
-#define T_Tank4		SYSTEM_AD_DATA.NTC_T[3]
-#define T_Tank5		SYSTEM_AD_DATA.NTC_T[4]
-#define H2Con1		SYSTEM_AD_DATA.H2Con[0]
-#define H2Con2		SYSTEM_AD_DATA.H2Con[1]
+#define PhysData_T_Tank1		SYSTEM_AD_DATA.NTC_T[0]
+#define PhysData_T_Tank2		SYSTEM_AD_DATA.NTC_T[1]
+#define PhysData_T_Tank3		SYSTEM_AD_DATA.NTC_T[2]
+#define PhysData_T_Tank4		SYSTEM_AD_DATA.NTC_T[3]
+#define PhysData_T_Tank5		SYSTEM_AD_DATA.NTC_T[4]
+#define PhysData_H2Con1			SYSTEM_AD_DATA.H2Con[0]
+#define PhysData_H2Con2			SYSTEM_AD_DATA.H2Con[1]
 #elif HCU_Type==HCUB
-#define T_Tank6		(SYSTEM_AD_DATA.NTC_T[0])
-#define T_Tank7		(SYSTEM_AD_DATA.NTC_T[1])
-#define H2Con3		(SYSTEM_AD_DATA.H2Con[0])
-#define H2Con4		(SYSTEM_AD_DATA.H2Con[1])
-#define H2Con5		(SYSTEM_AD_DATA.H2Con[2])
-#define H2Con6		(SYSTEM_AD_DATA.H2Con[3])
-#define H2Con7		(SYSTEM_AD_DATA.H2Con[4])
-#define P_H2Tank	(SYSTEM_AD_DATA.P_Tank)
-#define P_H2Mid		(SYSTEM_AD_DATA.P_Mid)
+#define PhysData_T_Tank6		(SYSTEM_AD_DATA.NTC_T[0])
+#define PhysData_T_Tank7		(SYSTEM_AD_DATA.NTC_T[1])
+#define PhysData_H2Con3			(SYSTEM_AD_DATA.H2Con[0])
+#define PhysData_H2Con4			(SYSTEM_AD_DATA.H2Con[1])
+#define PhysData_H2Con5			(SYSTEM_AD_DATA.H2Con[2])
+#define PhysData_H2Con6			(SYSTEM_AD_DATA.H2Con[3])
+#define PhysData_H2Con7			(SYSTEM_AD_DATA.H2Con[4])
+#define PhysData_P_H2Tank		(SYSTEM_AD_DATA.P_Tank)
+#define PhysData_P_H2Mid		(SYSTEM_AD_DATA.P_Mid)
 #endif
 
 #define RawData_NTC_T0	(ADCHRawData[0])	//NTC1
@@ -73,8 +64,8 @@ extern volatile AD_Date SYSTEM_AD_DATA;
 #define RawData_NTC_T4	(ADCHRawData[4])	//NTC5
 #define RawData_NTC_T5	(ADCHRawData[5])	//NTC6
 
-#define RawData_P_H2Tank	(ADCHRawData[8])	//AD1
-#define RawData_P_H2Mid		(ADCHRawData[9])	//AD2
+#define RawData_P_H2Mid		(ADCHRawData[8])	//AD1
+#define RawData_P_H2Tank	(ADCHRawData[9])	//AD2
 
 #define RawData_H2Con0	(ADCHRawData[10])	//AD3
 #define RawData_H2Con1	(ADCHRawData[11])	//AD4
@@ -118,7 +109,8 @@ extern const unsigned int P_H2MidData_Table[P_H2MidData_Table_Len];
 ** ===================================================================
 **********************************************************************
 */
-extern volatile StatusDef		HCUStatus;
+extern volatile StatusDef HCUStatus;
+extern volatile unsigned char HCU_ErrorGrade_Current;
 /*******************System State macro**************************/
 #define StatePowerUp    	(1)
 #define StateReady 			(2)
@@ -143,11 +135,11 @@ extern volatile StatusDef		HCUStatus;
 #define SetStateDebug   		(HCUStatus.MergedBits.StateMachine=StateError)
 
 /*******************System Error macro**************************/
-#define ErrorGradeOK			(0)
-#define ErrorGradeWarning		(1)
-#define	ErrorGradeAlarm			(2)
-#define	ErrorGradeError			(4)
-#define	ErrorGradeEmergency		(7)
+#define ErrorGradeOK			(0U)
+#define ErrorGradeWarning		(1U)
+#define	ErrorGradeAlarm			(2U)
+#define	ErrorGradeError			(4U)
+#define	ErrorGradeEmergency		(7U)
 /*
 **********************************************************************
 ** ===================================================================
@@ -155,92 +147,126 @@ extern volatile StatusDef		HCUStatus;
 ** ===================================================================
 **********************************************************************
 */
-extern volatile unsigned char HCU_ErrorCode;
-//extern volatile SYSTEM_ERROR SystemError;
-#if  HCU_Type==HCUA
+extern volatile HCU_ERROR_CODE HCU_ErrorCode;
+extern volatile HCU_ERROR_CODE HCU_ErrorCode_Current;
+#define ErrorCodeOK						(0x00U)		//ErrorGradeOK
 
-#define ErrorCode_TLEOUT1_OT		(0)		//ErrorGradeAlarm
-#define ErrorCode_TLEOUT1_SG		(0)		//ErrorGradeError
-#define ErrorCode_TLEOUT2_OT		(0)		//ErrorGradeAlarm
-#define ErrorCode_TLEOUT2_SG		(0)		//ErrorGradeError
-#define ErrorCode_TLEOUT3_OT		(0)		//ErrorGradeAlarm
-#define ErrorCode_TLEOUT3_SG		(0)		//ErrorGradeError
-#define ErrorCode_TLEOUT4_OT		(0)		//ErrorGradeAlarm
-#define ErrorCode_TLEOUT4_SG		(0)		//ErrorGradeError
-#define ErrorCode_TLEOUT5_OT		(0)		//ErrorGradeAlarm
-#define ErrorCode_TLEOUT5_SG		(0)		//ErrorGradeError
-#define ErrorCode_TLEOUT_ALL		(0)		//ErrorGradeError
+#define ErrorCode_CAN					(0x9FU)		//ErrorGradeError
+#define ErrorCode_TLEOUT_OT_Part		(0x54U)		//ErrorGradeAlarm
+#define ErrorCode_TLEOUT_OT_All			(0x92U)		//ErrorGradeError
+#define ErrorCode_TLEOUT_SCG			(0x91U)		//ErrorGradeError
 
-#define ErrorCode_T_Tank1_OT75		(0)		//ErrorGradeAlarm
-#define ErrorCode_T_Tank1_OT85		(0)		//ErrorGradeError
-#define ErrorCode_T_Tank1_SENSOR	(0)		//ErrorGradeError
-#define ErrorCode_T_Tank2_OT75		(0)		//ErrorGradeAlarm
-#define ErrorCode_T_Tank2_OT85		(0)		//ErrorGradeError
-#define ErrorCode_T_Tank2_SENSOR	(0)		//ErrorGradeError
-#define ErrorCode_T_Tank3_OT75		(0)		//ErrorGradeAlarm
-#define ErrorCode_T_Tank3_OT85		(0)		//ErrorGradeError
-#define ErrorCode_T_Tank3_SENSOR	(0)		//ErrorGradeError
-#define ErrorCode_T_Tank4_OT75		(0)		//ErrorGradeAlarm
-#define ErrorCode_T_Tank4_OT85		(0)		//ErrorGradeError
-#define ErrorCode_T_Tank4_SENSOR	(0)		//ErrorGradeError
-#define ErrorCode_T_Tank5_OT75		(0)		//ErrorGradeAlarm
-#define ErrorCode_T_Tank5_OT85		(0)		//ErrorGradeError
-#define ErrorCode_T_Tank5_SENSOR	(0)		//ErrorGradeError
+#define ErrorCode_T_Tank_OTAlarm		(0x4CU)		//ErrorGradeAlarm >75 deg C
+#define ErrorCode_T_Tank_OTError		(0xECU)		//ErrorGradeError >85 deg C or all >75 deg C
+#define ErrorCode_T_Tank_SENSOR			(0xEDU)		//ErrorGradeError
 
-#define ErrorCode_H2Con1_Alarm		(0)		//ErrorGradeAlarm
-#define ErrorCode_H2Con1_Emergency	(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con1_Sensor		(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con2_Alarm		(0)		//ErrorGradeAlarm
-#define ErrorCode_H2Con2_Emergency	(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con2_Sensor		(0)		//ErrorGradeEmergency
+#define ErrorCode_StoH2Con_Alarm		(0x48U)		//ErrorGradeAlarm
+#define ErrorCode_StoH2Con_Emergency	(0xE8U)		//ErrorGradeEmergency
+#define ErrorCode_StoH2Con_Sensor		(0xE9U)		//ErrorGradeEmergency
+#define ErrorCode_EngineH2Con_Alarm		(0x4AU)		//ErrorGradeAlarm
+#define ErrorCode_EngineH2Con_Emergency	(0xEAU)		//ErrorGradeEmergency
+#define ErrorCode_EngineH2Con_Sensor	(0xEBU)		//ErrorGradeEmergency
+#define ErrorCode_CabinH2Con_Alarm		(0x4CU)		//ErrorGradeAlarm
+#define ErrorCode_CabinH2Con_Emergency	(0xECU)		//ErrorGradeEmergency
+#define ErrorCode_CabinH2Con_Sensor		(0xEDU)		//ErrorGradeEmergency
 
-#define ErrorCode_CAN				(0)		//ErrorGradeError
+#define ErrorCode_P_H2Mid_H				(0x9AU)		//ErrorGradeError
+#define ErrorCode_P_H2Mid_L				(0x5AU)		//ErrorGradeAlarm
+#define ErrorCode_P_H2Mid_Sensor		(0x9BU)		//ErrorGradeError
 
-#endif //  HCU_Type==HCUA
+#define	ErrorCode_P_H2Tank_H			(0x9CU)		//ErrorGradeError
+#define ErrorCode_P_H2Tank_Sensor		(0xFCU)		//ErrorGradeEmergency
 
-#if HCU_Type==HCUB
+/*
+**********************************************************************
+** ===================================================================
+**                  System Error Flag
+** ===================================================================
+**********************************************************************
+*/
+extern volatile SYSTEM_ERROR_FLAG SysErrFlag;
+extern volatile unsigned char ErrorTimer_CAN;
 
-#define ErrorCode_TLEOUT1_OT		(0)		//ErrorGradeAlarm
-#define ErrorCode_TLEOUT1_SG		(0)		//ErrorGradeError
-#define ErrorCode_TLEOUT2_OT		(0)		//ErrorGradeAlarm
-#define ErrorCode_TLEOUT2_SG		(0)		//ErrorGradeError
-#define ErrorCode_TLEOUT_ALL		(0)		//ErrorGradeError
+#define ErrorFlag_TLEOUT1	(SysErrFlag.TLEOUT[0])
+#define ErrorFlag_TLEOUT2	(SysErrFlag.TLEOUT[1])
+#define ErrorFlag_TLEOUT3	(SysErrFlag.TLEOUT[2])
+#define ErrorFlag_TLEOUT4	(SysErrFlag.TLEOUT[3])
+#define ErrorFlag_TLEOUT5	(SysErrFlag.TLEOUT[4])
+#define ErrorFlag_TLEOUT6	(SysErrFlag.TLEOUT[5])
+#define ErrorFlag_TLEOUT7	(SysErrFlag.TLEOUT[6])
+#define ErrorFlag_TLEOUT8	(SysErrFlag.TLEOUT[7])
+#define ErrorFlag_TLEOUT9	(SysErrFlag.TLEOUT[8])
+#define ErrorFlag_TLEOUT10	(SysErrFlag.TLEOUT[9])
+#define ErrorFlag_TLEOUT11	(SysErrFlag.TLEOUT[10])
+#define ErrorFlag_TLEOUT12	(SysErrFlag.TLEOUT[11])
 
-#define ErrorCode_T_Tank6_OT75		(0)		//ErrorGradeAlarm
-#define ErrorCode_T_Tank6_OT85		(0)		//ErrorGradeError
-#define ErrorCode_T_Tank6_SENSOR	(0)		//ErrorGradeError
-#define ErrorCode_T_Tank7_OT75		(0)		//ErrorGradeAlarm
-#define ErrorCode_T_Tank7_OT85		(0)		//ErrorGradeError
-#define ErrorCode_T_Tank7_SENSOR	(0)		//ErrorGradeError
+#define ErrorFlag_NTC1		(SysErrFlag.NTC[0])
+#define ErrorFlag_NTC2		(SysErrFlag.NTC[1])
+#define ErrorFlag_NTC3		(SysErrFlag.NTC[2])
+#define ErrorFlag_NTC4		(SysErrFlag.NTC[3])
+#define ErrorFlag_NTC5		(SysErrFlag.NTC[4])
+#define ErrorFlag_NTC6		(SysErrFlag.NTC[5])
 
+#define ErrorFlag_H2Con1	(SysErrFlag.H2Con[0])
+#define ErrorFlag_H2Con2	(SysErrFlag.H2Con[1])
+#define ErrorFlag_H2Con3	(SysErrFlag.H2Con[2])
+#define ErrorFlag_H2Con4	(SysErrFlag.H2Con[3])
+#define ErrorFlag_H2Con5	(SysErrFlag.H2Con[4])
 
-#define ErrorCode_H2Con3_Alarm		(0)		//ErrorGradeAlarm
-#define ErrorCode_H2Con3_Emergency	(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con3_Sensor		(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con4_Alarm		(0)		//ErrorGradeAlarm
-#define ErrorCode_H2Con4_Emergency	(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con4_Sensor		(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con5_Alarm		(0)		//ErrorGradeAlarm
-#define ErrorCode_H2Con5_Emergency	(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con5_Sensor		(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con6_Alarm		(0)		//ErrorGradeAlarm
-#define ErrorCode_H2Con6_Emergency	(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con6_Sensor		(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con7_Alarm		(0)		//ErrorGradeAlarm
-#define ErrorCode_H2Con7_Emergency	(0)		//ErrorGradeEmergency
-#define ErrorCode_H2Con7_Sensor		(0)		//ErrorGradeEmergency
+#define ErrorFlag_P_H2Tank	(SysErrFlag.P_H2Tank)
+#define ErrorFlag_P_H2Mid	(SysErrFlag.P_H2Mid)
 
-#define ErrorCode_P_H2Tank_OP350	(0)		//ErrorGradeError
-#define ErrorCode_P_H2Tank_Sensor	(0)		//ErrorGradeEmergency
-#define ErrorCode_P_H2Mid_OP10		(0)		//ErrorGradeError
-#define ErrorCode_P_H2Mid_LP7		(0)		//ErrorGradeAlarm
-#define ErrorCode_P_H2Mid_Sensor	(0)		//ErrorGradeError
+#define ErrorFlag_CAN		(SysErrFlag.CAN)
 
-#define ErrorCode_CAN				(0)		//ErrorGradeError
+#define ErrorFlagOK				(0x00U)
 
-#endif // HCU_Type==HCUB
+/*Error Type*/
+#define ERRTypeOK				(0U)		//ErrorGradeEmergency
 
+#define ERRTypeTLEOT			(1U)		//ErrorGradeAlarm
+#define ERRTypeTLEOL			(2U)		//ErrorGradeAlarm
+#define	ERRTypeTLESCG			(3U)		//ErrorGradeError
 
+#define ERRTypeH2Con_Alarm		(1U)		//ErrorGradeAlarm
+#define ERRTypeH2Con_Emergency	(2U)		//ErrorGradeEmergency
+#define ERRTypeH2Con_Sensor		(3U)		//ErrorGradeEmergency
+
+#define ERRTypeNTC_OTAlarm		(1U)		//ErrorGradeAlarm
+#define	ERRTypeNTC_OTError		(2U)		//ErrorGradeError
+#define	ERRTypeNTC_Sensor		(3U)		//ErrorGradeError
+
+#define ERRTypeP_H2Mid_H		(1U)		//ErrorGradeError
+#define ERRTypeP_H2Mid_L		(2U)		//ErrorGradeAlarm
+#define ERRTypeP_H2Mid_Sensor	(3U)		//ErrorGradeError
+
+#define	ERRTypeP_H2Tank_H		(1U)		//ErrorGradeError
+#define ERRTypeP_H2Tank_Sensor	(3U)		//ErrorGradeEmergency
+
+#define ERRTypeCAN				(1U)		//ErrorGradeError
+
+#define NTC_T_LimitH		(45U) //85 deg C
+#define NTC_T_LimitL		(35U) //75 deg C
+#define NTC_T_Rev			(33U) //73 deg C
+
+#define H2Con_StoLimitH		(90U) //18000ppm
+#define H2Con_StoLimitL		(50U) //10000ppm
+#define H2Con_StoLimitRev	(25U) //5000ppm
+
+#define H2Con_EngineLimitH	(20U) //4000ppm
+#define H2Con_EngineLimitL	(10U) //2000ppm
+#define H2Con_EngineRev		(5U)  //1000ppm
+
+#define H2Con_CabinLimitH	(20U) //4000ppm
+#define H2Con_CabinLimitL	(10U) //2000ppm
+#define H2Con_CabinRev		(5U)  //1000ppm
+
+#define P_H2Tank_Limit		(35000U) //350barg
+#define P_H2Mid_LimitH		(1000U)	 //10barg
+#define P_H2Mid_LimitL		(700U)   //7barg
+#define P_H2Mid_RevL		(750U)   //7.5barg
+
+#define Error_2s			(100U)
+#define Error_5s			(250U)
 
 /*
 **********************************************************************
@@ -342,12 +368,18 @@ extern volatile WordFlags InnerFalutFlags;
 #endif // 0
 
 
+#define TLEErrorOK			(3U)
+#define TLEErrorOT			(2U)
+#define TLEErrorOL			(1U)
+#define TLEErrorSCG			(0U)
+
 extern volatile TLEDeviceCMD TLECMD;
 extern volatile TLEDeviceCMD TLECMDTarget;
 extern volatile	TLEErrFlag TLEErrFlag_1;
 extern volatile	TLEErrFlag TLEErrFlag_2;
 extern volatile unsigned char TLEFault1;
 extern volatile unsigned char TLEFault2;
+extern volatile unsigned char TLEErrorOUT[12];
 
 /*
 **********************************************************************

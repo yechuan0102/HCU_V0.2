@@ -6,7 +6,7 @@
 **     Component   : ADC
 **     Version     : Component 01.690, Driver 01.30, CPU db: 3.00.026
 **     Compiler    : CodeWarrior HCS08 C Compiler
-**     Date/Time   : 2017-05-16, 22:41, # CodeGen: 4
+**     Date/Time   : 2017-05-18, 19:05, # CodeGen: 11
 **     Abstract    :
 **         This device "ADC" implements an A/D converter,
 **         its control methods and interrupt/event handling procedure.
@@ -17,7 +17,7 @@
 **          Interrupt service/event                        : Enabled
 **            A/D interrupt                                : Vadc
 **            A/D interrupt priority                       : low priority
-**          A/D channels                                   : 16
+**          A/D channels                                   : 13
 **            Channel0                                     : 
 **              A/D channel (pin)                          : PTA0_PIA0_ADP0_MCLK
 **              A/D channel (pin) signal                   : 
@@ -57,16 +57,7 @@
 **            Channel12                                    : 
 **              A/D channel (pin)                          : PTB4_PIB4_ADP12
 **              A/D channel (pin) signal                   : 
-**            Channel13                                    : 
-**              A/D channel (pin)                          : PTB5_PIB5_ADP13
-**              A/D channel (pin) signal                   : 
-**            Channel14                                    : 
-**              A/D channel (pin)                          : PTB6_PIB6_ADP14
-**              A/D channel (pin) signal                   : 
-**            Channel15                                    : 
-**              A/D channel (pin)                          : PTB7_PIB7_ADP15
-**              A/D channel (pin) signal                   : 
-**          A/D resolution                                 : Autoselect
+**          A/D resolution                                 : 12 bits
 **          Conversion time                                : 23 ?s
 **          Low-power mode                                 : Disabled
 **          Sample time                                    : long
@@ -160,8 +151,8 @@ static void ClrSumV(void);
 #define SINGLE          0x03U          /* SINGLE state         */
 
 
-static const  byte Channels[16] = {0x40U,0x41U,0x42U,0x43U,0x44U,0x45U,0x46U,0x47U,0x48U,0x49U,0x4AU,0x4BU,0x4CU,0x4DU,0x4EU,
-0x4FU};  /* Contents for the device control register */
+static const  byte Channels[13] = {0x40U,0x41U,0x42U,0x43U,0x44U,0x45U,0x46U,0x47U,0x48U,0x49U,0x4AU,0x4BU,0x4CU
+};  /* Contents for the device control register */
 
 static bool EnUser;                    /* Enable/Disable device */
 static volatile bool OutFlg;           /* Measurement finish flag */
@@ -169,8 +160,8 @@ static volatile byte SumChan;          /* Number of measured channels */
 static volatile byte ModeFlg;          /* Current state of device */
 static volatile byte SumCnt;           /* Number of measured channels */
 
-volatile word ADCH_SumV[16];           /* Temporary sum of measured values */
-volatile word ADCH_OutV[16];           /* Sum of measured values */
+volatile word ADCH_SumV[13];           /* Temporary sum of measured values */
+volatile word ADCH_OutV[13];           /* Sum of measured values */
 
 
 
@@ -200,7 +191,7 @@ ISR(ADCH_Interrupt)
   ADCH_SumV[SumChan] += tmpTwreg.w;    /* Save measured value */
   /*lint -restore Enable MISRA rule (1.2) checking. */
   SumChan++;                           /* Number of measurement */
-  if (SumChan == 16U) {                /* Is number of measurement equal to the number of conversions? */
+  if (SumChan == 13U) {                /* Is number of measurement equal to the number of conversions? */
     SumChan = 0U;                      /* If yes then set the number of measurement to 0 */
     SumCnt++;
     if (SumCnt == 8U) {
@@ -218,9 +209,6 @@ ISR(ADCH_Interrupt)
       ADCH_OutV[10] = ADCH_SumV[10];   /* Save measured value to the output buffer */
       ADCH_OutV[11] = ADCH_SumV[11];   /* Save measured value to the output buffer */
       ADCH_OutV[12] = ADCH_SumV[12];   /* Save measured value to the output buffer */
-      ADCH_OutV[13] = ADCH_SumV[13];   /* Save measured value to the output buffer */
-      ADCH_OutV[14] = ADCH_SumV[14];   /* Save measured value to the output buffer */
-      ADCH_OutV[15] = ADCH_SumV[15];   /* Save measured value to the output buffer */
       if (ModeFlg != MEASURE) {        /* Is the device in measure state? */
         ADCH_SumV[0] = 0U;             /* Set mesured values to 0 */
         ADCH_SumV[1] = 0U;             /* Set mesured values to 0 */
@@ -235,9 +223,6 @@ ISR(ADCH_Interrupt)
         ADCH_SumV[10] = 0U;            /* Set mesured values to 0 */
         ADCH_SumV[11] = 0U;            /* Set mesured values to 0 */
         ADCH_SumV[12] = 0U;            /* Set mesured values to 0 */
-        ADCH_SumV[13] = 0U;            /* Set mesured values to 0 */
-        ADCH_SumV[14] = 0U;            /* Set mesured values to 0 */
-        ADCH_SumV[15] = 0U;            /* Set mesured values to 0 */
         SumCnt = 0U;                   /* Set number of conversions to 0 */
       }
       ADCH_OnEnd();                    /* Invoke user event */
@@ -275,9 +260,6 @@ static void ClrSumV(void)
   ADCH_SumV[10] = 0U;                  /* Set variable for storing measured values to 0 */
   ADCH_SumV[11] = 0U;                  /* Set variable for storing measured values to 0 */
   ADCH_SumV[12] = 0U;                  /* Set variable for storing measured values to 0 */
-  ADCH_SumV[13] = 0U;                  /* Set variable for storing measured values to 0 */
-  ADCH_SumV[14] = 0U;                  /* Set variable for storing measured values to 0 */
-  ADCH_SumV[15] = 0U;                  /* Set variable for storing measured values to 0 */
 }
 
 /*
@@ -531,9 +513,6 @@ byte ADCH_GetValue(void *Values)
   ((word*)Values)[10] = (word)(ADCH_OutV[10] / 8U); /* Save measured values to the output buffer */
   ((word*)Values)[11] = (word)(ADCH_OutV[11] / 8U); /* Save measured values to the output buffer */
   ((word*)Values)[12] = (word)(ADCH_OutV[12] / 8U); /* Save measured values to the output buffer */
-  ((word*)Values)[13] = (word)(ADCH_OutV[13] / 8U); /* Save measured values to the output buffer */
-  ((word*)Values)[14] = (word)(ADCH_OutV[14] / 8U); /* Save measured values to the output buffer */
-  ((word*)Values)[15] = (word)(ADCH_OutV[15] / 8U); /* Save measured values to the output buffer */
   return ERR_OK;                       /* OK */
 }
 

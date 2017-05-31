@@ -94,7 +94,7 @@
     </GenFiles>
     <SignalListFile>Documentation\HCU_V0.2_SIGNALS.txt</SignalListFile>
     <DestinationCompiler>MetrowerksHCS08CC</DestinationCompiler>
-    <ProjectModificationStamp>27</ProjectModificationStamp>
+    <ProjectModificationStamp>31</ProjectModificationStamp>
   </Options>
   <CpuID_2>
     <Generated>true</Generated>
@@ -103,7 +103,7 @@
     <GenDriverVersion>01.40</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
     <HeaderAge>1253094720</HeaderAge>
-    <CodeAge>1253198041</CodeAge>
+    <CodeAge>1253210338</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>18</GenNumMethods>
     <SetHighSpeed>false</SetHighSpeed>
@@ -452,8 +452,8 @@
     <GenComponentVersion>01.690</GenComponentVersion>
     <GenDriverVersion>01.30</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1253094720</HeaderAge>
-    <CodeAge>1253094720</CodeAge>
+    <HeaderAge>1253218493</HeaderAge>
+    <CodeAge>1253218493</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>20</GenNumMethods>
     <Enable>true</Enable>
@@ -494,141 +494,141 @@
       <MethodPos0>Interrupt</MethodPos0>
       <MethodType>internal_method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>153</LineBeg>
-      <LineEnd>164</LineEnd>
+      <LineBeg>144</LineBeg>
+      <LineEnd>155</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos1>HWEnDi</MethodPos1>
       <MethodType>internal_method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>165</LineBeg>
-      <LineEnd>177</LineEnd>
+      <LineBeg>156</LineBeg>
+      <LineEnd>168</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos2>Enable</MethodPos2>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>179</LineBeg>
-      <LineEnd>196</LineEnd>
+      <LineBeg>170</LineBeg>
+      <LineEnd>187</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos3>Disable</MethodPos3>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>197</LineBeg>
-      <LineEnd>214</LineEnd>
+      <LineBeg>188</LineBeg>
+      <LineEnd>205</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos4>Start</MethodPos4>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>215</LineBeg>
-      <LineEnd>240</LineEnd>
+      <LineBeg>206</LineBeg>
+      <LineEnd>231</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos5>Stop</MethodPos5>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>241</LineBeg>
-      <LineEnd>269</LineEnd>
+      <LineBeg>232</LineBeg>
+      <LineEnd>260</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos6>Measure</MethodPos6>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>270</LineBeg>
-      <LineEnd>304</LineEnd>
+      <LineBeg>261</LineBeg>
+      <LineEnd>295</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos7>GetValue</MethodPos7>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>305</LineBeg>
-      <LineEnd>336</LineEnd>
+      <LineBeg>296</LineBeg>
+      <LineEnd>327</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos8>Init</MethodPos8>
       <MethodType>internal_method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>337</LineBeg>
-      <LineEnd>349</LineEnd>
+      <LineBeg>328</LineBeg>
+      <LineEnd>340</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos9>ClrSumV</MethodPos9>
       <MethodType>internal_method_declaration</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>145</LineBeg>
-      <LineEnd>155</LineEnd>
+      <LineBeg>136</LineBeg>
+      <LineEnd>146</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos10>Interrupt</MethodPos10>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>178</LineBeg>
-      <LineEnd>251</LineEnd>
+      <LineBeg>169</LineBeg>
+      <LineEnd>236</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos11>ClrSumV</MethodPos11>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>252</LineBeg>
-      <LineEnd>281</LineEnd>
+      <LineBeg>237</LineBeg>
+      <LineEnd>263</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos12>HWEnDi</MethodPos12>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>282</LineBeg>
-      <LineEnd>308</LineEnd>
+      <LineBeg>264</LineBeg>
+      <LineEnd>290</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos13>Enable</MethodPos13>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>309</LineBeg>
-      <LineEnd>334</LineEnd>
+      <LineBeg>291</LineBeg>
+      <LineEnd>316</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos14>Disable</MethodPos14>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>335</LineBeg>
-      <LineEnd>360</LineEnd>
+      <LineBeg>317</LineBeg>
+      <LineEnd>342</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos15>Start</MethodPos15>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>361</LineBeg>
-      <LineEnd>397</LineEnd>
+      <LineBeg>343</LineBeg>
+      <LineEnd>379</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos16>Stop</MethodPos16>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>398</LineBeg>
-      <LineEnd>434</LineEnd>
+      <LineBeg>380</LineBeg>
+      <LineEnd>416</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos17>Measure</MethodPos17>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>435</LineBeg>
-      <LineEnd>484</LineEnd>
+      <LineBeg>417</LineBeg>
+      <LineEnd>466</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos18>GetValue</MethodPos18>
       <MethodType>method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>485</LineBeg>
-      <LineEnd>538</LineEnd>
+      <LineBeg>467</LineBeg>
+      <LineEnd>517</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos19>Init</MethodPos19>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>539</LineBeg>
-      <LineEnd>563</LineEnd>
+      <LineBeg>518</LineBeg>
+      <LineEnd>542</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
   </ComponentID_8>
@@ -1317,12 +1317,12 @@
     <GenComponentVersion>02.161</GenComponentVersion>
     <GenDriverVersion>01.23</GenDriverVersion>
     <GenEventModule>Events</GenEventModule>
-    <HeaderAge>1253198041</HeaderAge>
-    <CodeAge>1253198041</CodeAge>
+    <HeaderAge>1254052428</HeaderAge>
+    <CodeAge>1254052428</CodeAge>
     <AsemblAge>-1</AsemblAge>
     <GenNumMethods>14</GenNumMethods>
-    <Enable>false</Enable>
-    <Disable>false</Disable>
+    <Enable>true</Enable>
+    <Disable>true</Disable>
     <EnableEvent>false</EnableEvent>
     <DisableEvent>false</DisableEvent>
     <SetPeriodMode>false</SetPeriodMode>
@@ -1348,41 +1348,76 @@
     <GenSmartUserChangesDetected_Header>false</GenSmartUserChangesDetected_Header>
     <GenSmartUserChangesDetected_Code>false</GenSmartUserChangesDetected_Code>
     <GenSmartUserChangesDetected_Asembl>false</GenSmartUserChangesDetected_Asembl>
-    <GenMethodPos>5</GenMethodPos>
+    <GenMethodPos>10</GenMethodPos>
     <MethodPos>
       <MethodPos0>Enable</MethodPos0>
       <MethodType>method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>109</LineBeg>
-      <LineEnd>109</LineEnd>
-    </MethodPos>
-    <MethodPos>
-      <MethodPos1>Interrupt</MethodPos1>
-      <MethodType>internal_method</MethodType>
-      <ModuleType>Header</ModuleType>
       <LineBeg>110</LineBeg>
-      <LineEnd>121</LineEnd>
+      <LineEnd>126</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos2>Init</MethodPos2>
+      <MethodPos1>Disable</MethodPos1>
+      <MethodType>method</MethodType>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>127</LineBeg>
+      <LineEnd>142</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos2>Interrupt</MethodPos2>
       <MethodType>internal_method</MethodType>
       <ModuleType>Header</ModuleType>
-      <LineBeg>122</LineBeg>
-      <LineEnd>134</LineEnd>
+      <LineBeg>143</LineBeg>
+      <LineEnd>154</LineEnd>
     </MethodPos>
     <MethodPos>
       <MethodPos3>Init</MethodPos3>
       <MethodType>internal_method</MethodType>
-      <ModuleType>Code</ModuleType>
-      <LineBeg>113</LineBeg>
-      <LineEnd>136</LineEnd>
+      <ModuleType>Header</ModuleType>
+      <LineBeg>155</LineBeg>
+      <LineEnd>167</LineEnd>
     </MethodPos>
     <MethodPos>
-      <MethodPos4>Interrupt</MethodPos4>
+      <MethodPos4>HWEnDi</MethodPos4>
+      <MethodType>internal_method_declaration</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>112</LineBeg>
+      <LineEnd>124</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos5>HWEnDi</MethodPos5>
       <MethodType>internal_method</MethodType>
       <ModuleType>Code</ModuleType>
-      <LineBeg>137</LineBeg>
-      <LineEnd>155</LineEnd>
+      <LineBeg>128</LineBeg>
+      <LineEnd>150</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos6>Enable</MethodPos6>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>151</LineBeg>
+      <LineEnd>173</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos7>Disable</MethodPos7>
+      <MethodType>method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>174</LineBeg>
+      <LineEnd>196</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos8>Init</MethodPos8>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>197</LineBeg>
+      <LineEnd>221</LineEnd>
+    </MethodPos>
+    <MethodPos>
+      <MethodPos9>Interrupt</MethodPos9>
+      <MethodType>internal_method</MethodType>
+      <ModuleType>Code</ModuleType>
+      <LineBeg>222</LineBeg>
+      <LineEnd>240</LineEnd>
     </MethodPos>
     <GenExtraFilesCount>0</GenExtraFilesCount>
   </ComponentID_36>

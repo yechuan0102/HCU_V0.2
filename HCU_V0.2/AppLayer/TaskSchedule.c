@@ -22,7 +22,7 @@ void TaskSchedule(void)
 	if (Task_CANTXD)			Task_CANTXD_Process();
 	if (Task_FCUCMD)			Task_FCUCMD_Process();
 	
-//	if (Task_ErrorDiagnosis);
+	if (Task_ErrorDiagnosis)    Task_ErrorDiagnosisProcess();
 }
 
 /*
@@ -46,37 +46,33 @@ void Task_ADCHSProcess(void)
 	{
 		InnerFault_ADProcess = 0;
 		/*Tank Temperature*/
-		SYSTEM_AD_DATA.NTC_T[0] = Calc_ADData_NTC(737);
-		SYSTEM_AD_DATA.NTC_T[1] = Calc_ADData_NTC(700);
-		SYSTEM_AD_DATA.NTC_T[2] = Calc_ADData_NTC(665);
-		SYSTEM_AD_DATA.NTC_T[3] = Calc_ADData_NTC(4028);
-		SYSTEM_AD_DATA.NTC_T[4] = Calc_ADData_NTC(302);
+		SYSTEM_AD_DATA.NTC_T[0] = Calc_ADData_NTC(RawData_NTC_T0);
+		SYSTEM_AD_DATA.NTC_T[1] = Calc_ADData_NTC(RawData_NTC_T1);
+		SYSTEM_AD_DATA.NTC_T[2] = Calc_ADData_NTC(RawData_NTC_T2);
+		SYSTEM_AD_DATA.NTC_T[3] = Calc_ADData_NTC(RawData_NTC_T3);
+		SYSTEM_AD_DATA.NTC_T[4] = Calc_ADData_NTC(RawData_NTC_T4);
 		SYSTEM_AD_DATA.NTC_T[5] = Calc_ADData_NTC(RawData_NTC_T5);
 		
 		/*H2Con */
-		SYSTEM_AD_DATA.H2Con[0] = Calc_ADData_H2Con(1000);
-//		SYSTEM_AD_DATA.H2Con[1] = Calc_ADData_H2Con(RawData_H2Con1);
-//		SYSTEM_AD_DATA.H2Con[2] = Calc_ADData_H2Con(1000);
-//		SYSTEM_AD_DATA.H2Con[3] = Calc_ADData_H2Con(RawData_H2Con3);
-//		SYSTEM_AD_DATA.H2Con[4] = Calc_ADData_H2Con(RawData_H2Con4);
-//
-		/*H2 Pressure */
-		SYSTEM_AD_DATA.P_Tank	= Calc_ADData_P_H2Tank(3500);
-		SYSTEM_AD_DATA.P_Mid	= Calc_ADData_P_H2Mid(2000);
+		SYSTEM_AD_DATA.H2Con[0] = Calc_ADData_H2Con(RawData_H2Con0);
+		SYSTEM_AD_DATA.H2Con[1] = Calc_ADData_H2Con(RawData_H2Con1);
+		SYSTEM_AD_DATA.H2Con[2] = Calc_ADData_H2Con(RawData_H2Con2);
+		SYSTEM_AD_DATA.H2Con[3] = Calc_ADData_H2Con(RawData_H2Con3);
+		SYSTEM_AD_DATA.H2Con[4] = Calc_ADData_H2Con(RawData_H2Con4);
 
+		/*H2 Pressure */
+		SYSTEM_AD_DATA.P_Tank	= Calc_ADData_P_H2Tank(RawData_P_H2Tank);
+		SYSTEM_AD_DATA.P_Mid	= Calc_ADData_P_H2Mid(RawData_P_H2Mid);
+		
+		
 	}
-	else 
-	{
-		InnerFault_ADProcess = 1;
-		if (ERR_OK == ADCH_Stop())	InnerFault_ADProcess = 0;
-		else						InnerFault_ADProcess = 1;
-		ADCH_Init();
-	}
+	else { InnerFault_ADProcess = 1; }
 	
-	if (ERR_OK == ADCH_Start())		InnerFault_ADProcess = 0;
-	else							InnerFault_ADProcess = 1;
-	/*clear Task_ADCHS Flag */
+	/*** Clear Task Flag. DON'T MODIFY THIS CODE!!! ***/
 	Task_ADCHS = 0;
+	
+	(void)ADCH_Measure(FALSE);
+	
 }
 
 /**************************************************************************************
@@ -99,7 +95,7 @@ unsigned char Calc_ADData_NTC(unsigned int Temp_RawData)//-40~150 C   0-190   0.
 	{
 		if ((TRawData_Table[i] <= Temp_RawData) && (Temp_RawData <= TRawData_Table[i - 1]))
 		{
-			Temp_Data = TData_Table[i] - ((Temp_RawData - TRawData_Table[i]) * 5 )/ (TRawData_Table[i - 1] - TRawData_Table[i]);
+			Temp_Data = TData_Table[i] - ((Temp_RawData - TRawData_Table[i]) * 5) / (TRawData_Table[i - 1] - TRawData_Table[i]);
 			break;
 		}
 	}
@@ -115,7 +111,7 @@ unsigned char Calc_ADData_H2Con(unsigned int Temp_RawData)//0-20000ppm  0-200  0
 	
 	if (Temp_RawData < H2ConRawData_Table[1]) return (unsigned char)H2ConData_Table[1];
 	else if (Temp_RawData > H2ConRawData_Table[0]) return (unsigned char)H2ConData_Table[0];
-	Temp_Data = ((unsigned long)(Temp_RawData- H2ConRawData_Table[1])*(H2ConData_Table[0] - H2ConData_Table[1])) / (H2ConRawData_Table[0] - H2ConRawData_Table[1]) + H2ConData_Table[1];
+	Temp_Data = ((unsigned long)(Temp_RawData - H2ConRawData_Table[1])*(H2ConData_Table[0] - H2ConData_Table[1])) / (H2ConRawData_Table[0] - H2ConRawData_Table[1]) + H2ConData_Table[1];
 	return (unsigned char)Temp_Data;
 }
 unsigned int Calc_ADData_P_H2Tank(unsigned int Temp_RawData) //0-500barg  0-50000  1-5V
@@ -139,57 +135,6 @@ unsigned int Calc_ADData_P_H2Mid(unsigned int Temp_RawData) //0-20barg   0-2000 
 	return (unsigned int)Temp_Data;
 }
 
-/**************************************************************************************
-Function:       //	AD_Lagrange
-Called By:      //	Calc_ADData_NTC
-				//	Calc_ADData_H2Con
-				//	Calc_ADData_P_H2Tank
-				//	Calc_ADData_P_H2Mid
-Input:          //	const int x[]		RawData_Table
-					const int y[],	Data_Table
-					const int len,	Data_Table_len
-					int xh		ADCHRawData
-Return:         //	yh			ADCHData
-Others:         //	NA
-****************************************************************************************/
-unsigned int AD_Lagrange(const unsigned int x[], const unsigned int y[], const int len, unsigned int xh)
-{
-	unsigned long yh;
-	unsigned int y0,y1,x0,x1;
-	int i;
-	if (len == 2)
-	{
-		y0 = y[0];
-		y1 = y[1];
-		x0 = x[0];
-		x1 = x[1];
-		yh = (y0-y1);
-		yh= xh*yh;
-		yh = yh/(x0-x1)+y0;
-	}
-	else
-	{
-		for (i = 0; i < len; i++)
-		{
-			if (x[i] <= xh)	break;
-		}
-		if (i == 0)		i = 1;
-		else if (i > (len - 1))	i = len - 1;
-		if (i > 0 && i <= (len - 1))
-		{
-			y0 = y[i - 1];
-			y1 = y[i];
-			x0 = x[i - 1];
-			x1 = x[i];			
-			yh = xh*(y0-y1);
-			yh	=y0-yh/(x1-x0);
-		}			
-	}
-	
-	//if (yh < 0)		yh = 0;
-	return yh;
-
-}
 
 /*
 **********************************************************************
@@ -320,13 +265,13 @@ void TLE_CMDset(void)
 	if (IsStateEnable)
 	{
 		TLE_ON_count++;
-		if (TLE_ON_count >= 10)	//  only 1 channel will be open in 1s
+		if (TLE_ON_count >= 5)	//  only 1 channel will be open in 1s
 		{
 			TLECMD_Open1Channel();
 			TLE_ON_count = 0;
 		}
 		TLE_OFF_count++;
-		if (TLE_OFF_count >= 10)//  only 1 channel will be close in 1s
+		if (TLE_OFF_count >= 5)//  only 1 channel will be close in 1s
 		{
 			TLECMD_Close1Channel();
 			TLE_OFF_count = 0;
@@ -401,6 +346,28 @@ void TLE_Update(void)
 	}
 }
 /**************************************************************************************
+Function:       // TLE_ErrorDIA
+Called By:      // Task_TLE6232Process
+Input:          // NA
+Return:         // NA
+Others:         // NA
+****************************************************************************************/
+void TLE_ErrorDIA(void)
+{
+	TLEErrorOUT[0] = (TLEErrFlag_1.TLEErrBits.DIA6); // TLE1-OUT6	OUT1
+	TLEErrorOUT[1] = (TLEErrFlag_1.TLEErrBits.DIA1); // TLE1-OUT1	OUT2
+	TLEErrorOUT[2] = (TLEErrFlag_1.TLEErrBits.DIA4); // TLE1-OUT4	OUT3
+	TLEErrorOUT[3] = (TLEErrFlag_2.TLEErrBits.DIA3); // TLE2-OUT3	OUT4
+	TLEErrorOUT[4] = (TLEErrFlag_2.TLEErrBits.DIA2); // TLE2-OUT2	OUT5
+	TLEErrorOUT[5] = (TLEErrFlag_2.TLEErrBits.DIA5); // TLE2-OUT5	OUT6
+	TLEErrorOUT[6] = (TLEErrFlag_2.TLEErrBits.DIA1); // TLE2-OUT1	OUT7
+	TLEErrorOUT[7] = (TLEErrFlag_1.TLEErrBits.DIA2); // TLE1-OUT2	OUT8
+	TLEErrorOUT[8] = (TLEErrFlag_1.TLEErrBits.DIA5); // TLE1-OUT5	OUT9
+	TLEErrorOUT[9] = (TLEErrFlag_1.TLEErrBits.DIA3); // TLE1-OUT3	OUT10
+	TLEErrorOUT[10] = (TLEErrFlag_2.TLEErrBits.DIA4); // TLE2-OUT4	OUT11
+	TLEErrorOUT[11] = (TLEErrFlag_2.TLEErrBits.DIA6); // TLE2-OUT6 	OUT12
+}
+/**************************************************************************************
 Function:       // Task_TLE6232Process
 Called By:      // 100ms Interrupt
 Input:          // NA
@@ -411,7 +378,7 @@ void Task_TLE6232Process(void)
 {
 	TLE_CMDset();
 	TLE_Update();
-	
+	TLE_ErrorDIA();
 	/*** Clear Task Flag. DON'T MODIFY THIS CODE!!! ***/
 	Task_TLE6232 = 0;
 }
@@ -433,8 +400,8 @@ Others:         // NA
 ****************************************************************************************/
 void Task_CANTXD_Process(void)
 {
-	systemp_Timer1++;
 	CANTXD_MsgBufferUpdate();
+	ErrorTimer_CAN = 0;
 	EnableCANTXD;
 	/*** Clear Task Flag. DON'T MODIFY THIS CODE!!! ***/
 	Task_CANTXD = 0;
@@ -448,45 +415,44 @@ Others:         // NA
 ****************************************************************************************/
 void CANTXD_MsgBufferUpdate(void)
 {
-#if HCU_Type == HCUA
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[0] = T_Tank1;
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[1] = T_Tank2;
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[2] = T_Tank3;
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[3] = T_Tank4;
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[4] = T_Tank5;
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[5] = 0x00;
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[6] = HCUStatus.Status;
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[7] = 0x00;//ERRCODE
-
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[0] = H2Con1;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[1] = H2Con2;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[2] = 0x00;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[3] = 0x00;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[4] = 0x00;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[5] = 0x00;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[6] = 0x00;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[7] = 0x00;
-#endif // HCU_Type == HCUA
-#if HCU_Type == HCUB
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[0] = T_Tank6;
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[1] = T_Tank7;
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[2] = (unsigned char)(P_H2Tank>>8);
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[3] = (unsigned char)(P_H2Tank);
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[4] = (unsigned char)(P_H2Mid >> 8);
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[5] = (unsigned char)(P_H2Mid);
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[6] = HCUStatus.Status;
-	Msg_CAN_TXD[HCU2FCU_Msg1].data[7] = 0x00;//ERRCODE
-
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[0] = H2Con3;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[1] = H2Con4;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[2] = H2Con5;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[3] = H2Con6;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[4] = H2Con7;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[5] = 0x00;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[6] = 0x00;
-	Msg_CAN_TXD[HCU2FCU_Msg2].data[7] = 0x00;
-#endif // HCU_Type == HCUB
-
+	#if HCU_Type == HCUA
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[0] = PhysData_T_Tank1;
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[1] = PhysData_T_Tank2;
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[2] = PhysData_T_Tank3;
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[3] = PhysData_T_Tank4;
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[4] = PhysData_T_Tank5;
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[5] = 0x00;
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[6] = HCUStatus.Status;
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[7] = 0x00;//ERRCODE
+	
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[0] = PhysData_H2Con1;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[1] = PhysData_H2Con2;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[2] = 0x00;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[3] = 0x00;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[4] = 0x00;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[5] = 0x00;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[6] = 0x00;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[7] = 0x00;
+	#endif // HCU_Type == HCUA
+	#if HCU_Type == HCUB
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[0] = PhysData_T_Tank6;
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[1] = PhysData_T_Tank7;
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[2] = (unsigned char)(PhysData_P_H2Tank);
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[3] = (unsigned char)(PhysData_P_H2Tank >>8);
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[4] = (unsigned char)(PhysData_P_H2Mid);
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[5] = (unsigned char)(PhysData_P_H2Mid >> 8);
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[6] = HCUStatus.Status;
+		Msg_CAN_TXD[HCU2FCU_Msg1].data[7] = 0x00;//ERRCODE
+	
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[0] = PhysData_H2Con3;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[1] = PhysData_H2Con4;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[2] = PhysData_H2Con5;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[3] = PhysData_H2Con6;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[4] = PhysData_H2Con7;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[5] = 0x00;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[6] = 0x00;
+		Msg_CAN_TXD[HCU2FCU_Msg2].data[7] = 0x00;
+	#endif // HCU_Type == HCUB
 }
 
 /**************************************************************************************
@@ -536,17 +502,17 @@ void Task_FCUCMD_Process(void)
 {
 	Data_Bits8 TLECtrl;
 	TLECtrl.Data = Msg_CAN_RXD[FCU2HCU_Msg].data[0];
-#if HCU_Type == HCUA
-	TLECMDTarget.DriverCMDBits.OUT2 = ~TLECtrl.Bits.BIT0;	//Tank1
-	TLECMDTarget.DriverCMDBits.OUT3 = ~TLECtrl.Bits.BIT1;	//Tank2
-	TLECMDTarget.DriverCMDBits.OUT4 = ~TLECtrl.Bits.BIT2;	//Tank3
-	TLECMDTarget.DriverCMDBits.OUT5 = ~TLECtrl.Bits.BIT3;	//Tank4
-	TLECMDTarget.DriverCMDBits.OUT7 = ~TLECtrl.Bits.BIT4;	//Tank5
-#endif // HCU_Type == HCUA
-#if HCU_Type == HCUB
-	TLECMDTarget.DriverCMDBits.OUT2 = ~TLECtrl.Bits.BIT0;	//Tank6
-	TLECMDTarget.DriverCMDBits.OUT3 = ~TLECtrl.Bits.BIT1;	//Tank7
-#endif // HCU_Type == HCUB
+	#if HCU_Type == HCUA
+		TLECMDTarget.DriverCMDBits.OUT2 = ~TLECtrl.Bits.BIT0;	//Tank1
+		TLECMDTarget.DriverCMDBits.OUT3 = ~TLECtrl.Bits.BIT1;	//Tank2
+		TLECMDTarget.DriverCMDBits.OUT4 = ~TLECtrl.Bits.BIT2;	//Tank3
+		TLECMDTarget.DriverCMDBits.OUT5 = ~TLECtrl.Bits.BIT3;	//Tank4
+		TLECMDTarget.DriverCMDBits.OUT7 = ~TLECtrl.Bits.BIT4;	//Tank5
+	#endif // HCU_Type == HCUA
+	#if HCU_Type == HCUB
+		TLECMDTarget.DriverCMDBits.OUT2 = ~TLECtrl.Bits.BIT0;	//Tank6
+		TLECMDTarget.DriverCMDBits.OUT3 = ~TLECtrl.Bits.BIT1;	//Tank7
+	#endif // HCU_Type == HCUB
 
 	/*** Clear Task Flag. DON'T MODIFY THIS CODE!!! ***/
 	Task_FCUCMD = 0;
@@ -554,39 +520,434 @@ void Task_FCUCMD_Process(void)
 
 /**************************************************************************************
 Function:       // Task_ErrorDiagnosisProcess
-Called By:      // 
+Called By:      // 20ms Interrupt
 Input:          // NA
 Return:         // NA
 Others:         // NA
 ****************************************************************************************/
 void Task_ErrorDiagnosisProcess(void)
 {
-#if HCU_Type == HCUA
-	/*if (SYSTEM_AD_DATA.NTC_T[1] == -1) 
+	SetErrorFlag();
+	ErrorReport();
+
+	
+
+	/*** Clear Task Flag. DON'T MODIFY THIS CODE!!! ***/
+	Task_ErrorDiagnosis = 0;
+}
+
+/**************************************************************************************
+Function:       // SetErrorFlag
+Called By:      // Task_ErrorDiagnosisProcess
+Input:          // NA
+Return:         // NA
+Others:         // NA
+****************************************************************************************/
+void SetErrorFlag(void)
+{
+	unsigned char i;
+	static volatile unsigned int ErrorTimer_H2Con[5];
+	static volatile unsigned int ErrorTimer_P_H2Mid_H;
+	static volatile unsigned int ErrorTimer_P_H2Mid_L;
+	for (i = 0; i < 5; i++)	{	ErrorTimer_H2Con[i] = 0;	}
+	ErrorTimer_P_H2Mid_H = 0;
+	ErrorTimer_P_H2Mid_L = 0;
+	//6 Channel NTC
+	for (i = 0; i < 6; i++)	
 	{
-		SystemError.Bits.T_Tank1_SENSOR = 1; 
-		if (Set_ErrGrade(ErrorGradeError)) 
-			HCU_ErrorCode = ErrorCode_T_Tank1_SENSOR;
+		if (SYSTEM_AD_DATA.NTC_T[i] == 0xFF)
+		{
+			SysErrFlag.NTC[i].Detail.ErrorType = ERRTypeNTC_Sensor;
+			SysErrFlag.NTC[i].Detail.ErrorGrade = ErrorGradeError;
+		}
+		else if (SYSTEM_AD_DATA.NTC_T[i] >= NTC_T_LimitH)
+		{
+			SysErrFlag.NTC[i].Detail.ErrorType = ERRTypeNTC_OTError;
+			SysErrFlag.NTC[i].Detail.ErrorGrade = ErrorGradeError;
+		}
+		else if (SYSTEM_AD_DATA.NTC_T[i] >= NTC_T_LimitL )
+		{
+			SysErrFlag.NTC[i].Detail.ErrorType = ERRTypeNTC_OTAlarm;
+			SysErrFlag.NTC[i].Detail.ErrorGrade = ErrorGradeAlarm;
+		}
+		else if ((SYSTEM_AD_DATA.NTC_T[i] < NTC_T_Rev))
+		{
+			SysErrFlag.NTC[i].Detail.ErrorType = ERRTypeOK;
+			SysErrFlag.NTC[i].Detail.ErrorGrade = ErrorGradeOK;
+		}
+		else {}
 	}
-	if (SYSTEM_AD_DATA.NTC_T[2] == -1) { SystemError.Bits.T_Tank2_SENSOR = 1; }
-	if (SYSTEM_AD_DATA.NTC_T[3] == -1) { SystemError.Bits.T_Tank3_SENSOR = 1; }
-	if (SYSTEM_AD_DATA.NTC_T[4] == -1) { SystemError.Bits.T_Tank4_SENSOR = 1; }
-	if (SYSTEM_AD_DATA.NTC_T[5] == -1) { SystemError.Bits.T_Tank5_SENSOR = 1; }*/
+
+#if HCU_Type==HCUA
+	//2 Channal H2Con for HCUA
+	for (i = 0; i < 2; i++)  //Storage Cabin H2Con1 H2Con2
+	{
+		if (SYSTEM_AD_DATA.H2Con[i] == 0xFF)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Sensor;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeEmergency;
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] >= H2Con_StoLimitH)
+		{
+			ErrorTimer_H2Con[i]++;
+			if (ErrorTimer_H2Con[i] >= Error_2s)
+			{
+				SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Emergency;
+				SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeEmergency;
+			}
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] >= H2Con_StoLimitL)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Alarm;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeAlarm;
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] < H2Con_StoLimitRev)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeOK;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeOK;
+		}
+		else {
+			ErrorTimer_H2Con[i] = 0;
+		}
+	}
+#endif // HCU_Type==HCUA
 
 
-	//if (SYSTEM_AD_DATA.NTC_T[1] >= );
+#if HCU_Type==HCUB
+	//5 Channal H2Con for HCUB
+	for (i = 0; i < 2; i++)  //Storage Cabin  H2Con1 H2Con2
+	{
+		if (SYSTEM_AD_DATA.H2Con[i] == 0xFF)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Sensor;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeEmergency;
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] >= H2Con_StoLimitH)
+		{
+			ErrorTimer_H2Con[i]++;
+			if (ErrorTimer_H2Con[i] >= Error_2s)
+			{
+				SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Emergency;
+				SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeEmergency;
+			}
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] >= H2Con_StoLimitL)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Alarm;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeAlarm;
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] < H2Con_StoLimitRev)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeOK;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeOK;
+		}
+		else 
+		{
+			ErrorTimer_H2Con[i] = 0;
+		}
+	}
+	for (i = 2; i < 4; i++) //Engine Cabin  H2Con3 H2Con4
+	{
+		if (SYSTEM_AD_DATA.H2Con[i] == 0xFF)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Sensor;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeEmergency;
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] >= H2Con_EngineLimitH)
+		{
+			ErrorTimer_H2Con[i]++;
+			if (ErrorTimer_H2Con[i] >= Error_2s)
+			{
+				SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Emergency;
+				SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeEmergency;
+			}
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] >= H2Con_EngineLimitL )
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Alarm;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeAlarm;
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] < H2Con_EngineRev)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeOK;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeOK;
+		}
+		else {
+			ErrorTimer_H2Con[i] = 0;
+		}
+	}
+	for (i = 4; i < 5; i++) //Passenger Cabin H2Con5
+	{
+		if (SYSTEM_AD_DATA.H2Con[i] == 0xFF)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Sensor;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeEmergency;
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] >= H2Con_CabinLimitH)
+		{
+			ErrorTimer_H2Con[i]++;
+			if (ErrorTimer_H2Con[i] >= Error_2s)
+			{
+				SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Emergency;
+				SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeEmergency;
+			}
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] >= H2Con_CabinLimitL)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeH2Con_Alarm;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeAlarm;
+		}
+		else if (SYSTEM_AD_DATA.H2Con[i] < H2Con_CabinRev)
+		{
+			ErrorTimer_H2Con[i] = 0;
+			SysErrFlag.H2Con[i].Detail.ErrorType = ERRTypeOK;
+			SysErrFlag.H2Con[i].Detail.ErrorGrade = ErrorGradeOK;
+		}
+		else {
+			ErrorTimer_H2Con[i] = 0;
+		}
+	}
+#endif // HCU_Type==HCUB
 
+	
+	// P_H2Tank
+	if (SYSTEM_AD_DATA.P_Tank == 0xFFFF)
+	{
+		SysErrFlag.P_H2Tank.Detail.ErrorType = ERRTypeP_H2Tank_Sensor;
+		SysErrFlag.P_H2Tank.Detail.ErrorGrade = ErrorGradeEmergency;
+	}
+	else if (SYSTEM_AD_DATA.P_Tank >= P_H2Tank_Limit)
+	{
+		SysErrFlag.P_H2Tank.Detail.ErrorType = ERRTypeP_H2Tank_H;
+		SysErrFlag.P_H2Tank.Detail.ErrorGrade = ErrorGradeError;
+	}
+	else
+	{
+		SysErrFlag.P_H2Tank.Detail.ErrorType = ERRTypeOK;
+		SysErrFlag.P_H2Tank.Detail.ErrorGrade = ErrorGradeOK;
+	}
+	//P_H2Mid
+	if (SYSTEM_AD_DATA.P_Mid == 0xFFFF)
+	{
+		ErrorTimer_P_H2Mid_H = 0;
+		ErrorTimer_P_H2Mid_L = 0;
+		SysErrFlag.P_H2Mid.Detail.ErrorType = ERRTypeP_H2Mid_Sensor;
+		SysErrFlag.P_H2Mid.Detail.ErrorGrade = ErrorGradeError;
+	}
+	else if (SYSTEM_AD_DATA.P_Mid >= P_H2Mid_LimitH)
+	{
+		ErrorTimer_P_H2Mid_H++;
+		ErrorTimer_P_H2Mid_L = 0;
+		if (ErrorTimer_P_H2Mid_H >= Error_5s) 
+		{
+			SysErrFlag.P_H2Mid.Detail.ErrorType = ERRTypeP_H2Mid_H;
+			SysErrFlag.P_H2Mid.Detail.ErrorGrade = ErrorGradeError;
+		}
+	}
+	else 
+	{
+		ErrorTimer_P_H2Mid_H = 0;
+		ErrorTimer_P_H2Mid_L = 0;
+		SysErrFlag.P_H2Mid.Detail.ErrorType = ERRTypeOK;
+		SysErrFlag.P_H2Mid.Detail.ErrorGrade = ErrorGradeOK;
+	}
+
+
+	//12 Channel TLE OUT 
+
+	for (i = 0; i < 12; i++)
+	{
+		if (TLEErrorOUT[i] == TLEErrorOK)
+		{
+			SysErrFlag.TLEOUT[i].Detail.ErrorType = ERRTypeOK;
+			SysErrFlag.TLEOUT[i].Detail.ErrorGrade = ErrorGradeOK;
+		}
+		else if (TLEErrorOUT[i] == TLEErrorOT)
+		{
+			SysErrFlag.TLEOUT[i].Detail.ErrorType = ERRTypeTLEOT;
+			SysErrFlag.TLEOUT[i].Detail.ErrorGrade = ErrorGradeAlarm;
+		}
+		else if (TLEErrorOUT[i] == TLEErrorOL)
+		{
+			SysErrFlag.TLEOUT[i].Detail.ErrorType = ERRTypeTLEOL;
+			SysErrFlag.TLEOUT[i].Detail.ErrorGrade = ErrorGradeAlarm;
+		}
+		else if (TLEErrorOUT[i] == TLEErrorSCG)
+		{
+			SysErrFlag.TLEOUT[i].Detail.ErrorType = ERRTypeTLESCG;
+			SysErrFlag.TLEOUT[i].Detail.ErrorGrade = ErrorGradeError;
+		}
+	}
+	/*CAN lost*/
+	if (ErrorTimer_CAN != 0xff)
+	{
+		ErrorTimer_CAN++;
+		if (ErrorTimer_CAN >= Error_2s) //2s
+		{
+			SysErrFlag.CAN.Detail.ErrorType = ERRTypeCAN;
+			SysErrFlag.CAN.Detail.ErrorGrade = ErrorGradeError;
+		}
+	}
+}
+
+
+/**************************************************************************************
+Function:       // Set_ErrCode
+Called By:      // ErrorReport
+Input:          // ErrCode
+Return:         // NA
+Others:         // NA
+****************************************************************************************/
+void Set_ErrCode(unsigned char ErrCode)
+{
+	if (HCU_ErrorCode_Current.ErrorCode < ErrCode) HCU_ErrorCode_Current.ErrorCode = ErrCode;
+}
+
+/**************************************************************************************
+Function:       // ErrorReport
+Called By:      // Task_ErrorDiagnosisProcess
+Input:          // NA
+Return:         // NA
+Others:         // NA
+****************************************************************************************/
+void ErrorReport(void)
+{
+	unsigned char temp_ErrorCount;
+	//reset ErrorCode ErrorGrade
+	Set_ErrCode(ErrorCodeOK);
+#if HCU_Type == HCUA
+	/*5 Channel NTC*/
+	// >75C Alarm
+	temp_ErrorCount = 0;
+	if (ErrorFlag_NTC1.Detail.ErrorType == ERRTypeNTC_OTAlarm) { temp_ErrorCount++;	Set_ErrCode(ErrorCode_T_Tank_OTAlarm); }
+	if (ErrorFlag_NTC2.Detail.ErrorType == ERRTypeNTC_OTAlarm) { temp_ErrorCount++;	Set_ErrCode(ErrorCode_T_Tank_OTAlarm); }
+	if (ErrorFlag_NTC3.Detail.ErrorType == ERRTypeNTC_OTAlarm) { temp_ErrorCount++;	Set_ErrCode(ErrorCode_T_Tank_OTAlarm); }
+	if (ErrorFlag_NTC4.Detail.ErrorType == ERRTypeNTC_OTAlarm) { temp_ErrorCount++;	Set_ErrCode(ErrorCode_T_Tank_OTAlarm); }
+	if (ErrorFlag_NTC5.Detail.ErrorType == ERRTypeNTC_OTAlarm) { temp_ErrorCount++;	Set_ErrCode(ErrorCode_T_Tank_OTAlarm); }
+	if (temp_ErrorCount == 5) { Set_ErrCode(ErrorCode_T_Tank_OTError); }
+	//>85C Error
+	if (ErrorFlag_NTC1.Detail.ErrorType == ERRTypeNTC_OTError) { Set_ErrCode(ErrorCode_T_Tank_OTError); }
+	if (ErrorFlag_NTC2.Detail.ErrorType == ERRTypeNTC_OTError) { Set_ErrCode(ErrorCode_T_Tank_OTError); }
+	if (ErrorFlag_NTC3.Detail.ErrorType == ERRTypeNTC_OTError) { Set_ErrCode(ErrorCode_T_Tank_OTError); }
+	if (ErrorFlag_NTC4.Detail.ErrorType == ERRTypeNTC_OTError) { Set_ErrCode(ErrorCode_T_Tank_OTError); }
+	if (ErrorFlag_NTC5.Detail.ErrorType == ERRTypeNTC_OTError) { Set_ErrCode(ErrorCode_T_Tank_OTError); }
+	//sensor Error
+	if (ErrorFlag_NTC1.Detail.ErrorType == ERRTypeNTC_Sensor) { Set_ErrCode(ErrorCode_T_Tank_SENSOR); }
+	if (ErrorFlag_NTC2.Detail.ErrorType == ERRTypeNTC_Sensor) { Set_ErrCode(ErrorCode_T_Tank_SENSOR); }
+	if (ErrorFlag_NTC3.Detail.ErrorType == ERRTypeNTC_Sensor) { Set_ErrCode(ErrorCode_T_Tank_SENSOR); }
+	if (ErrorFlag_NTC4.Detail.ErrorType == ERRTypeNTC_Sensor) { Set_ErrCode(ErrorCode_T_Tank_SENSOR); }
+	if (ErrorFlag_NTC5.Detail.ErrorType == ERRTypeNTC_Sensor) { Set_ErrCode(ErrorCode_T_Tank_SENSOR); }
+
+	/*2Channel H2Con*/
+	// Alarm
+	if (ErrorFlag_H2Con1.Detail.ErrorType == ERRTypeH2Con_Alarm) { Set_ErrCode(ErrorCode_StoH2Con_Alarm); }
+	if (ErrorFlag_H2Con2.Detail.ErrorType == ERRTypeH2Con_Alarm) { Set_ErrCode(ErrorCode_StoH2Con_Alarm); }
+	//Emergency
+	if (ErrorFlag_H2Con1.Detail.ErrorType == ERRTypeH2Con_Emergency) { Set_ErrCode(ErrorCode_StoH2Con_Emergency); }
+	if (ErrorFlag_H2Con2.Detail.ErrorType == ERRTypeH2Con_Emergency) { Set_ErrCode(ErrorCode_StoH2Con_Emergency); }
+	//Sensor
+	if (ErrorFlag_H2Con1.Detail.ErrorType == ERRTypeH2Con_Sensor) { Set_ErrCode(ErrorCode_StoH2Con_Sensor); }
+	if (ErrorFlag_H2Con2.Detail.ErrorType == ERRTypeH2Con_Sensor) { Set_ErrCode(ErrorCode_StoH2Con_Sensor); }
+
+	/*5 Channel TLE OUT  OUT2 OUT3 OUT4 OUT5 OUT7*/
+	//OT OL SCB Alarm
+	temp_ErrorCount = 0;
+	if (ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLEOT || ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLEOL) { temp_ErrorCount++; Set_ErrCode(ErrorCode_TLEOUT_OT_Part); }
+	if (ErrorFlag_TLEOUT3.Detail.ErrorType == ERRTypeTLEOT || ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLEOL) { temp_ErrorCount++; Set_ErrCode(ErrorCode_TLEOUT_OT_Part); }
+	if (ErrorFlag_TLEOUT4.Detail.ErrorType == ERRTypeTLEOT || ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLEOL) { temp_ErrorCount++; Set_ErrCode(ErrorCode_TLEOUT_OT_Part); }
+	if (ErrorFlag_TLEOUT5.Detail.ErrorType == ERRTypeTLEOT || ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLEOL) { temp_ErrorCount++; Set_ErrCode(ErrorCode_TLEOUT_OT_Part); }
+	if (ErrorFlag_TLEOUT7.Detail.ErrorType == ERRTypeTLEOT || ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLEOL) { temp_ErrorCount++; Set_ErrCode(ErrorCode_TLEOUT_OT_Part); }
+	if (temp_ErrorCount == 5) { Set_ErrCode(ErrorCode_TLEOUT_OT_All); }
+	//SCG
+	if (ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLESCG) { Set_ErrCode(ErrorCode_TLEOUT_SCG); }
+	if (ErrorFlag_TLEOUT3.Detail.ErrorType == ERRTypeTLESCG) { Set_ErrCode(ErrorCode_TLEOUT_SCG); }
+	if (ErrorFlag_TLEOUT4.Detail.ErrorType == ERRTypeTLESCG) { Set_ErrCode(ErrorCode_TLEOUT_SCG); }
+	if (ErrorFlag_TLEOUT5.Detail.ErrorType == ERRTypeTLESCG) { Set_ErrCode(ErrorCode_TLEOUT_SCG); }
+	if (ErrorFlag_TLEOUT7.Detail.ErrorType == ERRTypeTLESCG) { Set_ErrCode(ErrorCode_TLEOUT_SCG); }
+
+	/*CAN */
+	if (ErrorFlag_CAN.Detail.ErrorType == ERRTypeCAN) { Set_ErrCode(ErrorCode_CAN); }
 #endif // HCU_Type == HCUA
 #if HCU_Type == HCUB
+	/*2 Channel NTC*/
+	// >75C Alarm
+	temp_ErrorCount = 0;
+	if (ErrorFlag_NTC1.Detail.ErrorType == ERRTypeNTC_OTAlarm) { temp_ErrorCount++;	Set_ErrCode(ErrorCode_T_Tank_OTAlarm); }
+	if (ErrorFlag_NTC2.Detail.ErrorType == ERRTypeNTC_OTAlarm) { temp_ErrorCount++;	Set_ErrCode(ErrorCode_T_Tank_OTAlarm); }
+	if (temp_ErrorCount == 2) { Set_ErrCode(ErrorCode_T_Tank_OTError); }
+	//>85C Error
+	if (ErrorFlag_NTC1.Detail.ErrorType == ERRTypeNTC_OTError) { Set_ErrCode(ErrorCode_T_Tank_OTError); }
+	if (ErrorFlag_NTC2.Detail.ErrorType == ERRTypeNTC_OTError) { Set_ErrCode(ErrorCode_T_Tank_OTError); }
+	//sensor Error
+	if (ErrorFlag_NTC1.Detail.ErrorType == ERRTypeNTC_Sensor) { Set_ErrCode(ErrorCode_T_Tank_SENSOR); }
+	if (ErrorFlag_NTC2.Detail.ErrorType == ERRTypeNTC_Sensor) { Set_ErrCode(ErrorCode_T_Tank_SENSOR); }
+	
+	/*5 Channel H2Con*/
+	/****Storage Cabin  H2Con1 H2Con2*****/
+	// Alarm
+	if (ErrorFlag_H2Con1.Detail.ErrorType == ERRTypeH2Con_Alarm) { Set_ErrCode(ErrorCode_StoH2Con_Alarm); }
+	if (ErrorFlag_H2Con2.Detail.ErrorType == ERRTypeH2Con_Alarm) { Set_ErrCode(ErrorCode_StoH2Con_Alarm); }
+	//Emergency
+	if (ErrorFlag_H2Con1.Detail.ErrorType == ERRTypeH2Con_Emergency) { Set_ErrCode(ErrorCode_StoH2Con_Emergency); }
+	if (ErrorFlag_H2Con2.Detail.ErrorType == ERRTypeH2Con_Emergency) { Set_ErrCode(ErrorCode_StoH2Con_Emergency); }
+	//Sensor
+	if (ErrorFlag_H2Con1.Detail.ErrorType == ERRTypeH2Con_Sensor) { Set_ErrCode(ErrorCode_StoH2Con_Sensor); }
+	if (ErrorFlag_H2Con2.Detail.ErrorType == ERRTypeH2Con_Sensor) { Set_ErrCode(ErrorCode_StoH2Con_Sensor); }
+	/****Engine Cabin  H2Con3 H2Con4*****/
+	// Alarm
+	if (ErrorFlag_H2Con3.Detail.ErrorType == ERRTypeH2Con_Alarm) { Set_ErrCode(ErrorCode_EngineH2Con_Alarm); }
+	if (ErrorFlag_H2Con4.Detail.ErrorType == ERRTypeH2Con_Alarm) { Set_ErrCode(ErrorCode_EngineH2Con_Alarm); }
+	//Emergency
+	if (ErrorFlag_H2Con3.Detail.ErrorType == ERRTypeH2Con_Emergency) { Set_ErrCode(ErrorCode_EngineH2Con_Emergency); }
+	if (ErrorFlag_H2Con4.Detail.ErrorType == ERRTypeH2Con_Emergency) { Set_ErrCode(ErrorCode_EngineH2Con_Emergency); }
+	//Sensor
+	if (ErrorFlag_H2Con3.Detail.ErrorType == ERRTypeH2Con_Sensor) { Set_ErrCode(ErrorCode_EngineH2Con_Sensor); }
+	if (ErrorFlag_H2Con4.Detail.ErrorType == ERRTypeH2Con_Sensor) { Set_ErrCode(ErrorCode_EngineH2Con_Sensor); }
+	/****Engine Cabin  H2Con5 *****/
+	// Alarm
+	if (ErrorFlag_H2Con5.Detail.ErrorType == ERRTypeH2Con_Alarm) { Set_ErrCode(ErrorCode_CabinH2Con_Alarm); }
+	//Emergency
+	if (ErrorFlag_H2Con5.Detail.ErrorType == ERRTypeH2Con_Emergency) { Set_ErrCode(ErrorCode_CabinH2Con_Emergency); }
+	//Sensor
+	if (ErrorFlag_H2Con5.Detail.ErrorType == ERRTypeH2Con_Sensor) { Set_ErrCode(ErrorCode_CabinH2Con_Sensor); }
 
+	/*2 Channel TLE OUT  OUT2 OUT3 OUT4 OUT5 OUT7*/
+	//OT OL SCB Alarm
+	temp_ErrorCount = 0;
+	if (ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLEOT || ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLEOL) { temp_ErrorCount++; Set_ErrCode(ErrorCode_TLEOUT_OT_Part); }
+	if (ErrorFlag_TLEOUT3.Detail.ErrorType == ERRTypeTLEOT || ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLEOL) { temp_ErrorCount++; Set_ErrCode(ErrorCode_TLEOUT_OT_Part); }
+	if (temp_ErrorCount == 2) { Set_ErrCode(ErrorCode_TLEOUT_OT_All); }
+	//SCG
+	if (ErrorFlag_TLEOUT2.Detail.ErrorType == ERRTypeTLESCG) { Set_ErrCode(ErrorCode_TLEOUT_SCG); }
+	if (ErrorFlag_TLEOUT3.Detail.ErrorType == ERRTypeTLESCG) { Set_ErrCode(ErrorCode_TLEOUT_SCG); }
+
+	/* CAN */
+	if (ErrorFlag_CAN.Detail.ErrorType == ERRTypeCAN) { Set_ErrCode(ErrorCode_CAN); }
 #endif // HCU_Type == HCUB
-}
-int Set_ErrGrade(unsigned char ErrGrade)
-{
-	if (HCUStatus.MergedBits.ErrGrade < ErrGrade)
+
+	HCU_ErrorGrade_Current = HCU_ErrorCode_Current.MergedBits.ErrorGrade;
+	if ((HCUStatus.MergedBits.ErrGrade == ErrorGradeEmergency) || (HCUStatus.MergedBits.ErrGrade == ErrorGradeError))
 	{
-		HCUStatus.MergedBits.ErrGrade = ErrGrade;
-		return 1;
+		if (HCU_ErrorCode_Current.ErrorCode >= HCU_ErrorCode.ErrorCode)
+		{
+			HCU_ErrorCode.ErrorCode = HCU_ErrorCode_Current.ErrorCode;
+			HCUStatus.MergedBits.ErrGrade = HCU_ErrorGrade_Current;
+		}
 	}
-	return 0;
+	else
+	{
+		HCU_ErrorCode.ErrorCode = HCU_ErrorCode_Current.ErrorCode;
+		HCUStatus.MergedBits.ErrGrade = HCU_ErrorGrade_Current;
+	}
 }
